@@ -37,6 +37,7 @@ import {
   Terminal,
   Layers,
   Cpu,
+  X,
 } from 'lucide-react';
 
 interface LandingPageProps {
@@ -46,6 +47,7 @@ interface LandingPageProps {
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAuditor }) => {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   const toggleFaq = (index: number) => {
     setOpenFaq(openFaq === index ? null : index);
@@ -56,33 +58,62 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
       {/* Navbar */}
       <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={onOpenWallet}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
-              title="Open Navigation"
-            >
-              <Menu className="w-6 h-6 text-gray-700" />
-            </button>
-          </div>
-
-          <div
-            onClick={onOpenWallet}
-            className="flex items-center gap-2 font-semibold text-xl tracking-tight cursor-pointer"
-          >
-            <div className="w-7 h-7 bg-black rounded-full flex items-center justify-center shadow-sm">
-              <Zap className="w-4 h-4 text-amber-400" />
-            </div>
-            <span className="tracking-tight font-bold text-2xl">ZCross</span>
-            <span className="text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full ml-1 border border-amber-300">
-              Shielded
-            </span>
-          </div>
-
           <div className="flex items-center gap-6">
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer lg:hidden"
+              title="Toggle Navigation Menu"
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6 text-gray-700" /> : <Menu className="w-6 h-6 text-gray-700" />}
+            </button>
+
+            <div
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="flex items-center gap-2 font-semibold text-xl tracking-tight cursor-pointer"
+              title="ZCross - Return to Top"
+            >
+              <div className="w-7 h-7 bg-black rounded-full flex items-center justify-center shadow-sm">
+                <Zap className="w-4 h-4 text-amber-400" />
+              </div>
+              <span className="tracking-tight font-bold text-2xl">ZCross</span>
+              <span className="text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full ml-1 border border-amber-300">
+                Shielded
+              </span>
+            </div>
+
+            {/* Desktop Navigation Links */}
+            <div className="hidden lg:flex items-center gap-6 text-sm font-medium text-gray-600 ml-4">
+              <button
+                onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
+                className="hover:text-black transition cursor-pointer"
+              >
+                How It Works
+              </button>
+              <button
+                onClick={() => document.getElementById('ecosystem')?.scrollIntoView({ behavior: 'smooth' })}
+                className="hover:text-black transition cursor-pointer"
+              >
+                Architecture
+              </button>
+              <button
+                onClick={() => document.getElementById('corridors')?.scrollIntoView({ behavior: 'smooth' })}
+                className="hover:text-black transition cursor-pointer"
+              >
+                Corridors
+              </button>
+              <button
+                onClick={() => document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' })}
+                className="hover:text-black transition cursor-pointer"
+              >
+                FAQ
+              </button>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4 sm:gap-6">
             <button 
               onClick={onOpenAuditor}
-              className="hidden md:flex items-center gap-2 text-sm font-medium text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full hover:bg-emerald-100 transition cursor-pointer"
+              className="hidden sm:flex items-center gap-2 text-sm font-medium text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full hover:bg-emerald-100 transition cursor-pointer"
             >
               <Shield className="w-4 h-4 text-emerald-600" />
               Pure Orchard Mode
@@ -95,6 +126,59 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
             </button>
           </div>
         </div>
+
+        {/* Mobile Navigation Drawer */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden border-t border-gray-100 bg-white px-6 py-4 space-y-3 shadow-lg">
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="block w-full text-left text-sm font-medium text-gray-700 hover:text-black py-2 cursor-pointer"
+            >
+              How It Works
+            </button>
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                document.getElementById('ecosystem')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="block w-full text-left text-sm font-medium text-gray-700 hover:text-black py-2 cursor-pointer"
+            >
+              Architecture
+            </button>
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                document.getElementById('corridors')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="block w-full text-left text-sm font-medium text-gray-700 hover:text-black py-2 cursor-pointer"
+            >
+              Corridors
+            </button>
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="block w-full text-left text-sm font-medium text-gray-700 hover:text-black py-2 cursor-pointer"
+            >
+              FAQ
+            </button>
+            <div className="pt-2 border-t border-gray-100">
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenWallet();
+                }}
+                className="w-full bg-black text-white py-2.5 rounded-full text-sm font-medium hover:bg-gray-800 text-center cursor-pointer"
+              >
+                Launch App
+              </button>
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* Hero Section */}
@@ -113,7 +197,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
               className="flex items-center gap-2 bg-black text-white px-8 py-3.5 rounded-full font-medium hover:bg-gray-800 transition-all w-full sm:w-auto justify-center shadow-lg hover:shadow-xl cursor-pointer"
             >
               <Zap className="w-5 h-5 text-amber-400" />
-              Launch Shielded Swap
+              Launch App
             </button>
             <button
               onClick={onOpenAuditor}
@@ -161,52 +245,41 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
                   </div>
 
                   <div className="grid grid-cols-4 gap-4 mb-8">
-                    <button
-                      onClick={onOpenWallet}
-                      className="flex flex-col items-center gap-2 cursor-pointer group"
-                    >
-                      <div className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center group-hover:bg-amber-400 group-hover:text-black transition">
+                    <div className="flex flex-col items-center gap-2 select-none group">
+                      <div className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-gray-300">
                         <ArrowUp className="w-5 h-5" />
                       </div>
-                      <span className="text-xs text-gray-400 group-hover:text-white transition">Shield</span>
-                    </button>
+                      <span className="text-xs text-gray-400">Shield</span>
+                    </div>
 
-                    <button
-                      onClick={onOpenWallet}
-                      className="flex flex-col items-center gap-2 cursor-pointer group"
-                    >
-                      <div className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center group-hover:bg-amber-400 group-hover:text-black transition">
+                    <div className="flex flex-col items-center gap-2 select-none group">
+                      <div className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-gray-300">
                         <ArrowDown className="w-5 h-5" />
                       </div>
-                      <span className="text-xs text-gray-400 group-hover:text-white transition">Receive</span>
-                    </button>
+                      <span className="text-xs text-gray-400">Receive</span>
+                    </div>
 
-                    <button
-                      onClick={onOpenWallet}
-                      className="flex flex-col items-center gap-2 cursor-pointer group"
-                    >
-                      <div className="w-12 h-12 rounded-full bg-amber-400 text-neutral-950 font-bold flex items-center justify-center group-hover:bg-amber-300 transition shadow-lg">
+                    <div className="flex flex-col items-center gap-2 select-none group">
+                      <div className="w-12 h-12 rounded-full bg-amber-400 text-neutral-950 font-bold flex items-center justify-center shadow-lg">
                         <ArrowLeftRight className="w-5 h-5" />
                       </div>
-                      <span className="text-xs text-amber-400 font-semibold transition">Swap</span>
-                    </button>
+                      <span className="text-xs text-amber-400 font-semibold">Swap</span>
+                    </div>
 
-                    <button
+                    <div
                       onClick={onOpenAuditor}
                       className="flex flex-col items-center gap-2 cursor-pointer group"
+                      title="Inspect Cryptographic Invariants"
                     >
-                      <div className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center group-hover:bg-amber-400 group-hover:text-black transition">
+                      <div className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center group-hover:bg-emerald-500 group-hover:text-black transition text-gray-300">
                         <Shield className="w-5 h-5" />
                       </div>
                       <span className="text-xs text-gray-400 group-hover:text-white transition">Audit</span>
-                    </button>
+                    </div>
                   </div>
 
                   {/* Shielded Asset Card */}
-                  <div
-                    onClick={onOpenWallet}
-                    className="bg-gray-900 rounded-2xl p-4 mb-4 cursor-pointer hover:bg-gray-800/80 transition border border-white/10"
-                  >
+                  <div className="bg-gray-900 rounded-2xl p-4 mb-4 border border-white/10 select-none">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full bg-amber-400 flex items-center justify-center text-neutral-950 font-bold shadow">
                         Z
@@ -223,7 +296,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
                   </div>
 
                   {/* Cross-chain Callout */}
-                  <div className="bg-gradient-to-r from-emerald-950/70 to-neutral-900 rounded-2xl p-4 border border-emerald-800/40">
+                  <div className="bg-gradient-to-r from-emerald-950/70 to-neutral-900 rounded-2xl p-4 border border-emerald-800/40 select-none">
                     <div className="flex items-start justify-between">
                       <div>
                         <h4 className="font-medium text-emerald-400 text-sm mb-1">NEAR Intents 1Click</h4>
@@ -237,19 +310,19 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
                 </div>
 
                 {/* Bottom Nav */}
-                <div className="h-20 bg-gray-950/90 backdrop-blur border-t border-gray-800 flex justify-around items-center px-4">
-                  <button onClick={onOpenWallet} className="cursor-pointer">
-                    <Home className="w-6 h-6 text-amber-400" />
-                  </button>
-                  <button onClick={onOpenWallet} className="cursor-pointer">
-                    <ArrowLeftRight className="w-6 h-6 text-gray-500 hover:text-white transition" />
-                  </button>
-                  <button onClick={onOpenWallet} className="cursor-pointer">
-                    <Wallet className="w-6 h-6 text-gray-500 hover:text-white transition" />
-                  </button>
-                  <button onClick={onOpenAuditor} className="cursor-pointer">
-                    <Shield className="w-6 h-6 text-gray-500 hover:text-white transition" />
-                  </button>
+                <div className="h-20 bg-gray-950/90 backdrop-blur border-t border-gray-800 flex justify-around items-center px-4 select-none">
+                  <div className="text-amber-400 p-2">
+                    <Home className="w-6 h-6" />
+                  </div>
+                  <div className="text-gray-500 p-2">
+                    <ArrowLeftRight className="w-6 h-6" />
+                  </div>
+                  <div className="text-gray-500 p-2">
+                    <Wallet className="w-6 h-6" />
+                  </div>
+                  <div onClick={onOpenAuditor} className="text-gray-500 hover:text-emerald-400 p-2 cursor-pointer transition" title="Inspect Cryptographic Invariants">
+                    <Shield className="w-6 h-6" />
+                  </div>
                 </div>
               </div>
             </div>
@@ -302,7 +375,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
       </section>
 
       {/* Features Section */}
-      <section className="py-24 bg-white border-t border-gray-100">
+      <section id="how-it-works" className="py-24 bg-white border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
             <h2 className="text-3xl md:text-5xl font-semibold tracking-tight max-w-lg text-slate-900">
@@ -406,8 +479,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
         </div>
       </section>
 
-      {/* Services Section */}
-      <section className="py-24 bg-white">
+      {/* Services / Ecosystem Section */}
+      <section id="ecosystem" className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-6xl font-semibold tracking-tight mb-4 uppercase text-slate-900">
@@ -420,13 +493,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
             {/* Wallet Card (Dark) */}
-            <div
-              onClick={onOpenWallet}
-              className="bg-gray-950 rounded-[2.5rem] p-10 md:p-14 min-h-[500px] relative overflow-hidden text-white flex flex-col justify-end group cursor-pointer shadow-xl hover:shadow-2xl transition border border-gray-800"
-            >
+            <div className="bg-gray-950 rounded-[2.5rem] p-10 md:p-14 min-h-[500px] relative overflow-hidden text-white flex flex-col justify-end shadow-xl border border-gray-800">
               <div className="absolute top-8 right-8">
-                <span className="bg-amber-400 text-neutral-950 text-xs font-bold px-3 py-1.5 rounded-full shadow">
-                  Launch Desktop Wallet ↗
+                <span className="bg-amber-400/20 text-amber-300 border border-amber-400/30 text-xs font-bold px-3.5 py-1.5 rounded-full">
+                  Client Interface
                 </span>
               </div>
               <div className="relative z-10 pt-20">
@@ -438,10 +508,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
             </div>
 
             {/* Solver Daemon Card (Light) */}
-            <div
-              onClick={onOpenWallet}
-              className="bg-gray-50 rounded-[2.5rem] p-10 md:p-14 min-h-[500px] relative overflow-hidden flex flex-col justify-end group cursor-pointer shadow-md hover:shadow-xl transition border border-gray-100"
-            >
+            <div className="bg-gray-50 rounded-[2.5rem] p-10 md:p-14 min-h-[500px] relative overflow-hidden flex flex-col justify-end shadow-md border border-gray-100">
               <div className="absolute top-8 right-8">
                 <span className="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1.5 rounded-full border border-emerald-200">
                   Automated Daemon
@@ -465,7 +532,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
       </section>
 
       {/* Business Section */}
-      <section className="py-24 bg-emerald-50/30 border-t border-emerald-100/50">
+      <section id="solutions" className="py-24 bg-emerald-50/30 border-t border-emerald-100/50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex justify-center mb-10">
             <span className="inline-flex items-center gap-2 bg-white border border-gray-100 text-emerald-700 px-4 py-1.5 rounded-full text-sm font-medium shadow-sm">
@@ -483,16 +550,19 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
             </p>
             <div className="mt-8">
               <button
-                onClick={onOpenWallet}
+                onClick={() => {
+                  const el = document.getElementById('developer-api');
+                  el?.scrollIntoView({ behavior: 'smooth' });
+                }}
                 className="bg-black text-white px-8 py-3 rounded-full font-medium hover:bg-gray-800 transition-colors shadow-md cursor-pointer"
               >
-                Test in Live Sandbox
+                Explore Developer API
               </button>
             </div>
           </div>
 
           {/* Business UI Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+          <div id="developer-api" className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
             {/* Mockup Left */}
             <div className="md:col-span-3 bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-64 flex flex-col">
               <div className="text-xs text-gray-400 uppercase mb-2">Settlement Vault</div>
@@ -548,10 +618,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
                 <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
               </div>
               <button
-                onClick={onOpenWallet}
+                onClick={onOpenAuditor}
                 className="mt-auto w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs py-2 rounded font-medium transition cursor-pointer"
               >
-                Inspect Solver Stream
+                Inspect Invariants &amp; Audit
               </button>
             </div>
           </div>
@@ -559,7 +629,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
       </section>
 
       {/* Earn Section */}
-      <section className="py-24 bg-white border-t border-gray-100">
+      <section id="corridors" className="py-24 bg-white border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
             <h2 className="text-3xl md:text-5xl font-semibold tracking-tight max-w-lg text-slate-900">
@@ -570,16 +640,19 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
                 Convert private ZEC into native tokens across EVM, Solana, and Bitcoin ecosystems at guaranteed market rates.
               </p>
               <button
-                onClick={onOpenWallet}
+                onClick={() => {
+                  const el = document.getElementById('corridors-grid');
+                  el?.scrollIntoView({ behavior: 'smooth' });
+                }}
                 className="inline-flex items-center text-emerald-600 font-medium text-sm hover:text-emerald-700 cursor-pointer"
               >
                 <ArrowUpRight className="w-4 h-4 mr-1" />
-                VIEW ALL CORRIDORS
+                EXPLORE ALL CORRIDORS
               </button>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div id="corridors-grid" className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Arbitrum Corridor */}
             <div className="bg-gray-50 rounded-3xl p-8 min-h-[350px] flex flex-col justify-between border border-gray-100/80">
               <div className="flex gap-4 overflow-x-auto hide-scrollbar mb-8 opacity-90 pb-2">
@@ -753,7 +826,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
       </section>
 
       {/* FAQ */}
-      <section className="py-24 bg-white border-t border-gray-100">
+      <section id="faq" className="py-24 bg-white border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row gap-16">
           <div className="md:w-1/3">
             <h2 className="text-3xl md:text-5xl font-semibold tracking-tight mb-4 text-slate-900">FAQ</h2>
@@ -888,14 +961,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
                   className="flex items-center justify-center gap-2 bg-black text-white px-6 py-2.5 rounded-full text-sm font-medium hover:bg-gray-800 transition-all w-full cursor-pointer shadow-sm"
                 >
                   <Zap className="w-4 h-4 text-amber-400" />
-                  Launch Application
+                  Launch App
                 </button>
                 <button
-                  onClick={onOpenWallet}
+                  onClick={onOpenAuditor}
                   className="flex items-center justify-center gap-2 bg-white border border-gray-200 text-black px-6 py-2.5 rounded-full text-sm font-medium hover:bg-gray-50 transition-all w-full cursor-pointer"
                 >
-                  <Wallet className="w-4 h-4" />
-                  Desktop Wallet
+                  <Shield className="w-4 h-4 text-emerald-600" />
+                  Audit Invariants
                 </button>
               </div>
             </div>
