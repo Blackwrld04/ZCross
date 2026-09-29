@@ -416,147 +416,119 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
           {/* 4 Invariant Pillars Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* 1. Pure Shielded Isolation */}
-            <div className="bg-gray-50 rounded-3xl p-8 border border-gray-100/80 shadow-sm hover:shadow-md transition flex flex-col justify-between">
-              <div>
-                <div className="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center mb-4">
-                  <ShieldCheck className="w-5 h-5" />
-                </div>
-                <div className="text-xs font-bold text-emerald-700 uppercase tracking-wider mb-1 font-mono">Invariant 01</div>
-                <h3 className="text-xl font-semibold text-slate-900 mb-2">Pure Shielded Isolation</h3>
-                <p className="text-xs text-gray-500 font-light mb-6 leading-relaxed">
-                  Strict enforcement of pure shielded pools with zero transparent address exposure or linkability.
-                </p>
-                <ul className="space-y-3 text-xs text-gray-600">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
-                    <span>Zero transparent addresses (t-addr) accepted or routed</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
-                    <span>Pure Orchard pool (ZIP 316 Unified Addresses only)</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
-                    <span>Halo 2 recursive zero-knowledge proving system</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
-                    <span>Zero transaction graph linkability between parties</span>
-                  </li>
-                </ul>
+            <div className="bg-gray-50 rounded-3xl p-8 border border-gray-100/80 shadow-sm hover:shadow-md transition">
+              <div className="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center mb-4">
+                <ShieldCheck className="w-5 h-5" />
               </div>
-              <div className="mt-8 pt-4 border-t border-gray-200/70 flex items-center justify-between text-[11px] text-emerald-700 font-mono font-medium">
-                <span>ORCHARD_HALO2</span>
-                <span>STATUS: VERIFIED</span>
-              </div>
+              <h3 className="text-xl font-semibold text-slate-900 mb-2">Pure Shielded Isolation</h3>
+              <p className="text-xs text-gray-500 font-light mb-6 leading-relaxed">
+                Strict enforcement of pure shielded pools with zero transparent address exposure or linkability.
+              </p>
+              <ul className="space-y-3 text-xs text-gray-600">
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
+                  <span>Zero transparent addresses (t-addr) accepted or routed</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
+                  <span>Pure Orchard pool (ZIP 316 Unified Addresses only)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
+                  <span>Halo 2 recursive zero-knowledge proving system</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
+                  <span>Zero transaction graph linkability between parties</span>
+                </li>
+              </ul>
             </div>
 
             {/* 2. Metadata Defense */}
-            <div className="bg-gray-50 rounded-3xl p-8 border border-gray-100/80 shadow-sm hover:shadow-md transition flex flex-col justify-between">
-              <div>
-                <div className="w-10 h-10 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center mb-4">
-                  <Lock className="w-5 h-5" />
-                </div>
-                <div className="text-xs font-bold text-amber-700 uppercase tracking-wider mb-1 font-mono">Invariant 02</div>
-                <h3 className="text-xl font-semibold text-slate-900 mb-2">Constant-Length Memos</h3>
-                <p className="text-xs text-gray-500 font-light mb-6 leading-relaxed">
-                  Eliminates network packet sniffing and byte-length side-channels with uniform constant padding.
-                </p>
-                <ul className="space-y-3 text-xs text-gray-600">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
-                    <span>In-band ChaCha20-Poly1305 note ciphertexts</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
-                    <span>Exact 512-byte uniform padding eliminates size leaks</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
-                    <span>Destination chains and tokens hidden from observers</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
-                    <span>Forward secrecy guaranteed across all note transfers</span>
-                  </li>
-                </ul>
+            <div className="bg-gray-50 rounded-3xl p-8 border border-gray-100/80 shadow-sm hover:shadow-md transition">
+              <div className="w-10 h-10 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center mb-4">
+                <Lock className="w-5 h-5" />
               </div>
-              <div className="mt-8 pt-4 border-t border-gray-200/70 flex items-center justify-between text-[11px] text-amber-700 font-mono font-medium">
-                <span>MEMO_512B_PAD</span>
-                <span>STATUS: VERIFIED</span>
-              </div>
+              <h3 className="text-xl font-semibold text-slate-900 mb-2">Constant-Length Memos</h3>
+              <p className="text-xs text-gray-500 font-light mb-6 leading-relaxed">
+                Eliminates network packet sniffing and byte-length side-channels with uniform constant padding.
+              </p>
+              <ul className="space-y-3 text-xs text-gray-600">
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+                  <span>In-band ChaCha20-Poly1305 note ciphertexts</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+                  <span>Exact 512-byte uniform padding eliminates size leaks</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+                  <span>Destination chains and tokens hidden from observers</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+                  <span>Forward secrecy guaranteed across all note transfers</span>
+                </li>
+              </ul>
             </div>
 
             {/* 3. Non-Custodial Solvers */}
-            <div className="bg-gray-50 rounded-3xl p-8 border border-gray-100/80 shadow-sm hover:shadow-md transition flex flex-col justify-between">
-              <div>
-                <div className="w-10 h-10 rounded-2xl bg-cyan-100 text-cyan-700 flex items-center justify-center mb-4">
-                  <Zap className="w-5 h-5" />
-                </div>
-                <div className="text-xs font-bold text-cyan-700 uppercase tracking-wider mb-1 font-mono">Invariant 03</div>
-                <h3 className="text-xl font-semibold text-slate-900 mb-2">Non-Custodial Solvers</h3>
-                <p className="text-xs text-gray-500 font-light mb-6 leading-relaxed">
-                  Decentralized intent fulfillment network eliminating central bridges and smart contract honeypots.
-                </p>
-                <ul className="space-y-3 text-xs text-gray-600">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-cyan-600 flex-shrink-0 mt-0.5" />
-                    <span>Direct integration with NEAR Intents 1Click protocol</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-cyan-600 flex-shrink-0 mt-0.5" />
-                    <span>Ed25519-signed guaranteed execution rate quotes</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-cyan-600 flex-shrink-0 mt-0.5" />
-                    <span>Automated timeout detection and shielded refund fallbacks</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-cyan-600 flex-shrink-0 mt-0.5" />
-                    <span>Zero wrapped tokens or vulnerable bridge escrow pools</span>
-                  </li>
-                </ul>
+            <div className="bg-gray-50 rounded-3xl p-8 border border-gray-100/80 shadow-sm hover:shadow-md transition">
+              <div className="w-10 h-10 rounded-2xl bg-cyan-100 text-cyan-700 flex items-center justify-center mb-4">
+                <Zap className="w-5 h-5" />
               </div>
-              <div className="mt-8 pt-4 border-t border-gray-200/70 flex items-center justify-between text-[11px] text-cyan-700 font-mono font-medium">
-                <span>NEAR_DEFUSE_1CLICK</span>
-                <span>STATUS: VERIFIED</span>
-              </div>
+              <h3 className="text-xl font-semibold text-slate-900 mb-2">Non-Custodial Solvers</h3>
+              <p className="text-xs text-gray-500 font-light mb-6 leading-relaxed">
+                Decentralized intent fulfillment network eliminating central bridges and smart contract honeypots.
+              </p>
+              <ul className="space-y-3 text-xs text-gray-600">
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-cyan-600 flex-shrink-0 mt-0.5" />
+                  <span>Direct integration with NEAR Intents 1Click protocol</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-cyan-600 flex-shrink-0 mt-0.5" />
+                  <span>Ed25519-signed guaranteed execution rate quotes</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-cyan-600 flex-shrink-0 mt-0.5" />
+                  <span>Automated timeout detection and shielded refund fallbacks</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-cyan-600 flex-shrink-0 mt-0.5" />
+                  <span>Zero wrapped tokens or vulnerable bridge escrow pools</span>
+                </li>
+              </ul>
             </div>
 
             {/* 4. Verifiable Receipts */}
-            <div className="bg-gray-50 rounded-3xl p-8 border border-gray-100/80 shadow-sm hover:shadow-md transition flex flex-col justify-between">
-              <div>
-                <div className="w-10 h-10 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center mb-4">
-                  <Key className="w-5 h-5" />
-                </div>
-                <div className="text-xs font-bold text-purple-700 uppercase tracking-wider mb-1 font-mono">Invariant 04</div>
-                <h3 className="text-xl font-semibold text-slate-900 mb-2">Verifiable Audit Receipts</h3>
-                <p className="text-xs text-gray-500 font-light mb-6 leading-relaxed">
-                  Cryptographic proofs of execution allowing selective disclosure for accounting without spending leaks.
-                </p>
-                <ul className="space-y-3 text-xs text-gray-600">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-purple-600 flex-shrink-0 mt-0.5" />
-                    <span>Cryptographic audit receipt generated for every swap</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-purple-600 flex-shrink-0 mt-0.5" />
-                    <span>Viewing Key fingerprints for tax and audit compliance</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-purple-600 flex-shrink-0 mt-0.5" />
-                    <span>Spending authority remains 100% private and protected</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-purple-600 flex-shrink-0 mt-0.5" />
-                    <span>Independently verifiable across on-chain block explorers</span>
-                  </li>
-                </ul>
+            <div className="bg-gray-50 rounded-3xl p-8 border border-gray-100/80 shadow-sm hover:shadow-md transition">
+              <div className="w-10 h-10 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center mb-4">
+                <Key className="w-5 h-5" />
               </div>
-              <div className="mt-8 pt-4 border-t border-gray-200/70 flex items-center justify-between text-[11px] text-purple-700 font-mono font-medium">
-                <span>AUDIT_PROOF_V1</span>
-                <span>STATUS: VERIFIED</span>
-              </div>
+              <h3 className="text-xl font-semibold text-slate-900 mb-2">Verifiable Audit Receipts</h3>
+              <p className="text-xs text-gray-500 font-light mb-6 leading-relaxed">
+                Cryptographic proofs of execution allowing selective disclosure for accounting without spending leaks.
+              </p>
+              <ul className="space-y-3 text-xs text-gray-600">
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-purple-600 flex-shrink-0 mt-0.5" />
+                  <span>Cryptographic audit receipt generated for every swap</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-purple-600 flex-shrink-0 mt-0.5" />
+                  <span>Viewing Key fingerprints for tax and audit compliance</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-purple-600 flex-shrink-0 mt-0.5" />
+                  <span>Spending authority remains 100% private and protected</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-purple-600 flex-shrink-0 mt-0.5" />
+                  <span>Independently verifiable across on-chain block explorers</span>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -1055,9 +1027,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
                 <div className="flex justify-between items-center font-medium list-none text-slate-900">
                   <span>{faq.q}</span>
                   <ChevronDown
-                    className={`w-5 h-5 text-gray-400 transition-transform ${
-                      openFaq === i ? 'rotate-180 text-black' : ''
-                    }`}
+                    className={`w-5 h-5 text-gray-400 transition-transform ${openFaq === i ? 'rotate-180 text-black' : ''
+                      }`}
                   />
                 </div>
                 {openFaq === i && (
