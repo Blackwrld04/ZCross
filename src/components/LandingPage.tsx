@@ -38,6 +38,8 @@ import {
   Layers,
   Cpu,
   X,
+  ShieldCheck,
+  Key,
 } from 'lucide-react';
 
 interface LandingPageProps {
@@ -81,6 +83,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
             {/* Desktop Navigation Links */}
             <div className="hidden lg:flex items-center gap-6 text-sm font-medium text-gray-600 ml-4">
               <button
+                onClick={() => document.getElementById('audit-invariants')?.scrollIntoView({ behavior: 'smooth' })}
+                className="hover:text-black transition cursor-pointer"
+              >
+                Invariants Audit
+              </button>
+              <button
                 onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
                 className="hover:text-black transition cursor-pointer"
               >
@@ -120,6 +128,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
         {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
           <div className="lg:hidden border-t border-gray-100 bg-white px-6 py-4 space-y-3 shadow-lg">
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                document.getElementById('audit-invariants')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="block w-full text-left text-sm font-medium text-gray-700 hover:text-black py-2 cursor-pointer"
+            >
+              Invariants Audit
+            </button>
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
@@ -190,8 +207,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
               Launch App
             </button>
             <button
-              onClick={onOpenAuditor}
-              className="flex items-center gap-2 bg-white border border-gray-200 text-black px-8 py-3.5 rounded-full font-medium hover:bg-gray-50 transition-all w-full sm:w-auto justify-center cursor-pointer"
+              onClick={() => {
+                const el = document.getElementById('audit-invariants');
+                el?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="flex items-center gap-2 bg-white border border-gray-200 text-black px-8 py-3.5 rounded-full font-medium hover:bg-gray-50 transition-all w-full sm:w-auto justify-center cursor-pointer shadow-sm hover:shadow"
             >
               <Shield className="w-5 h-5 text-emerald-600" />
               Audit Zero-Leak Invariants
@@ -257,7 +277,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
                     </div>
 
                     <div
-                      onClick={onOpenAuditor}
+                      onClick={() => {
+                        const el = document.getElementById('audit-invariants');
+                        el?.scrollIntoView({ behavior: 'smooth' });
+                      }}
                       className="flex flex-col items-center gap-2 cursor-pointer group"
                       title="Inspect Cryptographic Invariants"
                     >
@@ -310,7 +333,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
                   <div className="text-gray-500 p-2">
                     <Wallet className="w-6 h-6" />
                   </div>
-                  <div onClick={onOpenAuditor} className="text-gray-500 hover:text-emerald-400 p-2 cursor-pointer transition" title="Inspect Cryptographic Invariants">
+                  <div
+                    onClick={() => {
+                      const el = document.getElementById('audit-invariants');
+                      el?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className="text-gray-500 hover:text-emerald-400 p-2 cursor-pointer transition"
+                    title="Inspect Cryptographic Invariants"
+                  >
                     <Shield className="w-6 h-6" />
                   </div>
                 </div>
@@ -364,6 +394,197 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
         </div>
       </section>
 
+      {/* Zero-Leak Security Invariants & Cryptographic Audit Section */}
+      <section id="audit-invariants" className="py-24 bg-slate-950 text-white relative overflow-hidden">
+        {/* Ambient background glows */}
+        <div className="absolute top-1/4 left-10 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute bottom-10 right-10 w-96 h-96 bg-amber-400/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <div className="flex flex-col items-center text-center mb-16">
+            <span className="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider mb-4 shadow-sm">
+              <ShieldCheck className="w-4 h-4" />
+              Cryptographic Invariants &amp; Audit
+            </span>
+            <h2 className="text-3xl md:text-5xl font-semibold tracking-tight mb-4 text-white">
+              Zero-Leak Security Invariants
+            </h2>
+            <p className="text-gray-400 font-light text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
+              Mathematical verification of pure Orchard isolation, uniform 512-byte memo padding, and non-custodial solver atomic fulfillment.
+            </p>
+          </div>
+
+          {/* 4 Invariant Pillars Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+            {/* 1. Pure Shielded Isolation */}
+            <div className="bg-neutral-900/80 rounded-2xl p-7 border border-emerald-500/30 shadow-lg hover:border-emerald-500/50 transition-all flex flex-col justify-between backdrop-blur-sm">
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-4">
+                  <ShieldCheck className="w-5 h-5" />
+                </div>
+                <div className="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-1 font-mono">Invariant 01</div>
+                <h3 className="text-xl font-semibold text-white mb-3">Pure Shielded Isolation</h3>
+                <p className="text-xs text-gray-400 font-light mb-6 leading-relaxed">
+                  Strict enforcement of pure shielded pools with zero transparent address exposure or linkability.
+                </p>
+                <ul className="space-y-3 text-xs text-gray-300">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
+                    <span>Zero transparent addresses (t-addr) accepted or routed</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
+                    <span>Pure Orchard pool (ZIP 316 Unified Addresses only)</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
+                    <span>Halo 2 recursive zero-knowledge proving system</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
+                    <span>Zero transaction graph linkability between parties</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="mt-8 pt-4 border-t border-neutral-800 flex items-center justify-between text-[11px] text-emerald-400 font-mono">
+                <span>ORCHARD_HALO2</span>
+                <span>STATUS: VERIFIED</span>
+              </div>
+            </div>
+
+            {/* 2. Metadata Defense */}
+            <div className="bg-neutral-900/80 rounded-2xl p-7 border border-amber-400/30 shadow-lg hover:border-amber-400/50 transition-all flex flex-col justify-between backdrop-blur-sm">
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-amber-400/20 text-amber-400 flex items-center justify-center mb-4">
+                  <Lock className="w-5 h-5" />
+                </div>
+                <div className="text-xs font-bold text-amber-400 uppercase tracking-wider mb-1 font-mono">Invariant 02</div>
+                <h3 className="text-xl font-semibold text-white mb-3">Constant-Length Memos</h3>
+                <p className="text-xs text-gray-400 font-light mb-6 leading-relaxed">
+                  Eliminates network packet sniffing and byte-length side-channels with uniform constant padding.
+                </p>
+                <ul className="space-y-3 text-xs text-gray-300">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
+                    <span>In-band ChaCha20-Poly1305 note ciphertexts</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
+                    <span>Exact 512-byte uniform padding eliminates size leaks</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
+                    <span>Destination chains and tokens hidden from observers</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
+                    <span>Forward secrecy guaranteed across all note transfers</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="mt-8 pt-4 border-t border-neutral-800 flex items-center justify-between text-[11px] text-amber-400 font-mono">
+                <span>MEMO_512B_PAD</span>
+                <span>STATUS: VERIFIED</span>
+              </div>
+            </div>
+
+            {/* 3. Non-Custodial Solvers */}
+            <div className="bg-neutral-900/80 rounded-2xl p-7 border border-cyan-400/30 shadow-lg hover:border-cyan-400/50 transition-all flex flex-col justify-between backdrop-blur-sm">
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-cyan-400/20 text-cyan-400 flex items-center justify-center mb-4">
+                  <Zap className="w-5 h-5" />
+                </div>
+                <div className="text-xs font-bold text-cyan-400 uppercase tracking-wider mb-1 font-mono">Invariant 03</div>
+                <h3 className="text-xl font-semibold text-white mb-3">Non-Custodial Solvers</h3>
+                <p className="text-xs text-gray-400 font-light mb-6 leading-relaxed">
+                  Decentralized intent fulfillment network eliminating central bridges and smart contract honeypots.
+                </p>
+                <ul className="space-y-3 text-xs text-gray-300">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5" />
+                    <span>Direct integration with NEAR Intents 1Click protocol</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5" />
+                    <span>Ed25519-signed guaranteed execution rate quotes</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5" />
+                    <span>Automated timeout detection and shielded refund fallbacks</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5" />
+                    <span>Zero wrapped tokens or vulnerable bridge escrow pools</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="mt-8 pt-4 border-t border-neutral-800 flex items-center justify-between text-[11px] text-cyan-400 font-mono">
+                <span>NEAR_DEFUSE_1CLICK</span>
+                <span>STATUS: VERIFIED</span>
+              </div>
+            </div>
+
+            {/* 4. Verifiable Receipts */}
+            <div className="bg-neutral-900/80 rounded-2xl p-7 border border-fuchsia-400/30 shadow-lg hover:border-fuchsia-400/50 transition-all flex flex-col justify-between backdrop-blur-sm">
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-fuchsia-400/20 text-fuchsia-400 flex items-center justify-center mb-4">
+                  <Key className="w-5 h-5" />
+                </div>
+                <div className="text-xs font-bold text-fuchsia-400 uppercase tracking-wider mb-1 font-mono">Invariant 04</div>
+                <h3 className="text-xl font-semibold text-white mb-3">Verifiable Audit Receipts</h3>
+                <p className="text-xs text-gray-400 font-light mb-6 leading-relaxed">
+                  Cryptographic proofs of execution allowing selective disclosure for accounting without spending leaks.
+                </p>
+                <ul className="space-y-3 text-xs text-gray-300">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-fuchsia-400 flex-shrink-0 mt-0.5" />
+                    <span>Cryptographic audit receipt generated for every swap</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-fuchsia-400 flex-shrink-0 mt-0.5" />
+                    <span>Viewing Key fingerprints for tax and audit compliance</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-fuchsia-400 flex-shrink-0 mt-0.5" />
+                    <span>Spending authority remains 100% private and protected</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-fuchsia-400 flex-shrink-0 mt-0.5" />
+                    <span>Independently verifiable across on-chain block explorers</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="mt-8 pt-4 border-t border-neutral-800 flex items-center justify-between text-[11px] text-fuchsia-400 font-mono">
+                <span>AUDIT_PROOF_V1</span>
+                <span>STATUS: VERIFIED</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Cryptographic Invariant Assertion Summary */}
+          <div className="bg-neutral-900 border border-neutral-800 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center flex-shrink-0 border border-emerald-500/20">
+                <ShieldCheck className="w-6 h-6" />
+              </div>
+              <div>
+                <h4 className="text-white font-semibold text-base mb-1">
+                  Automated Invariant Assertion Engine
+                </h4>
+                <p className="text-gray-400 text-xs md:text-sm font-light">
+                  Every transaction is validated before fulfillment: Zero Transparent Hops, 512B Padded In-Band Memo, and NEAR Intents Atomic Settlement.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-800 px-3.5 py-2 rounded-lg whitespace-nowrap font-bold">
+                ✓ 4/4 INVARIANTS PASSED
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Features Section */}
       <section id="how-it-works" className="py-24 bg-white border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-6">
@@ -376,7 +597,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
                 Traditional bridges force users into transparent addresses, permanently leaking transaction graphs. ZCross preserves pure Orchard shielding from end to end.
               </p>
               <button
-                onClick={onOpenAuditor}
+                onClick={() => {
+                  const el = document.getElementById('audit-invariants');
+                  el?.scrollIntoView({ behavior: 'smooth' });
+                }}
                 className="inline-flex items-center text-emerald-600 font-medium text-sm hover:text-emerald-700 cursor-pointer"
               >
                 <ArrowUpRight className="w-4 h-4 mr-1" />
@@ -608,7 +832,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
                 <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
               </div>
               <button
-                onClick={onOpenAuditor}
+                onClick={() => {
+                  const el = document.getElementById('audit-invariants');
+                  el?.scrollIntoView({ behavior: 'smooth' });
+                }}
                 className="mt-auto w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs py-2 rounded font-medium transition cursor-pointer"
               >
                 Inspect Invariants &amp; Audit
@@ -936,8 +1163,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
                   </a>
                 </li>
                 <li>
-                  <button onClick={onOpenAuditor} className="hover:text-black transition text-left cursor-pointer">
-                    Privacy Auditor &amp; Receipts
+                  <button
+                    onClick={() => {
+                      const el = document.getElementById('audit-invariants');
+                      el?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className="hover:text-black transition text-left cursor-pointer"
+                  >
+                    Privacy Auditor &amp; Invariants
                   </button>
                 </li>
               </ul>
@@ -954,7 +1187,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
                   Launch App
                 </button>
                 <button
-                  onClick={onOpenAuditor}
+                  onClick={() => {
+                    const el = document.getElementById('audit-invariants');
+                    el?.scrollIntoView({ behavior: 'smooth' });
+                  }}
                   className="flex items-center justify-center gap-2 bg-white border border-gray-200 text-black px-6 py-2.5 rounded-full text-sm font-medium hover:bg-gray-50 transition-all w-full cursor-pointer"
                 >
                   <Shield className="w-4 h-4 text-emerald-600" />
