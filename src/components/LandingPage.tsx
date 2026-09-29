@@ -32,14 +32,11 @@ import {
   Shield,
   Zap,
   CheckCircle2,
-  Lock,
   ExternalLink,
   Terminal,
   Layers,
   Cpu,
   X,
-  ShieldCheck,
-  Key,
 } from 'lucide-react';
 
 interface LandingPageProps {
@@ -353,13 +350,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
       {/* Stats Section */}
       <section className="py-20 bg-white border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex justify-center mb-12">
-            <span className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 px-4 py-1.5 rounded-full text-sm font-medium">
-              <BarChart className="w-4 h-4" />
-              ZCross in Numbers
-            </span>
-          </div>
-
           <h2 className="text-3xl md:text-5xl font-semibold text-center tracking-tight mb-16 max-w-2xl mx-auto text-slate-900">
             Engineered for pure privacy,<br />
             verified by zero-knowledge math
@@ -397,13 +387,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
       {/* Zero-Leak Security Invariants & Cryptographic Audit Section */}
       <section id="audit-invariants" className="py-24 bg-white border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex justify-center mb-10">
-            <span className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-100 text-emerald-700 px-4 py-1.5 rounded-full text-sm font-medium shadow-sm">
-              <ShieldCheck className="w-4 h-4" />
-              Cryptographic Invariants &amp; Audit
-            </span>
-          </div>
-
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-semibold tracking-tight mb-4 text-slate-900">
               Zero-Leak Security Invariants
@@ -417,9 +400,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* 1. Pure Shielded Isolation */}
             <div className="bg-gray-50 rounded-3xl p-8 border border-gray-100/80 shadow-sm hover:shadow-md transition">
-              <div className="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center mb-4">
-                <ShieldCheck className="w-5 h-5" />
-              </div>
               <h3 className="text-xl font-semibold text-slate-900 mb-2">Pure Shielded Isolation</h3>
               <p className="text-xs text-gray-500 font-light mb-6 leading-relaxed">
                 Strict enforcement of pure shielded pools with zero transparent address exposure or linkability.
@@ -446,9 +426,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
 
             {/* 2. Metadata Defense */}
             <div className="bg-gray-50 rounded-3xl p-8 border border-gray-100/80 shadow-sm hover:shadow-md transition">
-              <div className="w-10 h-10 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center mb-4">
-                <Lock className="w-5 h-5" />
-              </div>
               <h3 className="text-xl font-semibold text-slate-900 mb-2">Constant-Length Memos</h3>
               <p className="text-xs text-gray-500 font-light mb-6 leading-relaxed">
                 Eliminates network packet sniffing and byte-length side-channels with uniform constant padding.
@@ -475,9 +452,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
 
             {/* 3. Non-Custodial Solvers */}
             <div className="bg-gray-50 rounded-3xl p-8 border border-gray-100/80 shadow-sm hover:shadow-md transition">
-              <div className="w-10 h-10 rounded-2xl bg-cyan-100 text-cyan-700 flex items-center justify-center mb-4">
-                <Zap className="w-5 h-5" />
-              </div>
               <h3 className="text-xl font-semibold text-slate-900 mb-2">Non-Custodial Solvers</h3>
               <p className="text-xs text-gray-500 font-light mb-6 leading-relaxed">
                 Decentralized intent fulfillment network eliminating central bridges and smart contract honeypots.
@@ -504,9 +478,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
 
             {/* 4. Verifiable Receipts */}
             <div className="bg-gray-50 rounded-3xl p-8 border border-gray-100/80 shadow-sm hover:shadow-md transition">
-              <div className="w-10 h-10 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center mb-4">
-                <Key className="w-5 h-5" />
-              </div>
               <h3 className="text-xl font-semibold text-slate-900 mb-2">Verifiable Audit Receipts</h3>
               <p className="text-xs text-gray-500 font-light mb-6 leading-relaxed">
                 Cryptographic proofs of execution allowing selective disclosure for accounting without spending leaks.
