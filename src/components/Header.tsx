@@ -45,10 +45,10 @@ export const Header: React.FC<HeaderProps> = ({
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span style={{ fontSize: '1.3rem', fontWeight: 800, letterSpacing: '-0.02em', color: '#fff' }}>
-              Z-HYPERINTENT
+              ZCROSS
             </span>
             <span className="badge-tag badge-gold">
-              Cross-Chain Track
+              Shielded Bridge
             </span>
           </div>
           <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '6px' }}>

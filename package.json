@@ -1,5 +1,5 @@
 {
-  "name": "z-hyperintent",
+  "name": "zcross",
   "version": "1.0.0",
   "description": "Zero-Leak Shielded Cross-Chain Bridge & Intent Solver for Zcash Orchard & NEAR Intents",
   "private": true,

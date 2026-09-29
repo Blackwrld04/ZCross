@@ -82,7 +82,7 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
               <span className="h-3.5 w-3.5 rounded-full bg-emerald-500/90 inline-block cursor-pointer hover:opacity-80" onClick={() => setActiveTab('swap')} title="Shielded Swap"></span>
             </div>
             <div className="inline-flex items-center gap-2 px-3">
-              <span className="text-xl font-semibold tracking-tight text-white font-geist">Z-HyperIntent Wallet</span>
+              <span className="text-xl font-semibold tracking-tight text-white font-geist">ZCross Wallet</span>
               <span className="text-xs text-white/40 font-geist">Desktop Node</span>
               <span className="ml-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
                 Pure Shielded Mode (0 Leaks)
@@ -483,7 +483,7 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
                   </div>
 
                   <div className="bg-neutral-950 border border-white/10 rounded-xl p-4 font-mono text-xs text-emerald-400 shadow-inner space-y-2">
-                    <div className="text-slate-400">// Z-HyperIntent Solver Daemon CLI: npm run solver</div>
+                    <div className="text-slate-400">// ZCross Solver Daemon CLI: npm run solver</div>
                     <div>[Watcher] Connected to Zcash compact block stream at block #2,891,402</div>
                     <div>[Watcher] Scanning Orchard action commitments for vault Unified Address...</div>
                     <div className="text-amber-400">[Watcher] In-band memo decoder ready (ChaCha20-Poly1305, 512B constant pad)</div>

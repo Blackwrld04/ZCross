@@ -17,7 +17,7 @@ function sleep(ms: number) {
 async function runDaemon() {
   console.log('\x1b[33m%s\x1b[0m', `
   ╔═════════════════════════════════════════════════════════════════╗
-  ║            Z-HYPERINTENT SHIELDED SOLVER DAEMON               ║
+  ║                ZCROSS SHIELDED SOLVER DAEMON                  ║
   ║  Orchard Note Scanner • 512B Memo Decryptor • NEAR Intents Bus  ║
   ╚═════════════════════════════════════════════════════════════════╝
   `);

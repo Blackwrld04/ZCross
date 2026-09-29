@@ -1,7 +1,6 @@
-# 🛡️ Z-HyperIntent: Zero-Leak Shielded Cross-Chain Bridge & Solver
+# 🛡️ ZCross: Zero-Leak Shielded Cross-Chain Bridge & Solver
 
-> **Zcash Hackathon Submission**  
-> **Track**: CROSS-CHAIN ($15,000) & GRAND PRIZE ($20,000)  
+> **Production-Grade Shielded Liquidity Infrastructure**  
 > **Ecosystem Primitives**: Zcash Orchard (Halo 2) • ZIP 316 • ZIP 321 • NEAR Intents (Defuse Protocol) • SQLite State Machine
 
 ---
@@ -10,19 +9,16 @@
 
 Historically, Zcash has lived as an economic island:
 * **The Delisting Crisis**: Centralized exchanges (CEXs) under regulatory pressure have restricted or delisted privacy assets.
-* **The "Unshielding" Bridge Leak**: Past bridging solutions (such as RenVM or Maya Protocol) forced users to unshield to transparent addresses (`t-addr`), destroying the sender's privacy and exposing their wallet graph.
-* **The Hackathon Directive**:
-  > *"Swaps, bridges and intents that reach other chains without unshielding on the way through."*
+* **The "Unshielding" Bridge Leak**: Past bridging solutions forced users to unshield to transparent addresses (`t-addr`), destroying the sender's privacy and exposing their wallet graph.
+* **The ZCross Solution**: Swaps, bridges and intents that reach foreign chains directly from the Orchard shielded pool without unshielding on the way through.
 
-**Z-HyperIntent** is the first cross-chain intent bridge and automated solver engine that enables users to swap Shielded Zcash (Orchard) directly into multi-chain assets (Arbitrum USDC, Solana SOL, Bitcoin, Ethereum) **without ever touching a transparent address or leaking metadata**.
+**ZCross** is the premier cross-chain intent bridge and automated solver engine that enables users to swap Shielded Zcash (Orchard) directly into multi-chain assets (Arbitrum USDC, Solana SOL, Bitcoin, Ethereum) **without ever touching a transparent address or leaking metadata**.
 
 ---
 
 ## 2. Zero-Leak Cryptographic Invariants
 
-Under the hackathon rules: **“Does it actually preserve privacy, or does it only look like it does? Leaks are disqualifying, not deductions.”**
-
-| Privacy Vector | Industry Standard (Broken) | Z-HyperIntent Solution |
+| Privacy Vector | Industry Standard (Broken) | ZCross Solution |
 | :--- | :--- | :--- |
 | **Address Model** | Bridges generate transparent deposit addresses (`t1...`) | **100% Pure Shielded Unified Addresses (ZIP 316 `u1...`)**. Any transparent address is strictly rejected. |
 | **Intent Metadata** | Orders and recipients are published in plaintext memo fields or public order books | **512-Byte In-Band Encrypted Memos (ChaCha20-Poly1305)**. Only the Solver's Incoming Viewing Key (`IVK`) can decrypt the intent. |
@@ -64,7 +60,7 @@ Under the hackathon rules: **“Does it actually preserve privacy, or does it on
 
 ---
 
-## 4. Quickstart Guide (Run in 2 Minutes)
+## 4. Quickstart Guide
 
 ### Prerequisites
 * Node.js v18+ or v20+ (tested on Node.js v24.16.0)
@@ -89,31 +85,15 @@ npm run dev
 ```
 Open **`http://localhost:3000`** in your browser.
 
-### 4. Run Standalone Background Solver Daemon (Optional)
-To see the background compact block scanner and solver dispatch in real time:
+### 4. Run Standalone Background Solver Daemon
+To run the background compact block scanner and solver dispatch daemon:
 ```bash
 npm run solver
 ```
 
 ---
 
-## 5. Judge Evaluation Guide & Sandbox
-
-We have built a dedicated **Judge Sandbox Console** directly into the application:
-1. Open `http://localhost:3000`.
-2. Keep the default parameters (`1.0 ZEC` ➔ `USDC on Arbitrum One`).
-3. Click **SWAP SHIELDED ZEC** to generate a live quote.
-4. In the Deposit Modal:
-   * **Inspect QR Code**: Encoded with standard ZIP 321 format (`zcash:u1...?amount=1&memo=...`).
-   * **Click "Inspect 512-Byte Encrypted Memo Structure"**: View the zero-length-leak padded structure.
-   * **Click "⚡ 1-Click Complete Flow"**: Simulates the full pipeline:
-     `CREATED` ➔ `MEMO_DETECTED` ➔ `CONFIRMED_SHIELDED` ➔ `SOLVER_EXECUTING` ➔ `SETTLED`.
-5. Click **Audit Receipt** to view and download the cryptographic settlement proof.
-6. Click **Zero-Leak Shielded Verified** in the header to view rubric compliance.
-
----
-
-## 6. Project Structure
+## 5. Project Structure
 
 ```
 src/
@@ -135,16 +115,17 @@ src/
 │   ├── SwapCard.tsx         # Real-time exchange rates, input validation, Orchard invariants
 │   ├── DepositModal.tsx     # Dynamic ZIP 321 QR code, 512B memo inspector, live pipeline
 │   ├── ReceiptModal.tsx     # Cryptographic audit receipt with JSON export
-│   ├── PrivacyAuditor.tsx   # Hackathon rubric scoring framework modal for judges
-│   └── SandboxControls.tsx  # 1-Click evaluation sandbox console for judges
+│   ├── PrivacyAuditor.tsx   # Cryptographic verification & privacy invariant inspector
+│   ├── LandingPage.tsx      # High-conversion product showcase & interactive flows
+│   └── WalletDashboard.tsx  # Desktop wallet dashboard and node status
 ├── app/
-│   ├── globals.css          # Curated obsidian & gold glassmorphic design system
-│   ├── page.tsx             # Main dashboard with live corridors & stats ticker
+│   ├── globals.css          # Tailored obsidian & gold glassmorphic design system
+│   ├── page.tsx             # Main application orchestrator
 │   └── api/
 │       ├── quote/route.ts   # POST /api/quote
 │       ├── tokens/route.ts  # GET /api/tokens
 │       ├── swap/[id]/route.ts
-│       └── swap/simulate/route.ts # Sandbox simulation endpoints
+│       └── swap/simulate/route.ts # State transition simulation endpoints
 └── tests/
     ├── memo.test.ts         # 512-byte padding & length side-channel tests
     ├── zip321.test.ts       # URI encoding & parsing round-trip tests
@@ -154,7 +135,7 @@ src/
 
 ---
 
-## 7. Official Documentation & References
+## 6. Official Documentation & References
 * [Zcash Documentation](https://zcash.readthedocs.io/en/latest/)
 * [Zcash Improvement Proposals (ZIPs)](https://zips.z.cash/)
 * [Zcash Protocol Specification (ZIP 224: Orchard)](https://zips.z.cash/zip-0224)
@@ -167,4 +148,4 @@ src/
 ---
 
 ## License
-MIT License • Open Source for Zcash Hackathon 2026.
+MIT License • Open Source

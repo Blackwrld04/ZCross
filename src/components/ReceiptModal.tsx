@@ -16,7 +16,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ receipt, onClose }) 
     const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(receipt, null, 2));
     const downloadAnchor = document.createElement('a');
     downloadAnchor.setAttribute('href', dataStr);
-    downloadAnchor.setAttribute('download', `z-hyperintent-receipt-${receipt.swapId.slice(0, 8)}.json`);
+    downloadAnchor.setAttribute('download', `zcross-receipt-${receipt.swapId.slice(0, 8)}.json`);
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
@@ -106,7 +106,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ receipt, onClose }) 
             </div>
           </div>
 
-          {/* Privacy Verification Rubric */}
+          {/* Cryptographic Invariants Audit */}
           <div style={{
             background: 'rgba(16, 185, 129, 0.05)',
             border: '1px solid rgba(16, 185, 129, 0.25)',

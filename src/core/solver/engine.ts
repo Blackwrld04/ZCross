@@ -104,7 +104,7 @@ export class SolverEngine {
       recipientAddress: depositVaultUA,
       amountZec: input.originAmountZec,
       memoBase64,
-      message: `Z-HyperIntent Swap ${swapId.slice(0, 8)} to ${input.destinationTokenSymbol}`,
+      message: `ZCross Swap ${swapId.slice(0, 8)} to ${input.destinationTokenSymbol}`,
     });
 
     const intentHash = crypto.createHash('sha256')

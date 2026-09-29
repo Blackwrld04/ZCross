@@ -73,9 +73,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
             <div className="w-7 h-7 bg-black rounded-full flex items-center justify-center shadow-sm">
               <Zap className="w-4 h-4 text-amber-400" />
             </div>
-            <span className="tracking-tight font-bold text-2xl">swapster</span>
+            <span className="tracking-tight font-bold text-2xl">ZCross</span>
             <span className="text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full ml-1 border border-amber-300">
-              Z-HyperIntent
+              Shielded
             </span>
           </div>
 
@@ -133,7 +133,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
             aria-hidden="true"
           >
             <span className="text-[12rem] md:text-[18rem] font-bold text-gray-100 opacity-90 tracking-tighter whitespace-nowrap">
-              ORCHARD
+              ZCROSS
             </span>
           </div>
 
@@ -263,7 +263,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
           <div className="flex justify-center mb-12">
             <span className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 px-4 py-1.5 rounded-full text-sm font-medium">
               <BarChart className="w-4 h-4" />
-              Swapster in Numbers
+              ZCross in Numbers
             </span>
           </div>
 
@@ -310,7 +310,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
             </h2>
             <div className="max-w-sm">
               <p className="text-gray-500 font-light mb-4 text-sm leading-relaxed">
-                Traditional bridges force users into transparent addresses, permanently leaking transaction graphs. Z-HyperIntent preserves pure Orchard shielding from end to end.
+                Traditional bridges force users into transparent addresses, permanently leaking transaction graphs. ZCross preserves pure Orchard shielding from end to end.
               </p>
               <button
                 onClick={onOpenAuditor}
@@ -522,7 +522,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
                   <div className="w-2.5 h-2.5 rounded-full bg-green-500"></div>
                 </div>
                 <code className="text-xs font-mono text-emerald-400 block leading-relaxed">
-                  const solver = new ZHyperIntent(&#123;<br />
+                  const solver = new ZCross(&#123;<br />
                   &nbsp;&nbsp;network: 'mainnet',<br />
                   &nbsp;&nbsp;privacy: 'pure-orchard'<br />
                   &#125;);<br />
@@ -697,7 +697,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
           </div>
           <h2 className="text-3xl md:text-5xl font-semibold text-center tracking-tight mb-16 text-slate-900">
             Real Stories, Real Experience<br />
-            with Swapster
+            with ZCross
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -713,7 +713,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
                 </div>
               </div>
               <p className="text-gray-600 font-light text-sm leading-relaxed">
-                "I use Swapster for private cross-chain swaps. The speed and zero-leak shielded architecture are unmatched. Fast, solid, and reliable."
+                "I use ZCross for private cross-chain swaps. The speed and zero-leak shielded architecture are unmatched. Fast, solid, and reliable."
               </p>
             </div>
 
@@ -729,7 +729,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
                 </div>
               </div>
               <p className="text-gray-600 font-light text-sm leading-relaxed">
-                "Fast. Solid. Easy to use. That's how I'd sum up Swapster's philosophy. If you're looking for seamless, private cross-chain liquidity, this is the one I recommend!"
+                "Fast. Solid. Easy to use. That's how I'd sum up ZCross's philosophy. If you're looking for seamless, private cross-chain liquidity, this is the one I recommend!"
               </p>
             </div>
 
@@ -764,8 +764,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
           <div className="md:w-2/3 space-y-4">
             {[
               {
-                q: 'Why is Z-HyperIntent guaranteed zero-leak?',
-                a: 'Traditional cross-chain bridges require depositing to a transparent address (t-addr) before bridging, permanently linking your shielded identity to an on-chain cluster. Z-HyperIntent accepts deposits exclusively into Orchard Unified Addresses (u1...). The cross-chain destination, token, and recipient are encrypted inside the 512-byte memo field, ensuring zero sender graph or destination details are revealed on the Zcash blockchain.',
+                q: 'Why is ZCross guaranteed zero-leak?',
+                a: 'Traditional cross-chain bridges require depositing to a transparent address (t-addr) before bridging, permanently linking your shielded identity to an on-chain cluster. ZCross accepts deposits exclusively into Orchard Unified Addresses (u1...). The cross-chain destination, token, and recipient are encrypted inside the 512-byte memo field, ensuring zero sender graph or destination details are revealed on the Zcash blockchain.',
               },
               {
                 q: 'Why are memos padded uniformly to 512 bytes?',
@@ -813,7 +813,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
                 <div className="w-6 h-6 bg-black rounded-full flex items-center justify-center">
                   <Zap className="w-3.5 h-3.5 text-amber-400" />
                 </div>
-                <span>Z-HyperIntent Protocol</span>
+                <span>ZCross Protocol</span>
               </div>
               <p className="text-xs text-gray-500 leading-relaxed mb-4">
                 Zero-leak shielded cross-chain bridge and solver daemon connecting Zcash Orchard to external ecosystems.
