@@ -53,35 +53,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
 
   return (
     <div className="bg-white text-slate-900 antialiased selection:bg-black selection:text-white font-sans min-h-screen">
-      {/* Top Notification / Hackathon Banner */}
-      <div className="bg-neutral-950 text-white text-xs py-2 px-4 border-b border-neutral-800">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span className="font-medium text-slate-300">
-              Zcash Hackathon 2026: Cross-Chain Track ($15,000) & Grand Prize ($20,000)
-            </span>
-          </div>
-          <div className="flex items-center gap-4">
-            {onOpenAuditor && (
-              <button
-                onClick={onOpenAuditor}
-                className="hidden sm:inline-flex items-center gap-1 text-emerald-400 hover:text-emerald-300 transition text-xs font-semibold cursor-pointer"
-              >
-                <Shield className="w-3 h-3" />
-                Zero-Leak Privacy Invariants
-              </button>
-            )}
-            <button
-              onClick={onOpenWallet}
-              className="text-amber-400 hover:text-amber-300 font-bold transition flex items-center gap-1 cursor-pointer"
-            >
-              Launch Shielded Wallet →
-            </button>
-          </div>
-        </div>
-      </div>
-
       {/* Navbar */}
       <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -129,11 +100,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
       {/* Hero Section */}
       <section className="relative pt-20 pb-12 overflow-hidden bg-white">
         <div className="max-w-5xl mx-auto px-6 text-center z-10 relative">
-          <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-800 px-3.5 py-1 rounded-full text-xs font-semibold mb-6">
-            <span className="w-2 h-2 rounded-full bg-amber-500"></span>
-            Zero-Leak Cross-Chain Intents for Zcash Shielded Orchard (Halo 2)
-          </div>
-
           <h1 className="text-5xl md:text-7xl font-semibold tracking-tight leading-[1.1] mb-6 text-slate-900">
             SHIELDED LIQUIDITY<br />
             WITHOUT BOUNDARIES
@@ -262,7 +228,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
                       <div>
                         <h4 className="font-medium text-emerald-400 text-sm mb-1">NEAR Intents 1Click</h4>
                         <p className="text-xs text-gray-400 leading-relaxed">
-                          Guaranteed quotes to Arbitrum USDC & Solana via 512-byte encrypted memos.
+                          Guaranteed quotes to Arbitrum USDC &amp; Solana via 512-byte encrypted memos.
                         </p>
                       </div>
                       <Zap className="text-amber-400 w-5 h-5 flex-shrink-0" />
@@ -297,7 +263,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
           <div className="flex justify-center mb-12">
             <span className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 px-4 py-1.5 rounded-full text-sm font-medium">
               <BarChart className="w-4 h-4" />
-              Z-HyperIntent Protocol Invariants
+              Swapster in Numbers
             </span>
           </div>
 
@@ -417,7 +383,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
           {/* Logos */}
           <div className="border-t border-b border-gray-100 py-12">
             <p className="text-center text-sm text-gray-400 mb-8 font-light">
-              Built on battle-tested <span className="font-medium text-gray-900">Zcash & Cross-Chain standards</span>
+              Built on battle-tested <span className="font-medium text-gray-900">Zcash &amp; Cross-Chain standards</span>
             </p>
             <div className="flex flex-wrap justify-center md:justify-between items-center gap-8 opacity-75 grayscale hover:grayscale-0 transition-all duration-500">
               <span className="text-lg font-bold tracking-tight text-slate-900 flex items-center gap-1.5">
@@ -504,7 +470,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
           <div className="flex justify-center mb-10">
             <span className="inline-flex items-center gap-2 bg-white border border-gray-100 text-emerald-700 px-4 py-1.5 rounded-full text-sm font-medium shadow-sm">
               <Briefcase className="w-4 h-4" />
-              Merchant &amp; Developer Integration
+              Business Solutions
             </span>
           </div>
 
@@ -649,10 +615,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
 
             {/* Solana Corridor */}
             <div className="bg-gray-50 rounded-3xl p-8 min-h-[350px] flex flex-col justify-between relative overflow-hidden border border-gray-100/80">
-              <div className="absolute top-8 right-8 bg-purple-100 text-purple-800 text-xs px-2.5 py-1 rounded font-medium z-20">
-                High Velocity
-              </div>
-
               <div className="flex justify-center mt-4">
                 <div className="bg-gray-900 w-56 h-48 rounded-t-3xl border-4 border-gray-800 p-4 text-white shadow-2xl">
                   <div className="flex justify-between text-xs text-gray-400 mb-4">
@@ -681,9 +643,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
 
             {/* Bitcoin Native Corridor */}
             <div className="bg-gray-50 rounded-3xl p-8 min-h-[350px] flex flex-col justify-between relative overflow-hidden border border-gray-100/80">
-              <div className="absolute top-8 left-8 bg-orange-100 text-orange-800 text-xs px-2.5 py-1 rounded font-medium z-20">
-                UTXO Native
-              </div>
               <div className="flex justify-center mt-4 ml-24">
                 <div className="bg-black w-56 h-48 rounded-tl-3xl border-l-4 border-t-4 border-gray-800 p-4 text-white shadow-2xl relative">
                   <h4 className="text-center font-medium mb-4 text-sm">Bitcoin Output</h4>
@@ -705,10 +664,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
 
             {/* Audit & Compliance */}
             <div className="bg-gray-50 rounded-3xl p-8 min-h-[350px] flex flex-col justify-between relative overflow-hidden border border-gray-100/80">
-              <div className="absolute top-8 right-8 bg-emerald-100 text-emerald-800 text-xs px-2.5 py-1 rounded font-medium z-20">
-                Institutional
-              </div>
-
               <div className="flex justify-center items-center py-6">
                 <div className="bg-white p-4 rounded-2xl shadow-lg border border-gray-100 w-64 text-center">
                   <Shield className="w-8 h-8 text-emerald-500 mx-auto mb-2" />
@@ -737,60 +692,60 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
           <div className="flex justify-center mb-10">
             <span className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 px-4 py-1.5 rounded-full text-sm font-medium">
               <UserCheck className="w-4 h-4" />
-              Verified Invariants &amp; Scoring Rubric
+              Trusted by people
             </span>
           </div>
           <h2 className="text-3xl md:text-5xl font-semibold text-center tracking-tight mb-16 text-slate-900">
-            Engineered for the Zcash Hackathon<br />
-            $100,000 Prize Pool
+            Real Stories, Real Experience<br />
+            with Swapster
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Criterion 1 */}
+            {/* Review 1 */}
             <div className="bg-gray-50 p-8 rounded-3xl border border-gray-100/80">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-amber-100 text-amber-800 rounded-full flex items-center justify-center font-bold">
-                  🛡️
+                <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center font-bold text-gray-600">
+                  M
                 </div>
                 <div>
-                  <div className="font-semibold text-sm">Privacy Invariant</div>
-                  <div className="text-xs text-amber-700 font-medium">Disqualifying Gate: PASSED</div>
+                  <div className="font-semibold text-sm">Max</div>
+                  <div className="text-xs text-gray-400">Trustpilot Verified</div>
                 </div>
               </div>
               <p className="text-gray-600 font-light text-sm leading-relaxed">
-                "Leaks are disqualifying, not deductions. Z-HyperIntent operates exclusively in the Orchard shielded pool with 512-byte uniform padded memos. Observers see zero sender graph or destination details."
+                "I use Swapster for private cross-chain swaps. The speed and zero-leak shielded architecture are unmatched. Fast, solid, and reliable."
               </p>
             </div>
 
-            {/* Criterion 2 */}
+            {/* Review 2 */}
             <div className="bg-gray-50 p-8 rounded-3xl border border-gray-100/80">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center font-bold">
-                  ⚡
+                  AA
                 </div>
                 <div>
-                  <div className="font-semibold text-sm">Immediate Utility</div>
-                  <div className="text-xs text-emerald-700 font-medium">Monday Morning Readiness</div>
+                  <div className="font-semibold text-sm">Alex A.</div>
+                  <div className="text-xs text-gray-400">Trustpilot Verified</div>
                 </div>
               </div>
               <p className="text-gray-600 font-light text-sm leading-relaxed">
-                "Users can scan standard ZIP 321 QR codes directly from official Zashi or Zodl wallets to swap ZEC into Arbitrum USDC today. No experimental browser extensions or custom signers required."
+                "Fast. Solid. Easy to use. That's how I'd sum up Swapster's philosophy. If you're looking for seamless, private cross-chain liquidity, this is the one I recommend!"
               </p>
             </div>
 
-            {/* Criterion 3 */}
+            {/* Review 3 */}
             <div className="bg-gray-50 p-8 rounded-3xl border border-gray-100/80">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-cyan-100 text-cyan-800 rounded-full flex items-center justify-center font-bold">
-                  ⚙️
+                <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center font-bold text-gray-600">
+                  E
                 </div>
                 <div>
-                  <div className="font-semibold text-sm">Execution Excellence</div>
-                  <div className="text-xs text-cyan-700 font-medium">Working Beats Ambitious</div>
+                  <div className="font-semibold text-sm">Elena R.</div>
+                  <div className="text-xs text-gray-400">DeFi Operator</div>
                 </div>
               </div>
               <p className="text-gray-600 font-light text-sm leading-relaxed">
-                "Includes an automated test suite (7/7 passing in 1.6s), SQLite persistent state machine with WAL mode, SSE real-time listener, and full judge sandbox console for 1-click verification."
+                "Great reliable exchanger wallet with instant settlement to Arbitrum and Solana. Fully automatic and zero metadata exposure."
               </p>
             </div>
           </div>
@@ -926,18 +881,21 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
             </div>
 
             <div>
-              <h4 className="font-semibold mb-4 text-sm text-slate-900">Submission Track</h4>
+              <h4 className="font-semibold mb-4 text-sm text-slate-900">Products</h4>
               <div className="space-y-3">
-                <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-900">
-                  <div className="font-bold">CROSS-CHAIN Track ($15,000)</div>
-                  <div className="text-[11px] text-amber-700 mt-1">Swaps and bridges that reach other chains without unshielding.</div>
-                </div>
                 <button
                   onClick={onOpenWallet}
                   className="flex items-center justify-center gap-2 bg-black text-white px-6 py-2.5 rounded-full text-sm font-medium hover:bg-gray-800 transition-all w-full cursor-pointer shadow-sm"
                 >
                   <Zap className="w-4 h-4 text-amber-400" />
                   Launch Application
+                </button>
+                <button
+                  onClick={onOpenWallet}
+                  className="flex items-center justify-center gap-2 bg-white border border-gray-200 text-black px-6 py-2.5 rounded-full text-sm font-medium hover:bg-gray-50 transition-all w-full cursor-pointer"
+                >
+                  <Wallet className="w-4 h-4" />
+                  Desktop Wallet
                 </button>
               </div>
             </div>
@@ -947,7 +905,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
             <div className="flex gap-6 mb-4 md:mb-0">
               <span>Pure Orchard Invariant: Verified</span>
               <span>Open Source: MIT / Apache 2.0</span>
-              <span>Zcash Hackathon 2026 Submission</span>
+              <span>Decentralized Liquidity Protocol</span>
             </div>
             <div>
               <span>Zero-Leak Cryptographic Invariant Guarded</span>

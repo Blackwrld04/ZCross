@@ -332,7 +332,7 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
                     className="w-full group flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-300 hover:bg-white/5 font-geist transition cursor-pointer text-left"
                   >
                     <HelpCircle className="w-4 h-4 text-slate-400 group-hover:text-slate-200" />
-                    Hackathon Scoring Rubric
+                    Protocol Specifications
                   </button>
                 </div>
               </nav>
