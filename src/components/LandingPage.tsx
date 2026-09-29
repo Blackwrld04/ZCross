@@ -12,13 +12,9 @@ import {
   MoreHorizontal,
   Gift,
   Home,
-  BarChart2,
   Wallet,
   User,
-  BarChart,
   ArrowUpRight,
-  Briefcase,
-  UserCheck,
   ChevronDown,
   Link as LinkIcon,
   Triangle,
@@ -533,7 +529,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
             {/* Card 1 */}
             <div className="bg-gray-50 rounded-3xl p-8 min-h-[400px] flex flex-col justify-between overflow-hidden relative group border border-gray-100/80">
               <div>
-                <span className="text-xs font-mono font-bold text-amber-600 uppercase tracking-wider block mb-2">ZIP 316 Standard</span>
                 <h3 className="text-2xl font-semibold mb-3">Pure Unified Addresses</h3>
                 <p className="text-gray-500 font-light text-sm">
                   Requires <code className="bg-gray-200 px-1 py-0.5 rounded text-slate-800">u1...</code> Unified Addresses with Orchard receivers. Transparent <code className="bg-gray-200 px-1 py-0.5 rounded text-slate-800">t-addresses</code> are rejected to ensure privacy integrity.
@@ -552,7 +547,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
             {/* Card 2 */}
             <div className="bg-gray-50 rounded-3xl p-8 min-h-[400px] flex flex-col justify-between border border-gray-100/80">
               <div>
-                <span className="text-xs font-mono font-bold text-emerald-600 uppercase tracking-wider block mb-2">Cryptographic Padding</span>
                 <h3 className="text-2xl font-semibold mb-3">In-Band 512B Encrypted Memos</h3>
                 <p className="text-gray-500 font-light text-sm">
                   Intent parameters are encrypted inside ChaCha20-Poly1305 note ciphertexts with uniform 512-byte padding to prevent packet-size side-channels.
@@ -570,7 +564,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
             {/* Card 3 */}
             <div className="bg-gray-50 rounded-3xl p-8 min-h-[400px] flex flex-col justify-between overflow-hidden relative group border border-gray-100/80">
               <div>
-                <span className="text-xs font-mono font-bold text-cyan-600 uppercase tracking-wider block mb-2">NEAR Intents Integration</span>
                 <h3 className="text-2xl font-semibold mb-3">Decentralized Solver Network</h3>
                 <p className="text-gray-500 font-light text-sm">
                   Independent solvers scan compact block filters, verify note commitments, and execute atomic settlements on Arbitrum, Solana, and Bitcoin.
@@ -628,11 +621,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
             {/* Wallet Card (Dark) */}
             <div className="bg-gray-950 rounded-[2.5rem] p-10 md:p-14 min-h-[500px] relative overflow-hidden text-white flex flex-col justify-end shadow-xl border border-gray-800">
-              <div className="absolute top-8 right-8">
-                <span className="bg-amber-400/20 text-amber-300 border border-amber-400/30 text-xs font-bold px-3.5 py-1.5 rounded-full">
-                  Client Interface
-                </span>
-              </div>
               <div className="relative z-10 pt-20">
                 <h3 className="text-3xl font-semibold mb-3">Desktop Shielded Wallet</h3>
                 <p className="text-gray-400 font-light text-lg leading-relaxed">
@@ -643,11 +631,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
 
             {/* Solver Daemon Card (Light) */}
             <div className="bg-gray-50 rounded-[2.5rem] p-10 md:p-14 min-h-[500px] relative overflow-hidden flex flex-col justify-end shadow-md border border-gray-100">
-              <div className="absolute top-8 right-8">
-                <span className="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1.5 rounded-full border border-emerald-200">
-                  Automated Daemon
-                </span>
-              </div>
               <div className="relative z-10 pt-20">
                 <h3 className="text-3xl font-semibold mb-3 text-slate-900">Headless Solver Watcher</h3>
                 <p className="text-gray-500 font-light text-lg leading-relaxed">
@@ -668,13 +651,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
       {/* Business Section */}
       <section id="solutions" className="py-24 bg-emerald-50/30 border-t border-emerald-100/50">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex justify-center mb-10">
-            <span className="inline-flex items-center gap-2 bg-white border border-gray-100 text-emerald-700 px-4 py-1.5 rounded-full text-sm font-medium shadow-sm">
-              <Briefcase className="w-4 h-4" />
-              Business Solutions
-            </span>
-          </div>
-
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-semibold tracking-tight mb-4 text-slate-900">
               Seamless Cross-Chain Settlements for DApps &amp; DAOs
@@ -682,17 +658,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
             <p className="text-gray-500 font-light text-lg max-w-2xl mx-auto">
               Accept shielded ZEC payments and settle automatically into Arbitrum USDC, Solana, or Bitcoin with zero sender balance exposure.
             </p>
-            <div className="mt-8">
-              <button
-                onClick={() => {
-                  const el = document.getElementById('developer-api');
-                  el?.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="bg-black text-white px-8 py-3 rounded-full font-medium hover:bg-gray-800 transition-colors shadow-md cursor-pointer"
-              >
-                Explore Developer API
-              </button>
-            </div>
           </div>
 
           {/* Business UI Grid */}
@@ -825,25 +790,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
 
             {/* Solana Corridor */}
             <div className="bg-gray-50 rounded-3xl p-8 min-h-[350px] flex flex-col justify-between relative overflow-hidden border border-gray-100/80">
-              <div className="flex justify-center mt-4">
-                <div className="bg-gray-900 w-56 h-48 rounded-t-3xl border-4 border-gray-800 p-4 text-white shadow-2xl">
-                  <div className="flex justify-between text-xs text-gray-400 mb-4">
-                    <span>Orchard Deposit</span>
-                    <span className="text-purple-400 font-medium">Solana Fill</span>
-                  </div>
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center text-sm">
-                      <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-full bg-purple-500"></div>
-                        <span className="font-medium">SOL Native</span>
-                      </div>
-                      <span className="text-emerald-400 text-xs font-semibold">11.82 SOL / ZEC</span>
-                    </div>
-                  </div>
-                </div>
+              <div className="rounded-2xl overflow-hidden shadow-md border border-gray-200/80 mb-6 bg-slate-950">
+                <img
+                  src="/images/solana-screenshot.jpg"
+                  alt="Solana Native SOL Settlement Confirmation"
+                  className="w-full h-48 object-cover object-top hover:scale-105 transition-transform duration-500"
+                />
               </div>
 
-              <div className="relative z-10 bg-gray-50 pt-6">
+              <div>
                 <h3 className="text-2xl font-semibold mb-2">Solana Native (SOL)</h3>
                 <p className="text-gray-500 font-light text-sm">
                   Sub-second Solana payouts directly into your Phantom or Backpack address without linking your Zcash wallet.
@@ -853,18 +808,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
 
             {/* Bitcoin Native Corridor */}
             <div className="bg-gray-50 rounded-3xl p-8 min-h-[350px] flex flex-col justify-between relative overflow-hidden border border-gray-100/80">
-              <div className="flex justify-center mt-4 ml-24">
-                <div className="bg-black w-56 h-48 rounded-tl-3xl border-l-4 border-t-4 border-gray-800 p-4 text-white shadow-2xl relative">
-                  <h4 className="text-center font-medium mb-4 text-sm">Bitcoin Output</h4>
-                  <div className="bg-gray-800 rounded-lg p-3 mb-2 flex justify-between items-center text-xs">
-                    <span className="flex items-center gap-1">
-                      <div className="w-4 h-4 rounded-full bg-orange-500"></div> BTC
-                    </span>
-                    <span className="font-semibold text-emerald-400">SegWit / Taproot</span>
-                  </div>
-                </div>
+              <div className="rounded-2xl overflow-hidden shadow-md border border-gray-200/80 mb-6 bg-slate-950">
+                <img
+                  src="/images/bitcoin-screenshot.jpg"
+                  alt="Native Bitcoin SegWit Taproot Transaction Confirmation"
+                  className="w-full h-48 object-cover object-top hover:scale-105 transition-transform duration-500"
+                />
               </div>
-              <div className="relative z-10 pt-6">
+
+              <div>
                 <h3 className="text-2xl font-semibold mb-2">Native Bitcoin (BTC)</h3>
                 <p className="text-gray-500 font-light text-sm">
                   Route shielded ZEC into self-custodial on-chain Bitcoin transactions via automated solver payment channels.
@@ -899,12 +851,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
       {/* Testimonials */}
       <section className="py-24 bg-white border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex justify-center mb-10">
-            <span className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 px-4 py-1.5 rounded-full text-sm font-medium">
-              <UserCheck className="w-4 h-4" />
-              Trusted by people
-            </span>
-          </div>
           <h2 className="text-3xl md:text-5xl font-semibold text-center tracking-tight mb-16 text-slate-900">
             Real Stories, Real Experience<br />
             with ZCross
