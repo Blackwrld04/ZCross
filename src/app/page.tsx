@@ -8,7 +8,6 @@ import { ReceiptModal } from '@/components/ReceiptModal';
 import { PrivacyAuditor } from '@/components/PrivacyAuditor';
 import { DestinationToken } from '@/components/SwapCard';
 import { AuditReceiptData } from '@/core/crypto/receipt';
-import { Layout, Monitor } from 'lucide-react';
 
 export default function Home() {
   const [view, setView] = useState<'landing' | 'wallet'>('landing');
@@ -89,28 +88,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen relative font-geist">
-      {/* Floating View Switcher (Top Right) */}
-      <div className="fixed top-4 right-4 z-40 flex items-center gap-1.5 p-1.5 rounded-full bg-neutral-900/90 border border-white/10 shadow-2xl backdrop-blur-md">
-        <button
-          onClick={() => setView('landing')}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition ${
-            view === 'landing' ? 'bg-white text-black shadow-md' : 'text-slate-300 hover:text-white'
-          }`}
-        >
-          <Layout className="w-3.5 h-3.5" />
-          Landing Page
-        </button>
-        <button
-          onClick={() => setView('wallet')}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition ${
-            view === 'wallet' ? 'bg-amber-400 text-neutral-950 font-bold shadow-md' : 'text-slate-300 hover:text-white'
-          }`}
-        >
-          <Monitor className="w-3.5 h-3.5" />
-          Desktop Wallet
-        </button>
-      </div>
-
       {/* Render Selected View */}
       {view === 'landing' ? (
         <LandingPage
