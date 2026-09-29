@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { X, Play, RotateCcw, ShieldAlert, Cpu } from 'lucide-react';
+import { X, Play, Cpu } from 'lucide-react';
 
 interface SandboxControlsProps {
   onClose: () => void;
@@ -26,7 +26,7 @@ export const SandboxControls: React.FC<SandboxControlsProps> = ({ onClose, onQui
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Cpu size={16} color="var(--zcash-yellow)" />
-            <span style={{ fontSize: '0.9rem', fontWeight: 800 }}>Judge Sandbox Console</span>
+            <span style={{ fontSize: '0.9rem', fontWeight: 800 }}>Pipeline Simulation Console</span>
           </div>
           <button
             onClick={onClose}

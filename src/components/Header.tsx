@@ -114,14 +114,14 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
         </div>
 
-        {/* Judge Sandbox Button */}
+        {/* Interactive Simulator Button */}
         <button
           onClick={onOpenSandbox}
           className="btn-secondary"
           style={{ padding: '8px 14px', fontSize: '0.85rem' }}
         >
           <Zap size={14} color="#f4b728" />
-          <span>Judge Sandbox</span>
+          <span>Simulator</span>
         </button>
       </div>
     </header>

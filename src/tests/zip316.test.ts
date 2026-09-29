@@ -11,7 +11,7 @@ test('ZIP 316 Validator: recognizes Unified Addresses as pure shielded', () => {
   assert.equal(result.type, 'unified');
 });
 
-test('ZIP 316 Validator: flags transparent addresses as disqualifying for zero-leak flows', () => {
+test('ZIP 316 Validator: flags transparent addresses as strictly rejected for zero-leak flows', () => {
   const tAddr = 't1VpYecBW4UudbG3VoYHnmxXMStEJBDEBxj';
   const result = validateZcashAddress(tAddr, 'mainnet');
 

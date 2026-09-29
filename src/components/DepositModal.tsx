@@ -77,7 +77,7 @@ export const DepositModal: React.FC<DepositModalProps> = ({
     setTimeout(() => setCopiedField(null), 2000);
   };
 
-  // Simulate judge action
+  // Simulate pipeline action
   const handleSimulate = async (action: 'deposit' | 'settle' | 'full_flow') => {
     setSimulating(true);
     try {
@@ -444,7 +444,7 @@ export const DepositModal: React.FC<DepositModalProps> = ({
             </button>
           </div>
         ) : (
-          /* Judge Sandbox Simulator Controls */
+          /* Interactive Simulator Controls */
           <div style={{
             background: 'rgba(244, 183, 40, 0.05)',
             border: '1px dashed rgba(244, 183, 40, 0.3)',
@@ -456,7 +456,7 @@ export const DepositModal: React.FC<DepositModalProps> = ({
           }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--zcash-yellow)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Zap size={14} /> Judge Evaluation Sandbox:
+                <Zap size={14} /> Pipeline Simulation Console:
               </span>
               <span style={{ fontSize: '0.75rem', color: 'var(--text-faint)' }}>Instant 1-Click Simulation</span>
             </div>

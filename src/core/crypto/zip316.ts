@@ -1,7 +1,7 @@
 /**
  * ZIP 316: Unified Addresses Implementation
  * Supports validation, decoding, and enforcement of pure Orchard shielded receivers.
- * Under hackathon rules: Leaks are disqualifying. Any transparent receiver is flagged.
+ * Under zero-leak rules: Leaks are strictly rejected. Any transparent receiver is flagged.
  */
 
 export interface UnifiedReceiver {
@@ -66,7 +66,7 @@ export function validateZcashAddress(address: string, expectedNetwork: 'mainnet'
     return { isValid: true, isShielded: true, type: 'sapling' };
   }
 
-  // Transparent check (DISQUALIFYING IN PURE ZERO-LEAK FLOWS)
+  // Transparent check (REJECTED IN PURE ZERO-LEAK FLOWS)
   if (trimmed.startsWith('t1') || trimmed.startsWith('t3') || trimmed.startsWith('tm')) {
     return { 
       isValid: true, 
