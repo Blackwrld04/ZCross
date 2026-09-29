@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { AuraGlowBackground } from './AuraGlowBackground';
 import {
   Menu,
   ArrowUp,
@@ -32,77 +33,20 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
-  // Initialize UnicornStudio WebGL interactive background matching https://limited.aura.build/
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const initUnicorn = () => {
-        try {
-          if ((window as any).UnicornStudio) {
-            (window as any).UnicornStudio.init?.();
-            (window as any).UnicornStudio.isInitialized = true;
-          }
-        } catch (e) {
-          // Fallback gracefully to animated CSS glowing aurora
-        }
-      };
-
-      if (!(window as any).UnicornStudio) {
-        (window as any).UnicornStudio = { isInitialized: false };
-        const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.29/dist/unicornStudio.umd.js';
-        script.async = true;
-        script.onload = () => {
-          initUnicorn();
-        };
-        document.body.appendChild(script);
-      } else {
-        initUnicorn();
-      }
-    }
-  }, []);
-
   const toggleFaq = (index: number) => {
     setOpenFaq(openFaq === index ? null : index);
   };
 
   return (
     <div className="bg-black text-white antialiased selection:bg-amber-400 selection:text-black font-geist min-h-screen relative overflow-x-hidden">
-      {/* Background (component) added by Aura - UnicornStudio project from https://limited.aura.build/ */}
-      <div className="aura-background-component -z-10 w-full h-[1040px] absolute top-0 pointer-events-none overflow-hidden">
-        <div data-us-project="vTTCp5g4cVl9nwjlT56Z" className="absolute w-full h-full left-0 top-0 -z-10"></div>
-      </div>
+      {/* Interactive Glowing Aurora Background (Fluid Canvas + UnicornStudio + Luminescent Bloom) */}
+      <AuraGlowBackground />
 
-      {/* Vibrant Multi-layer Glowing Aurora Mesh (reproducing the glowing background from https://limited.aura.build/) */}
-      <div className="pointer-events-none absolute top-0 left-0 right-0 h-[1150px] -z-10 overflow-hidden select-none">
-        {/* Top-down luminescent spotlight beam */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1100px] h-[750px] bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,rgba(245,158,11,0.22),rgba(16,185,129,0.14)_35%,rgba(6,182,212,0.1)_55%,transparent_80%)] blur-2xl"></div>
-
-        {/* Primary Pulsing Amber/Gold Core Orb */}
-        <div
-          className="absolute top-[80px] left-1/2 -translate-x-1/2 w-[650px] h-[450px] rounded-full bg-gradient-to-tr from-amber-400/30 via-yellow-500/20 to-transparent blur-[90px]"
-          style={{ animation: 'auraPulse 7s ease-in-out infinite' }}
-        ></div>
-
-        {/* Floating Emerald Green Glow (left wing) */}
-        <div
-          className="absolute top-[120px] left-[15%] w-[550px] h-[400px] rounded-full bg-gradient-to-r from-emerald-500/25 to-teal-400/15 blur-[100px]"
-          style={{ animation: 'auraFloat 9s ease-in-out infinite' }}
-        ></div>
-
-        {/* Floating Cyan/Sky Blue Glow (right wing) */}
-        <div
-          className="absolute top-[140px] right-[12%] w-[550px] h-[420px] rounded-full bg-gradient-to-l from-cyan-400/25 to-blue-500/15 blur-[100px]"
-          style={{ animation: 'auraFloat 11s ease-in-out infinite reverse' }}
-        ></div>
-
-        {/* Deep Violet / Magenta Atmospheric Depth */}
-        <div
-          className="absolute top-[280px] left-1/2 -translate-x-1/2 w-[850px] h-[350px] rounded-full bg-gradient-to-b from-purple-600/18 via-indigo-600/12 to-transparent blur-[110px]"
-          style={{ animation: 'auraPulse 10s ease-in-out infinite 2s' }}
-        ></div>
-
-        {/* Horizon Fade to Black */}
-        <div className="absolute bottom-0 inset-x-0 h-64 bg-gradient-to-b from-transparent to-black"></div>
+      {/* Mid & Lower Page Ambient Glowing Radial Highlights */}
+      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+        <div className="absolute top-[800px] right-[-200px] w-[650px] h-[650px] bg-[radial-gradient(circle,rgba(56,189,248,0.12),transparent_70%)] blur-3xl"></div>
+        <div className="absolute top-[1800px] left-[-200px] w-[750px] h-[750px] bg-[radial-gradient(circle,rgba(168,85,247,0.1),transparent_70%)] blur-3xl"></div>
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[550px] bg-[radial-gradient(ellipse_at_bottom,rgba(244,183,40,0.09),transparent_70%)] blur-2xl"></div>
       </div>
 
       {/* Mid & Lower Page Ambient Glowing Radial Highlights */}
