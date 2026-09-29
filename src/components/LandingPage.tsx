@@ -414,7 +414,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
           </div>
 
           {/* 4 Invariant Pillars Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* 1. Pure Shielded Isolation */}
             <div className="bg-gray-50 rounded-3xl p-8 border border-gray-100/80 shadow-sm hover:shadow-md transition flex flex-col justify-between">
               <div>
@@ -557,28 +557,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
                 <span>AUDIT_PROOF_V1</span>
                 <span>STATUS: VERIFIED</span>
               </div>
-            </div>
-          </div>
-
-          {/* Cryptographic Invariant Assertion Summary */}
-          <div className="bg-gray-50 border border-gray-100 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center flex-shrink-0 border border-emerald-200">
-                <ShieldCheck className="w-6 h-6" />
-              </div>
-              <div>
-                <h4 className="text-slate-900 font-semibold text-base mb-1">
-                  Automated Invariant Assertion Engine
-                </h4>
-                <p className="text-gray-500 text-xs md:text-sm font-light">
-                  Every transaction is validated before fulfillment: Zero Transparent Hops, 512B Padded In-Band Memo, and NEAR Intents Atomic Settlement.
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="text-xs font-mono text-emerald-800 bg-emerald-100 border border-emerald-300 px-3.5 py-2 rounded-xl whitespace-nowrap font-bold">
-                ✓ 4/4 INVARIANTS PASSED
-              </span>
             </div>
           </div>
         </div>
