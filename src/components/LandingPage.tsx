@@ -201,39 +201,39 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
       </header>
 
       {/* Hero Section */}
-      <section className="relative pt-20 pb-16 overflow-hidden">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10 relative">
+      <section className="relative z-10 pt-28 sm:pt-36 md:pt-48 pb-24 overflow-hidden">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
           {/* Top Pill Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/5 border border-white/10 text-white/80 mb-6 shadow-sm">
-            <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse"></span>
-            <span className="text-xs font-medium text-white/90">Zero-Leak Shielded Liquidity</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/80 mb-8 shadow-sm backdrop-blur-lg">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span className="text-xs font-medium text-white/90 font-geist">Zero-Leak Shielded Liquidity</span>
           </div>
 
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tighter leading-[1.05] mb-6 text-white max-w-5xl mx-auto">
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tighter leading-[1.05] mb-6 text-white max-w-5xl mx-auto font-geist">
             SHIELDED LIQUIDITY<br />
             WITHOUT BOUNDARIES
           </h1>
 
-          <p className="text-base sm:text-lg md:text-xl text-white/70 max-w-2xl mx-auto mb-10 font-normal leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-white/70 max-w-2xl mx-auto mb-10 font-normal leading-relaxed font-geist">
             Swap directly from Zcash Orchard into Arbitrum USDC, Solana SOL, and Bitcoin without ever unshielding on the way through. Powered by 512-byte encrypted memos and the NEAR Intents protocol.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20">
             {/* Dual-layer animated Launch App button */}
             <button
               onClick={onOpenWallet}
-              className="group relative inline-flex min-w-[170px] cursor-pointer transition-all duration-[1000ms] ease-[cubic-bezier(0.15,0.83,0.66,1)] hover:-translate-y-[3px] hover:text-white shadow-[0_4px_24px_rgba(0,0,0,0.6)] overflow-hidden font-semibold text-neutral-300 tracking-tight bg-neutral-900 border border-neutral-700 rounded-full px-7 py-3.5 items-center justify-center w-full sm:w-auto"
+              className="group relative inline-flex min-w-[160px] cursor-pointer transition-all duration-[1000ms] ease-[cubic-bezier(0.15,0.83,0.66,1)] hover:-translate-y-[3px] hover:text-white shadow-[0_2.8px_2.2px_rgba(0,0,0,0.3),_0_6.7px_5.3px_rgba(0,0,0,0.35),_0_12.5px_10px_rgba(0,0,0,0.4)] overflow-hidden font-semibold text-neutral-300 tracking-tight bg-neutral-900/90 border border-neutral-700/80 rounded-full px-7 py-3.5 items-center justify-center w-full sm:w-auto font-geist"
             >
-              <span className="relative z-10 font-medium rounded-full transition-all duration-500 ease-out group-hover:transform group-hover:translate-y-8 group-hover:opacity-0 group-hover:blur-md flex items-center gap-2 text-white">
+              <span className="relative z-10 font-medium rounded-full transition-all duration-500 ease-out group-hover:transform group-hover:translate-y-8 group-hover:opacity-0 group-hover:blur-md flex items-center gap-2 text-white font-geist">
                 <Zap className="w-4 h-4 text-amber-400" />
                 Launch App
               </span>
-              <span className="absolute inset-0 z-10 flex items-center justify-center transition-all duration-300 ease-in-out transform -translate-y-8 group-hover:translate-y-0 group-hover:opacity-100 group-hover:blur-none font-medium opacity-0 rounded-full blur-md text-white gap-2">
+              <span className="absolute inset-0 z-10 flex items-center justify-center transition-all duration-300 ease-in-out transform -translate-y-8 group-hover:translate-y-0 group-hover:opacity-100 group-hover:blur-none font-medium opacity-0 rounded-full blur-md text-white gap-2 font-geist">
                 <Zap className="w-4 h-4 text-amber-400" />
                 Open Wallet
               </span>
               <span aria-hidden="true" className="absolute bottom-0 left-1/2 h-[1px] w-[70%] -translate-x-1/2 transition-all duration-[1000ms] ease-[cubic-bezier(0.15,0.83,0.66,1)] group-hover:opacity-80 bg-gradient-to-r from-transparent via-amber-400 to-transparent rounded-full blur-[2px]"></span>
-              <span aria-hidden="true" className="absolute bottom-0 left-0 right-0 h-[100%] group-hover:opacity-60 transition-all duration-[1000ms] ease-[cubic-bezier(0.15,0.83,0.66,1)] pointer-events-none bg-gradient-to-t from-amber-400/10 via-white/5 to-transparent rounded-full"></span>
+              <span aria-hidden="true" className="absolute bottom-0 left-0 right-0 h-[100%] group-hover:opacity-60 transition-all duration-[1000ms] ease-[cubic-bezier(0.15,0.83,0.66,1)] pointer-events-none bg-gradient-to-t from-white/20 via-white/10 to-transparent rounded-full"></span>
             </button>
 
             {/* Audit button */}
@@ -242,7 +242,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
                 const el = document.getElementById('audit-invariants');
                 el?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="inline-flex items-center gap-2 hover:bg-white/10 text-sm sm:text-base font-medium text-white/90 bg-white/5 border border-white/10 rounded-full px-6 py-3.5 backdrop-blur-xl transition shadow-sm hover:border-white/20 cursor-pointer w-full sm:w-auto justify-center"
+              className="inline-flex items-center gap-2 hover:bg-white/10 text-base font-medium text-white/90 bg-white/5 border border-white/10 rounded-full px-7 py-3.5 backdrop-blur transition shadow-sm hover:border-white/20 cursor-pointer w-full sm:w-auto justify-center font-geist"
             >
               <Shield className="w-4 h-4 text-emerald-400" />
               Audit Zero-Leak Invariants
@@ -257,13 +257,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
             className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden"
             aria-hidden="true"
           >
-            <span className="text-[12rem] md:text-[19rem] font-bold text-white/[0.03] tracking-tighter whitespace-nowrap">
+            <span className="text-[12rem] md:text-[20rem] font-bold text-white/[0.035] tracking-tighter whitespace-nowrap font-geist">
               ZCROSS
             </span>
           </div>
 
           {/* Ambient Glow behind phone */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[600px] bg-gradient-to-tr from-amber-500/15 via-emerald-500/10 to-cyan-500/15 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[460px] h-[650px] bg-gradient-to-tr from-amber-500/20 via-emerald-500/15 to-cyan-500/20 rounded-full blur-3xl -z-10 pointer-events-none"></div>
 
           {/* Phone Mockup Frame */}
           <div className="relative z-10 flex justify-center transform translate-y-8">
@@ -1034,10 +1034,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="py-24 border-t border-white/10 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row gap-16">
+      <section id="faq" className="py-24 border-t border-white/10 relative overflow-hidden bg-[url(https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/278bbef6-c861-4ed8-b799-a4713ff032b4_3840w.jpg)] bg-cover">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row gap-16 relative z-10">
           <div className="md:w-1/3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/80 text-xs font-medium mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/80 text-xs font-medium mb-4 backdrop-blur">
               <span>Support</span>
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tighter mb-4 text-white">FAQ</h2>
