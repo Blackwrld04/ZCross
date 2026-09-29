@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import { 
   Shield, Zap, CheckCircle2, ArrowLeftRight, ArrowUpRight, 
   Settings, HelpCircle, MoreHorizontal, Plus, ArrowLeft,
-  CreditCard, RefreshCw, BarChart2
+  CreditCard, RefreshCw, BarChart2, Check, Lock, ExternalLink,
+  Layers, Terminal, Cpu, Clock, Key
 } from 'lucide-react';
 import { SwapCard, DestinationToken } from './SwapCard';
 
@@ -23,7 +24,7 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
   onOpenAuditor,
   onBackToLanding,
 }) => {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'swap' | 'accounts' | 'transactions' | 'cards' | 'transfers' | 'analytics'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'swap' | 'accounts' | 'transactions' | 'corridors' | 'watcher'>('dashboard');
   const [showOptionsDropdown, setShowOptionsDropdown] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -49,19 +50,19 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
           className="inline-flex items-center gap-2 text-sm text-slate-300 hover:text-white transition px-3.5 py-1.5 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to Swapster Overview
+          Back to Protocol Overview
         </button>
 
         <div className="flex items-center gap-3">
           <span className="badge-tag badge-gold">
-            Zcash Shielded Orchard
+            Zcash Shielded Orchard (Halo 2)
           </span>
           <button
             onClick={onOpenAuditor}
             className="badge-tag badge-emerald cursor-pointer hover:brightness-110 transition flex items-center gap-1.5"
           >
             <Shield className="w-3.5 h-3.5" />
-            Zero-Leak Invariant Verified
+            Zero-Leak Invariant Guarded
           </button>
         </div>
       </div>
@@ -81,10 +82,10 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
               <span className="h-3.5 w-3.5 rounded-full bg-emerald-500/90 inline-block cursor-pointer hover:opacity-80" onClick={() => setActiveTab('swap')} title="Shielded Swap"></span>
             </div>
             <div className="inline-flex items-center gap-2 px-3">
-              <span className="text-xl font-semibold tracking-tight text-white font-geist">Wallet</span>
-              <span className="text-xs text-white/40 font-geist">Desktop</span>
+              <span className="text-xl font-semibold tracking-tight text-white font-geist">Z-HyperIntent Wallet</span>
+              <span className="text-xs text-white/40 font-geist">Desktop Node</span>
               <span className="ml-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                Pure Shielded Mode
+                Pure Shielded Mode (0 Leaks)
               </span>
             </div>
           </div>
@@ -101,7 +102,7 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
                 }`}
               >
                 <Plus className="w-4 h-4" />
-                New Transaction
+                New Shielded Swap
               </button>
             </div>
 
@@ -114,7 +115,7 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
 
             {/* Options Dropdown */}
             {showOptionsDropdown && (
-              <div className="absolute right-0 top-10 z-30 w-56 rounded-xl bg-neutral-900 border border-white/10 shadow-2xl p-2 text-sm text-slate-300">
+              <div className="absolute right-0 top-10 z-30 w-60 rounded-xl bg-neutral-900 border border-white/10 shadow-2xl p-2 text-sm text-slate-300">
                 <button
                   onClick={() => { setActiveTab('swap'); setShowOptionsDropdown(false); }}
                   className="w-full text-left px-3 py-2 rounded-lg hover:bg-white/5 hover:text-white flex items-center gap-2"
@@ -148,14 +149,12 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
             <div className="p-4 sm:p-6">
               <div className="mb-6 [animation:fadeSlideIn_0.5s_ease-in-out_0.25s_both]">
                 <div className="flex items-center gap-3 mb-4">
-                  <img
-                    className="h-10 w-10 rounded-lg object-cover border-gradient before:rounded-lg ring-1 ring-white/10"
-                    src="https://hoirqrkdgbmvpwutwuwj-all.supabase.co/storage/v1/object/public/assets/assets/9bf583f7-9a93-46c4-bb0a-4effddb01c86_320w.webp"
-                    alt="profile"
-                  />
+                  <div className="h-10 w-10 rounded-lg bg-gradient-to-tr from-amber-400 to-amber-600 flex items-center justify-center text-neutral-950 font-bold text-lg shadow-lg border border-amber-300/30">
+                    🛡️
+                  </div>
                   <div>
-                    <p className="text-sm font-semibold text-white font-geist">Alex Chen</p>
-                    <p className="text-xs text-amber-400 font-geist">Premium Shielded Account</p>
+                    <p className="text-sm font-semibold text-white font-geist">Shielded Operator</p>
+                    <p className="text-xs text-amber-400 font-geist">Orchard Halo 2 • Mainnet</p>
                   </div>
                 </div>
               </div>
@@ -195,6 +194,19 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
                     </li>
                     <li>
                       <button
+                        onClick={() => setActiveTab('swap')}
+                        className={`w-full group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-geist transition cursor-pointer ${
+                          activeTab === 'swap'
+                            ? 'text-amber-400 bg-amber-400/10 font-bold border border-amber-400/20'
+                            : 'text-amber-300/80 hover:bg-amber-400/5'
+                        }`}
+                      >
+                        <ArrowLeftRight className="w-4 h-4 text-amber-400" />
+                        Shielded Swap (Active)
+                      </button>
+                    </li>
+                    <li>
+                      <button
                         onClick={() => setActiveTab('accounts')}
                         className={`w-full group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-geist transition cursor-pointer ${
                           activeTab === 'accounts'
@@ -217,7 +229,7 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
                           <line x1="12" x2="12" y1="2" y2="22"></line>
                           <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                         </svg>
-                        Accounts
+                        Vault Balances
                       </button>
                     </li>
                     <li>
@@ -245,77 +257,39 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
                           <polyline points="7 10 12 15 17 10"></polyline>
                           <line x1="12" x2="12" y1="15" y2="3"></line>
                         </svg>
-                        Transactions
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        onClick={() => setActiveTab('swap')}
-                        className={`w-full group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-geist transition cursor-pointer ${
-                          activeTab === 'swap'
-                            ? 'text-amber-400 bg-amber-400/10 font-bold border border-amber-400/20'
-                            : 'text-amber-300/80 hover:bg-amber-400/5'
-                        }`}
-                      >
-                        <ArrowLeftRight className="w-4 h-4 text-amber-400" />
-                        Shielded Swap (Active)
+                        Settlement History
                       </button>
                     </li>
                   </ul>
                 </div>
 
                 <div className="[animation:fadeSlideIn_0.5s_ease-in-out_0.35s_both]">
-                  <p className="mb-2 text-xs uppercase tracking-wider text-slate-400 font-geist">Tools</p>
+                  <p className="mb-2 text-xs uppercase tracking-wider text-slate-400 font-geist">Cross-Chain Tools</p>
                   <ul className="space-y-1">
                     <li>
                       <button
-                        onClick={() => setActiveTab('cards')}
+                        onClick={() => setActiveTab('corridors')}
                         className={`w-full group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-geist transition cursor-pointer ${
-                          activeTab === 'cards'
+                          activeTab === 'corridors'
                             ? 'text-white bg-white/10 font-semibold'
                             : 'text-slate-300 hover:bg-white/5'
                         }`}
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="w-4 h-4 text-slate-400 group-hover:text-slate-200"
-                        >
-                          <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path>
-                          <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path>
-                          <path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path>
-                        </svg>
-                        Cards
+                        <Layers className="w-4 h-4 text-cyan-400" />
+                        Execution Corridors
                       </button>
                     </li>
                     <li>
                       <button
-                        onClick={() => setActiveTab('swap')}
-                        className="w-full group flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-300 hover:bg-white/5 font-geist transition cursor-pointer"
+                        onClick={() => setActiveTab('watcher')}
+                        className={`w-full group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-geist transition cursor-pointer ${
+                          activeTab === 'watcher'
+                            ? 'text-white bg-white/10 font-semibold'
+                            : 'text-slate-300 hover:bg-white/5'
+                        }`}
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="w-4 h-4 text-slate-400 group-hover:text-slate-200"
-                        >
-                          <line x1="12" y1="1" x2="12" y2="23"></line>
-                          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                        </svg>
-                        Transfers
+                        <Terminal className="w-4 h-4 text-emerald-400" />
+                        Compact Block Watcher
                       </button>
                     </li>
                     <li>
@@ -323,86 +297,42 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
                         onClick={onOpenAuditor}
                         className="w-full group flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-300 hover:bg-white/5 font-geist transition cursor-pointer"
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="w-4 h-4 text-slate-400 group-hover:text-slate-200"
-                        >
-                          <line x1="18" x2="18" y1="20" y2="10"></line>
-                          <line x1="12" x2="12" y1="20" y2="4"></line>
-                          <line x1="6" x2="6" y1="20" y2="14"></line>
-                        </svg>
-                        Analytics
+                        <Shield className="w-4 h-4 text-amber-400" />
+                        Zero-Leak Auditor
                       </button>
                     </li>
                   </ul>
                 </div>
 
                 <div className="[animation:fadeSlideIn_0.5s_ease-in-out_0.4s_both]">
-                  <p className="mb-2 text-xs uppercase tracking-wider text-slate-400 font-geist">Quick Access</p>
+                  <p className="mb-2 text-xs uppercase tracking-wider text-slate-400 font-geist">Shielded Vault</p>
                   <div className="grid grid-cols-2 gap-2">
                     <div className="rounded-lg border-gradient before:rounded-lg bg-white/5 p-3 text-center">
-                      <p className="text-xl font-semibold text-white font-geist">$12,450</p>
-                      <p className="text-xs text-slate-400 font-geist">Balance</p>
+                      <p className="text-xl font-semibold text-white font-geist">17.50 ZEC</p>
+                      <p className="text-xs text-slate-400 font-geist">Pure Orchard</p>
                     </div>
                     <div className="rounded-lg border-gradient before:rounded-lg bg-white/5 p-3 text-center">
-                      <p className="text-xl font-semibold text-emerald-300 font-geist">+$420</p>
-                      <p className="text-xs text-slate-400 font-geist">This month</p>
+                      <p className="text-xl font-semibold text-emerald-300 font-geist">+$12,450</p>
+                      <p className="text-xs text-slate-400 font-geist">Settled Vol</p>
                     </div>
                   </div>
                 </div>
 
                 <div className="space-y-1 [animation:fadeSlideIn_0.5s_ease-in-out_0.45s_both]">
                   <button
-                    onClick={() => showNotification('Privacy Settings: Orchard Shielding strictly enforced.')}
+                    onClick={() => showNotification('Viewing Key Settings: Export audit receipts or compliance credentials.')}
                     className="w-full group flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-300 hover:bg-white/5 font-geist transition cursor-pointer text-left"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="w-4 h-4 text-slate-400 group-hover:text-slate-200"
-                    >
-                      <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
-                      <circle cx="12" cy="12" r="3"></circle>
-                    </svg>
-                    Settings
+                    <Key className="w-4 h-4 text-slate-400 group-hover:text-slate-200" />
+                    Viewing Key Credentials
                   </button>
 
                   <button
                     onClick={onOpenAuditor}
                     className="w-full group flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-300 hover:bg-white/5 font-geist transition cursor-pointer text-left"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="w-4 h-4 text-slate-400 group-hover:text-slate-200"
-                    >
-                      <circle cx="12" cy="12" r="10"></circle>
-                      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                      <path d="M12 17h.01"></path>
-                    </svg>
-                    Help &amp; Support
+                    <HelpCircle className="w-4 h-4 text-slate-400 group-hover:text-slate-200" />
+                    Hackathon Scoring Rubric
                   </button>
                 </div>
               </nav>
@@ -418,7 +348,7 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
                   <div className="flex items-center justify-between">
                     <div>
                       <h2 className="text-2xl text-white mb-1 font-geist tracking-tighter font-bold">
-                        Shielded Cross-Chain Swap
+                        Shielded Cross-Chain Swap Engine
                       </h2>
                       <p className="text-sm text-slate-400 font-geist">
                         Route pure Zcash Orchard notes into Arbitrum USDC, Solana SOL, or Bitcoin with 0 leaks.
@@ -443,71 +373,134 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
                 /* Accounts Tab */
                 <div className="flex-1 sm:px-8 overflow-y-auto pt-8 pr-4 pb-8 pl-4 space-y-6">
                   <div>
-                    <h2 className="text-2xl text-white mb-1 font-geist tracking-tighter">Your Accounts</h2>
-                    <p className="text-sm text-slate-400 font-geist">Connected multi-chain and shielded Orchard vaults.</p>
+                    <h2 className="text-2xl text-white mb-1 font-geist tracking-tighter font-bold">
+                      Connected Vault Balances
+                    </h2>
+                    <p className="text-sm text-slate-400 font-geist">
+                      Shielded Orchard holdings and destination execution accounts.
+                    </p>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="border-gradient before:rounded-xl bg-white/5 p-5 rounded-xl">
+                    <div className="border-gradient before:rounded-xl bg-white/5 p-5 rounded-xl border border-amber-400/20">
                       <div className="flex items-center justify-between mb-3">
                         <span className="text-amber-400 font-bold text-sm">Zcash Shielded Orchard</span>
-                        <span className="badge-tag badge-gold">Halo 2</span>
+                        <span className="badge-tag badge-gold">Halo 2 Prover</span>
                       </div>
                       <div className="text-3xl font-bold text-white mb-1">17.50000000 ZEC</div>
-                      <div className="text-xs text-slate-400">~$24,850.42 USD • Pure Shielded</div>
+                      <div className="text-xs text-emerald-400">~$24,850.42 USD • Pure Shielded Invariant</div>
                     </div>
 
-                    <div className="border-gradient before:rounded-xl bg-white/5 p-5 rounded-xl">
+                    <div className="border-gradient before:rounded-xl bg-white/5 p-5 rounded-xl border border-cyan-400/20">
                       <div className="flex items-center justify-between mb-3">
                         <span className="text-cyan-400 font-bold text-sm">Arbitrum One</span>
-                        <span className="badge-tag badge-cyan">NEAR Intents</span>
+                        <span className="badge-tag badge-cyan">NEAR Intents Payout</span>
                       </div>
                       <div className="text-3xl font-bold text-white mb-1">12,450.00 USDC</div>
-                      <div className="text-xs text-slate-400">Fast Settlement Vault</div>
+                      <div className="text-xs text-slate-400">Fast Sub-Minute Settlement</div>
+                    </div>
+
+                    <div className="border-gradient before:rounded-xl bg-white/5 p-5 rounded-xl border border-purple-400/20">
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="text-purple-400 font-bold text-sm">Solana Native</span>
+                        <span className="badge-tag badge-cyan">Raydium Solver</span>
+                      </div>
+                      <div className="text-3xl font-bold text-white mb-1">42.5000 SOL</div>
+                      <div className="text-xs text-slate-400">Direct UTXO-to-Account Relay</div>
+                    </div>
+
+                    <div className="border-gradient before:rounded-xl bg-white/5 p-5 rounded-xl border border-orange-400/20">
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="text-orange-400 font-bold text-sm">Bitcoin Native</span>
+                        <span className="badge-tag badge-gold">UTXO Channel</span>
+                      </div>
+                      <div className="text-3xl font-bold text-white mb-1">0.35400000 BTC</div>
+                      <div className="text-xs text-slate-400">Taproot Settlement Channel</div>
                     </div>
                   </div>
 
-                  <div className="pt-4">
+                  <div className="pt-4 flex gap-3">
                     <button
                       onClick={() => setActiveTab('swap')}
-                      className="bg-amber-400 text-neutral-950 font-bold px-6 py-2.5 rounded-lg text-sm hover:bg-amber-300 transition"
+                      className="bg-amber-400 text-neutral-950 font-bold px-6 py-2.5 rounded-lg text-sm hover:bg-amber-300 transition shadow"
                     >
-                      + Bridge / Swap ZEC
+                      + Initiate Shielded Swap
+                    </button>
+                    <button
+                      onClick={onOpenAuditor}
+                      className="bg-white/10 text-white font-medium px-6 py-2.5 rounded-lg text-sm hover:bg-white/15 transition border border-white/10"
+                    >
+                      Audit Proofs
                     </button>
                   </div>
                 </div>
-              ) : activeTab === 'cards' ? (
-                /* Virtual Cards Tab */
+              ) : activeTab === 'corridors' ? (
+                /* Corridors Tab */
                 <div className="flex-1 sm:px-8 overflow-y-auto pt-8 pr-4 pb-8 pl-4 space-y-6">
                   <div>
-                    <h2 className="text-2xl text-white mb-1 font-geist tracking-tighter">Virtual Cards</h2>
-                    <p className="text-sm text-slate-400 font-geist">Instant virtual Visa & Mastercard linked to your shielded holdings.</p>
+                    <h2 className="text-2xl text-white mb-1 font-geist tracking-tighter font-bold">
+                      Active Execution Corridors
+                    </h2>
+                    <p className="text-sm text-slate-400 font-geist">
+                      Routing shielded ZEC directly to decentralized liquidity via NEAR Intents.
+                    </p>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4">
-                    <div className="w-full h-48 bg-gradient-to-tr from-neutral-800 to-neutral-950 rounded-2xl p-6 border border-white/10 flex flex-col justify-between shadow-2xl">
-                      <div className="flex justify-between items-start">
-                        <span className="text-xs font-mono text-amber-400">SHIELDED PLATINUM</span>
-                        <span className="text-white font-bold italic">Mastercard</span>
+                  <div className="space-y-3">
+                    {destinations.map((dest, idx) => (
+                      <div key={idx} className="border-gradient before:rounded-xl bg-white/5 p-4 rounded-xl flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <span className="text-2xl">{dest.icon}</span>
+                          <div>
+                            <div className="text-white font-semibold text-sm">{dest.chainName} ({dest.symbol})</div>
+                            <div className="text-xs text-slate-400 font-mono">{dest.assetId}</div>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-4">
+                          <span className="badge-tag badge-emerald text-[10px]">Active &amp; Quoting</span>
+                          <button
+                            onClick={() => setActiveTab('swap')}
+                            className="bg-white/10 hover:bg-white/20 text-white text-xs px-3 py-1.5 rounded-lg transition"
+                          >
+                            Swap Now →
+                          </button>
+                        </div>
                       </div>
-                      <div className="text-lg font-mono tracking-widest text-slate-300">•••• •••• •••• 8888</div>
-                      <div className="flex justify-between text-xs text-slate-400">
-                        <span>ALEX CHEN</span>
-                        <span>EXP 08/29</span>
-                      </div>
-                    </div>
+                    ))}
+                  </div>
+                </div>
+              ) : activeTab === 'watcher' ? (
+                /* Watcher Daemon Tab */
+                <div className="flex-1 sm:px-8 overflow-y-auto pt-8 pr-4 pb-8 pl-4 space-y-6">
+                  <div>
+                    <h2 className="text-2xl text-white mb-1 font-geist tracking-tighter font-bold">
+                      Compact Block Watcher Daemon
+                    </h2>
+                    <p className="text-sm text-slate-400 font-geist">
+                      Continuous background listener indexing Orchard Merkle commitments.
+                    </p>
+                  </div>
+
+                  <div className="bg-neutral-950 border border-white/10 rounded-xl p-4 font-mono text-xs text-emerald-400 shadow-inner space-y-2">
+                    <div className="text-slate-400">// Z-HyperIntent Solver Daemon CLI: npm run solver</div>
+                    <div>[Watcher] Connected to Zcash compact block stream at block #2,891,402</div>
+                    <div>[Watcher] Scanning Orchard action commitments for vault Unified Address...</div>
+                    <div className="text-amber-400">[Watcher] In-band memo decoder ready (ChaCha20-Poly1305, 512B constant pad)</div>
+                    <div>[NEAR Intents] 1Click execution quotes synced with 15 market makers</div>
+                    <div className="text-cyan-400">[Heartbeat] Daemon healthy. 0 dropped packets. Zero-leak invariant verified.</div>
                   </div>
                 </div>
               ) : (
-                /* Primary Dashboard Tab (Exact Alex Chen View from User Code) */
+                /* Primary Dashboard Tab (Exact Alex Chen View from User Code with Authentic Domain Text) */
                 <div className="flex-1 sm:px-8 overflow-y-auto pt-8 pr-4 pb-8 pl-4 space-y-6">
                   {/* Header */}
                   <div className="[animation:fadeSlideIn_0.5s_ease-in-out_0.5s_both]">
-                    <h2 className="text-2xl text-white mb-1 font-geist tracking-tighter">
-                      Welcome back, Alex
+                    <h2 className="text-2xl text-white mb-1 font-geist tracking-tighter font-bold">
+                      Welcome back, Shielded Operator
                     </h2>
                     <p className="text-sm text-slate-400 font-geist">
-                      Here's what's happening with your accounts today.
+                      Real-time status of your Orchard notes and cross-chain execution pipeline.
                     </p>
                   </div>
 
@@ -516,91 +509,47 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
                     <div className="rounded-xl border-gradient before:rounded-xl bg-white/5 p-4 backdrop-blur-sm">
                       <div className="flex items-center justify-between mb-2">
                         <p className="text-xs text-slate-400 uppercase tracking-wider font-geist">
-                          Total Balance
+                          Total Shielded Balance
                         </p>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="w-4 h-4 text-emerald-400"
-                        >
-                          <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path>
-                          <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path>
-                          <path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path>
-                        </svg>
+                        <Shield className="w-4 h-4 text-emerald-400" />
                       </div>
                       <p className="text-2xl text-white mb-1 font-geist tracking-tighter">
                         $24,850.42
                       </p>
                       <div className="flex items-center gap-1 text-xs">
-                        <span className="text-emerald-400 font-geist">+12.5%</span>
-                        <span className="text-slate-500 font-geist">vs last month</span>
+                        <span className="text-emerald-400 font-geist">17.50000000 ZEC</span>
+                        <span className="text-slate-500 font-geist">(Orchard Pool)</span>
                       </div>
                     </div>
 
                     <div className="rounded-xl border-gradient before:rounded-xl bg-white/5 p-4 backdrop-blur-sm">
                       <div className="flex items-center justify-between mb-2">
                         <p className="text-xs text-slate-400 uppercase tracking-wider font-geist">
-                          Spending
+                          Cross-Chain Settled
                         </p>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="w-4 h-4 text-orange-400"
-                        >
-                          <path d="M3 3v18h18"></path>
-                          <path d="m19 9-5 5-4-4-3 3"></path>
-                        </svg>
+                        <Zap className="w-4 h-4 text-cyan-400" />
                       </div>
                       <p className="text-2xl text-white mb-1 font-geist tracking-tighter">
-                        $3,249.18
+                        $12,450.00
                       </p>
                       <div className="flex items-center gap-1 text-xs">
-                        <span className="text-orange-400 font-geist">-8.2%</span>
-                        <span className="text-slate-500 font-geist">vs last month</span>
+                        <span className="text-cyan-400 font-geist">6 Corridors</span>
+                        <span className="text-slate-500 font-geist">via NEAR Intents</span>
                       </div>
                     </div>
 
                     <div className="border-gradient before:rounded-xl bg-white/5 rounded-xl pt-4 pr-4 pb-4 pl-4 backdrop-blur-sm">
                       <div className="flex items-center justify-between mb-2">
                         <p className="text-xs text-slate-400 uppercase tracking-wider font-geist">
-                          Savings Goal
+                          Zero-Leak Privacy Score
                         </p>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="w-4 h-4 text-blue-400"
-                        >
-                          <circle cx="12" cy="12" r="10"></circle>
-                          <path d="M12 16v-4"></path>
-                          <path d="M12 8h.01"></path>
-                        </svg>
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                       </div>
-                      <p className="text-2xl text-white mb-1 font-geist tracking-tighter">68%</p>
+                      <p className="text-2xl text-white mb-1 font-geist tracking-tighter">100%</p>
                       <div className="w-full bg-white/10 rounded-full h-1.5 mt-2">
                         <div
-                          className="bg-gradient-to-r from-orange-300 to-orange-400 h-1.5 rounded-full"
-                          style={{ width: '68%' }}
+                          className="bg-gradient-to-r from-emerald-400 to-emerald-500 h-1.5 rounded-full"
+                          style={{ width: '100%' }}
                         ></div>
                       </div>
                     </div>
@@ -610,7 +559,7 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
                   <div className="[animation:fadeSlideIn_0.5s_ease-in-out_0.6s_both]">
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="text-lg font-semibold text-white font-geist">
-                        Recent Transactions
+                        Recent Shielded Cross-Chain Transactions
                       </h3>
                       <button 
                         onClick={() => setActiveTab('transactions')}
@@ -624,94 +573,50 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
                       <div className="border-gradient before:rounded-lg flex bg-white/5 rounded-lg pt-4 pr-4 pb-4 pl-4 backdrop-blur-sm items-center justify-between hover:bg-white/10 transition">
                         <div className="flex items-center gap-3">
                           <div className="h-10 w-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              className="w-5 h-5 text-emerald-400"
-                            >
-                              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                              <polyline points="17 8 12 3 7 8"></polyline>
-                              <line x1="12" x2="12" y1="3" y2="15"></line>
-                            </svg>
+                            <Zap className="w-5 h-5 text-emerald-400" />
                           </div>
                           <div>
                             <p className="text-sm font-medium text-white font-geist">
-                              Salary Deposit
+                              1.00 ZEC ➔ 1,420.00 USDC (Arbitrum One)
                             </p>
-                            <p className="text-xs text-slate-400 font-geist">Today, 9:24 AM</p>
+                            <p className="text-xs text-slate-400 font-geist">Settled in 64s via NEAR Intents • 0 Transparent Hops</p>
                           </div>
                         </div>
                         <p className="text-base font-semibold text-emerald-400 font-geist">
-                          +$4,250.00
+                          +$1,420.00 USDC
                         </p>
                       </div>
 
                       <div className="rounded-lg border-gradient before:rounded-lg bg-white/5 p-4 backdrop-blur-sm flex items-center justify-between hover:bg-white/10 transition">
                         <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 rounded-lg bg-orange-500/20 flex items-center justify-center">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              className="w-5 h-5 text-orange-400"
-                            >
-                              <path d="M3 3v18h18"></path>
-                              <rect width="4" height="7" x="7" y="10" rx="1"></rect>
-                            </svg>
+                          <div className="h-10 w-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                            <ArrowLeftRight className="w-5 h-5 text-purple-400" />
                           </div>
                           <div>
                             <p className="text-sm font-medium text-white font-geist">
-                              Amazon Purchase
+                              0.50 ZEC ➔ 5.91 SOL (Solana Native)
                             </p>
                             <p className="text-xs text-slate-400 font-geist">
-                              Yesterday, 3:42 PM
+                              Settled in 42s via Raydium Solver • 512B Uniform Memo
                             </p>
                           </div>
                         </div>
-                        <p className="text-base font-semibold text-white font-geist">-$84.99</p>
+                        <p className="text-base font-semibold text-purple-400 font-geist">+5.91 SOL</p>
                       </div>
 
                       <div className="rounded-lg border-gradient before:rounded-lg bg-white/5 p-4 backdrop-blur-sm flex items-center justify-between hover:bg-white/10 transition">
                         <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              className="w-5 h-5 text-blue-400"
-                            >
-                              <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path>
-                              <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path>
-                              <path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path>
-                            </svg>
+                          <div className="h-10 w-10 rounded-lg bg-amber-500/20 flex items-center justify-center">
+                            <Shield className="w-5 h-5 text-amber-400" />
                           </div>
                           <div>
                             <p className="text-sm font-medium text-white font-geist">
-                              Netflix Subscription
+                              Shielded Inbound: Orchard Note
                             </p>
-                            <p className="text-xs text-slate-400 font-geist">Dec 28, 2024</p>
+                            <p className="text-xs text-slate-400 font-geist">Received via Zashi Wallet • Halo 2 Proof Confirmed</p>
                           </div>
                         </div>
-                        <p className="text-base font-semibold text-white font-geist">-$15.99</p>
+                        <p className="text-base font-semibold text-amber-400 font-geist">+2.5000 ZEC</p>
                       </div>
                     </div>
                   </div>
@@ -719,98 +624,39 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
                   {/* Quick actions */}
                   <div className="[animation:fadeSlideIn_0.5s_ease-in-out_0.65s_both]">
                     <h3 className="text-lg font-semibold text-white mb-4 font-geist">
-                      Quick Actions
+                      Protocol Quick Actions
                     </h3>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                       <button
                         onClick={() => setActiveTab('swap')}
                         className="border-gradient before:rounded-lg hover:bg-white/10 transition bg-white/5 rounded-lg pt-4 pr-4 pb-4 pl-4 backdrop-blur-sm cursor-pointer text-center group"
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="w-6 h-6 text-slate-300 mx-auto mb-2 group-hover:text-amber-400 transition"
-                        >
-                          <line x1="12" y1="1" x2="12" y2="23"></line>
-                          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                        </svg>
-                        <p className="text-xs text-slate-300 font-geist">Send Money</p>
+                        <ArrowLeftRight className="w-6 h-6 text-amber-400 mx-auto mb-2 group-hover:scale-110 transition" />
+                        <p className="text-xs text-slate-300 font-geist">Shielded Swap</p>
                       </button>
 
                       <button
-                        onClick={() => showNotification('Bill Pay: Utilities, rent, and card payments queued.')}
+                        onClick={() => setActiveTab('corridors')}
                         className="border-gradient before:rounded-lg hover:bg-white/10 transition bg-white/5 rounded-lg pt-4 pr-4 pb-4 pl-4 backdrop-blur-sm cursor-pointer text-center group"
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="w-6 h-6 text-slate-300 mx-auto mb-2 group-hover:text-blue-400 transition"
-                        >
-                          <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path>
-                          <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path>
-                          <path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path>
-                        </svg>
-                        <p className="text-xs text-slate-300 font-geist">Pay Bills</p>
+                        <Layers className="w-6 h-6 text-cyan-400 mx-auto mb-2 group-hover:scale-110 transition" />
+                        <p className="text-xs text-slate-300 font-geist">Corridors</p>
                       </button>
 
                       <button
                         onClick={() => setActiveTab('swap')}
                         className="rounded-lg border-gradient before:rounded-lg bg-white/5 p-4 backdrop-blur-sm hover:bg-white/10 transition cursor-pointer text-center group"
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="w-6 h-6 text-slate-300 mx-auto mb-2 group-hover:text-emerald-400 transition"
-                        >
-                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                          <polyline points="7 10 12 15 17 10"></polyline>
-                          <line x1="12" x2="12" y1="15" y2="3"></line>
-                        </svg>
-                        <p className="text-xs text-slate-300 font-geist">Deposit</p>
+                        <Zap className="w-6 h-6 text-emerald-400 mx-auto mb-2 group-hover:scale-110 transition" />
+                        <p className="text-xs text-slate-300 font-geist">Deposit Note</p>
                       </button>
 
                       <button
                         onClick={onOpenAuditor}
                         className="border-gradient before:rounded-lg hover:bg-white/10 transition bg-white/5 rounded-lg pt-4 pr-4 pb-4 pl-4 backdrop-blur-sm cursor-pointer text-center group"
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="w-6 h-6 text-slate-300 mx-auto mb-2 group-hover:text-cyan-400 transition"
-                        >
-                          <line x1="18" x2="18" y1="20" y2="10"></line>
-                          <line x1="12" x2="12" y1="20" y2="4"></line>
-                          <line x1="6" x2="6" y1="20" y2="14"></line>
-                        </svg>
-                        <p className="text-xs text-slate-300 font-geist">Analytics</p>
+                        <Shield className="w-6 h-6 text-amber-400 mx-auto mb-2 group-hover:scale-110 transition" />
+                        <p className="text-xs text-slate-300 font-geist">Audit Proofs</p>
                       </button>
                     </div>
                   </div>
