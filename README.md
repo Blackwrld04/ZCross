@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🛡️ ZCross
+#  ZCross
 
 ### Zero-Leak Shielded Cross-Chain Bridge & Intent Solver: Zcash Orchard (Halo 2), ZIP 316/321, In-Browser Embedded Wallet, Google Pay Shielded On-Ramp, and NEAR Defuse Liquidity.
 
