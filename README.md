@@ -14,6 +14,11 @@
 
 ZCross eliminates the "Zcash Island Problem" and the dangerous "Unshielding Bridge Leak". Past cross-chain bridging solutions forced users to unshield their funds to transparent addresses (`t-addr`), destroying sender privacy and exposing their entire wallet transaction graph to surveillance cartels. ZCross enables users to swap Shielded Zcash (Orchard) directly into multi-chain assets (Arbitrum USDC, Solana SOL, Bitcoin, Ethereum, NEAR) **without ever touching a transparent address, unshielding on intermediary hops, or leaking transaction metadata**.
 
+
+<img width="1919" height="934" alt="image" src="https://github.com/user-attachments/assets/d94e7fb2-0dbd-42fe-a6c7-32fa83c38b24" />
+
+
+
 **Shield first. Settle cross-chain via zero-leak intents. Eliminate the transparent bridge leak.**
 
 [Live Web App](https://zcross.cash) · [Interactive Developer Docs](/developer) · [1-Click Shielded Pay](/pay) · [Explore Without a Wallet](#explore-without-a-wallet) · [Production Roadmap](#what-is-implemented)
