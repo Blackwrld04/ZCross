@@ -10,6 +10,7 @@ import { serializeIntentMemo, deserializeIntentMemo } from '../crypto/memo';
 import { encodeZip321Uri } from '../crypto/zip321';
 import { getSolverVaultAddress, validateZcashAddress } from '../crypto/zip316';
 import { generateAuditReceipt, AuditReceiptData } from '../crypto/receipt';
+import { ZEC_BASE_PRICE_USD } from '../onramp/types';
 
 export interface CreateSwapInput {
   originAmountZec: string;
@@ -20,6 +21,8 @@ export interface CreateSwapInput {
   refundShieldedAddress?: string;
   slippageBps?: number;
   network?: 'mainnet' | 'testnet';
+  chaffEnabled?: boolean;
+  jitterDelaySeconds?: number;
 }
 
 export class SolverEngine {
@@ -33,13 +36,35 @@ export class SolverEngine {
   }> {
     const network = input.network || 'mainnet';
     const amountNum = parseFloat(input.originAmountZec);
-    if (isNaN(amountNum) || amountNum <= 0) {
-      throw new Error('Origin amount must be greater than zero');
+    if (isNaN(amountNum) || amountNum < 0.0001 || amountNum > 100_000) {
+      throw new Error('Origin amount must be between 0.0001 and 100,000 ZEC');
     }
 
-    // Strict validation: recipient must not be empty
-    if (!input.recipientAddress || input.recipientAddress.trim().length < 10) {
-      throw new Error('Invalid destination recipient address');
+    // Supported cross-chain destinations
+    const supportedChains = ['arb', 'sol', 'btc', 'eth', 'base'];
+    const destChain = (input.destinationChain || 'arb').toLowerCase();
+    if (!supportedChains.includes(destChain)) {
+      throw new Error(`Unsupported destination chain: ${destChain}. Supported: ${supportedChains.join(', ')}`);
+    }
+
+    // Strict regex validation on destination recipient address
+    const cleanRecipient = (input.recipientAddress || '').trim();
+    if (!cleanRecipient) {
+      throw new Error('Recipient address cannot be empty');
+    }
+
+    if (destChain === 'arb' || destChain === 'eth' || destChain === 'base') {
+      if (!/^0x[a-fA-F0-9]{40}$/.test(cleanRecipient)) {
+        throw new Error(`Invalid EVM recipient address for ${destChain.toUpperCase()} (must be 0x followed by 40 hex characters)`);
+      }
+    } else if (destChain === 'sol') {
+      if (!/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(cleanRecipient)) {
+        throw new Error('Invalid Solana recipient address (must be 32-44 base58 characters)');
+      }
+    } else if (destChain === 'btc') {
+      if (!/^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,62}$/.test(cleanRecipient)) {
+        throw new Error('Invalid Bitcoin recipient address (must be valid Bech32 or Base58 address)');
+      }
     }
 
     // Strict zero-leak enforcement on refund address if provided
@@ -66,13 +91,13 @@ export class SolverEngine {
         swapType: 'EXACT_INPUT',
         slippageTolerance: input.slippageBps || 100,
         originAsset: '1cs_v1:near:nep141:zec.omft.near',
-        depositType: 'ORIGIN_CHAIN',
+        depositType: 'INTENTS',
         destinationAsset: input.destinationAsset,
         amount: amountZatoshis,
         recipient: input.recipientAddress.toLowerCase(),
         recipientType: 'DESTINATION_CHAIN',
-        refundTo: 'solver-refund.near',
-        refundType: 'ORIGIN_CHAIN',
+        refundTo: 'solver-vault.near',
+        refundType: 'INTENTS',
         deadline: new Date(Date.now() + 30 * 60 * 1000).toISOString(),
       });
 
@@ -81,7 +106,7 @@ export class SolverEngine {
     } catch (err: any) {
       console.warn('[SolverEngine] Live quote fetch warning:', err.message);
       // Fallback calculation using live market estimate if quote rate limit hit
-      const zecPriceUsd = 1420.0;
+      const zecPriceUsd = ZEC_BASE_PRICE_USD;
       const estUsd = amountNum * zecPriceUsd;
       estimatedOutput = estUsd.toFixed(2);
       minimumOutput = (estUsd * 0.99).toFixed(2);
@@ -112,6 +137,9 @@ export class SolverEngine {
       .digest('hex');
 
     const deadline = new Date(Date.now() + 20 * 60 * 1000).toISOString();
+    const chaffEnabled = Boolean(input.chaffEnabled);
+    const jitterDelaySeconds = chaffEnabled ? (input.jitterDelaySeconds || Math.floor(Math.random() * (90 - 25 + 1)) + 25) : 0;
+    const decoySplitsCount = chaffEnabled ? 2 : 0;
 
     const swap = swapStore.createSwap({
       id: swapId,
@@ -129,6 +157,9 @@ export class SolverEngine {
       deadline,
       memo_base64: memoBase64,
       zip321_uri: zip321Uri,
+      chaff_enabled: chaffEnabled,
+      jitter_delay_seconds: jitterDelaySeconds,
+      decoy_splits_count: decoySplitsCount,
     });
 
     return { swap, memoBase64, zip321Uri };
@@ -157,6 +188,14 @@ export class SolverEngine {
     const memo = deserializeIntentMemo(swap.memo_base64);
     if (memo.swapId !== swapId.slice(0, 16)) {
       throw new Error('Encrypted memo ID mismatch');
+    }
+
+    if (swap.chaff_enabled) {
+      swapStore.addEvent(
+        swapId,
+        'CHAFF_SHIELDING_ENGAGED',
+        `Anti-timing correlation active: applying ${swap.jitter_delay_seconds || 45}s settlement jitter window & synthesizing 2 decoy Orchard note splits.`
+      );
     }
 
     // Step 3: Orchard pool confirmation
@@ -227,6 +266,13 @@ export class SolverEngine {
         explorerUrl: `${explorerBase}${swap.dest_tx_hash || ''}`,
       },
     });
+  }
+
+  /**
+   * Retrieves audit events for a given swap
+   */
+  getSwapEvents(swapId: string) {
+    return swapStore.getEvents(swapId);
   }
 }
 

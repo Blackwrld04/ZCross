@@ -1,671 +1,845 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
-  Shield, Zap, CheckCircle2, ArrowLeftRight, ArrowUpRight, 
-  Settings, HelpCircle, MoreHorizontal, Plus, ArrowLeft,
-  CreditCard, RefreshCw, BarChart2, Check, Lock, ExternalLink,
-  Layers, Terminal, Cpu, Clock, Key
+  CheckCircle2, ArrowLeftRight, ArrowRight,
+  ArrowLeft, RefreshCw, ExternalLink, Layers, Clock, 
+  Copy, Check, FileText, Zap, BookOpen, CreditCard,
+  Menu, X, ArrowUpRight, ArrowDownLeft, Banknote, Shield
 } from 'lucide-react';
 import { SwapCard, DestinationToken } from './SwapCard';
+import { AuditReceiptData } from '@/core/crypto/receipt';
+import { TokenIcon } from './TokenIcon';
+import { WalletButton } from './WalletButton';
+import { ShieldedWalletBadge } from './ShieldedWalletBadge';
+import { AddressBookModal } from './AddressBookModal';
+import { FiatOnrampModal } from './FiatOnrampModal';
+import { ZCrossLogo, GooglePayLogo } from './BrandLogos';
+import { ThemeToggle } from './ThemeToggle';
+import { useEmbeddedWallet } from '@/core/zcash/EmbeddedWalletContext';
+import { useLivePrices } from '@/core/prices/PriceContext';
 
 interface WalletDashboardProps {
   network: 'mainnet' | 'testnet';
   destinations: DestinationToken[];
   onQuoteGenerated: (quoteData: any) => void;
-  onOpenAuditor: () => void;
   onBackToLanding: () => void;
+  onSelectReceipt?: (receipt: AuditReceiptData) => void;
+}
+
+interface HistoricalSwap {
+  id: string;
+  intent_hash: string;
+  status: string;
+  origin_asset: string;
+  origin_amount: string;
+  deposit_ua: string;
+  dest_chain: string;
+  dest_token: string;
+  dest_recipient: string;
+  dest_amount_est: string;
+  dest_amount_min: string;
+  zcash_tx_hash?: string;
+  dest_tx_hash?: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export const WalletDashboard: React.FC<WalletDashboardProps> = ({
   network,
   destinations,
   onQuoteGenerated,
-  onOpenAuditor,
   onBackToLanding,
+  onSelectReceipt,
 }) => {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'swap' | 'accounts' | 'transactions' | 'corridors' | 'watcher'>('dashboard');
-  const [showOptionsDropdown, setShowOptionsDropdown] = useState<boolean>(false);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const { balanceZec, fundWallet } = useEmbeddedWallet();
+  const { zecPriceUsd } = useLivePrices();
+  const [activeTab, setActiveTab] = useState<'swap' | 'history' | 'vault'>('swap');
+  const [historySubTab, setHistorySubTab] = useState<'swaps' | 'fiat'>('swaps');
+  const [swaps, setSwaps] = useState<HistoricalSwap[]>([]);
+  const [fiatOrders, setFiatOrders] = useState<any[]>([]);
+  const [loadingSwaps, setLoadingSwaps] = useState<boolean>(false);
+  const [loadingFiatOrders, setLoadingFiatOrders] = useState<boolean>(false);
+  const [clearingOrderId, setClearingOrderId] = useState<string | null>(null);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [simulatingId, setSimulatingId] = useState<string | null>(null);
+  const [showAddressBook, setShowAddressBook] = useState<boolean>(false);
+  const [showFiatModal, setShowFiatModal] = useState<boolean>(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
-  const showNotification = (msg: string) => {
-    setToastMessage(msg);
-    setTimeout(() => setToastMessage(null), 3500);
+  // Fetch real swap history
+  const fetchSwaps = async () => {
+    setLoadingSwaps(true);
+    try {
+      const res = await fetch('/api/swap?limit=20');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.swaps) {
+          setSwaps(data.swaps);
+        }
+      }
+    } catch (err) {
+      console.warn('Could not load swaps from API:', err);
+    } finally {
+      setLoadingSwaps(false);
+    }
+  };
+
+  // Fetch fiat on-ramp and off-ramp orders
+  const fetchFiatOrders = async () => {
+    setLoadingFiatOrders(true);
+    try {
+      const res = await fetch('/api/onramp/orders');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.orders) {
+          setFiatOrders(data.orders);
+        }
+      }
+    } catch (err) {
+      console.warn('Could not load fiat orders:', err);
+    } finally {
+      setLoadingFiatOrders(false);
+    }
+  };
+
+  // Simulate clearance for pending Google Pay settlement order
+  const handleClearGooglePayOrder = async (orderId: string, cryptoAmount: number) => {
+    setClearingOrderId(orderId);
+    try {
+      const res = await fetch('/api/onramp/clear', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId }),
+      });
+      if (res.ok) {
+        if (cryptoAmount > 0) {
+          fundWallet(cryptoAmount);
+        }
+        await fetchFiatOrders();
+      }
+    } catch (err) {
+      console.error('Failed to clear Google Pay order:', err);
+    } finally {
+      setClearingOrderId(null);
+    }
+  };
+
+  useEffect(() => {
+    fetchSwaps();
+    fetchFiatOrders();
+    if (typeof window !== 'undefined' && window.location.search.includes('fiat_onramp=1')) {
+      setShowFiatModal(true);
+    }
+  }, []);
+
+  const copyToClipboard = (text: string, id: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2000);
+  };
+
+  const handleSimulateSettle = async (swapId: string) => {
+    setSimulatingId(swapId);
+    try {
+      const res = await fetch('/api/swap/simulate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ swapId, action: 'full_flow' }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.receipt && onSelectReceipt) {
+          onSelectReceipt(data.receipt);
+        }
+        await fetchSwaps();
+      }
+    } catch (err) {
+      console.error('Simulation error:', err);
+    } finally {
+      setSimulatingId(null);
+    }
+  };
+
+  const handleViewReceipt = async (swapId: string) => {
+    try {
+      const res = await fetch(`/api/swap/${swapId}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.receipt && onSelectReceipt) {
+          onSelectReceipt(data.receipt);
+        }
+      }
+    } catch (err) {
+      console.error('Error fetching receipt:', err);
+    }
+  };
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'SETTLED':
+        return (
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+            <CheckCircle2 className="w-3 h-3 text-emerald-600" /> Settled
+          </span>
+        );
+      case 'SOLVER_EXECUTING':
+        return (
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-cyan-50 text-cyan-800 border border-cyan-200">
+            <Zap className="w-3 h-3 text-cyan-600 animate-pulse" /> Executing
+          </span>
+        );
+      case 'CONFIRMED_SHIELDED':
+        return (
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-200">
+            <CheckCircle2 className="w-3 h-3 text-amber-600" /> Confirmed
+          </span>
+        );
+      case 'MEMO_DETECTED':
+        return (
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-50 text-purple-800 border border-purple-200">
+            <Clock className="w-3 h-3 text-purple-600" /> Memo Decoded
+          </span>
+        );
+      default:
+        return (
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-700 border border-gray-200">
+            <Clock className="w-3 h-3 text-gray-500" /> Created
+          </span>
+        );
+    }
+  };
+
+  const getExplorerUrl = (chain: string, txHash: string) => {
+    if (!txHash) return '#';
+    if (chain === 'arb') return `https://arbiscan.io/tx/${txHash}`;
+    if (chain === 'sol') return `https://solscan.io/tx/${txHash}`;
+    if (chain === 'btc') return `https://mempool.space/tx/${txHash}`;
+    if (chain === 'base') return `https://basescan.org/tx/${txHash}`;
+    if (chain === 'eth') return `https://etherscan.io/tx/${txHash}`;
+    return '#';
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 py-6 font-geist">
-      {/* Toast Alert */}
-      {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-neutral-900 border border-amber-400 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 animate-bounce">
-          <span className="text-amber-400 text-lg">⚡</span>
-          <span className="text-sm font-medium">{toastMessage}</span>
-        </div>
-      )}
-
-      {/* Top Banner Navigation */}
-      <div className="flex items-center justify-between mb-4">
-        <button
-          onClick={onBackToLanding}
-          className="inline-flex items-center gap-2 text-sm text-slate-300 hover:text-white transition px-3.5 py-1.5 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 cursor-pointer"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to Protocol Overview
-        </button>
-
-        <div className="flex items-center gap-3">
-          <span className="badge-tag badge-gold">
-            Zcash Shielded Orchard (Halo 2)
-          </span>
-          <button
-            onClick={onOpenAuditor}
-            className="badge-tag badge-emerald cursor-pointer hover:brightness-110 transition flex items-center gap-1.5"
-          >
-            <Shield className="w-3.5 h-3.5" />
-            Zero-Leak Invariant Guarded
-          </button>
-        </div>
-      </div>
-
-      {/* Main Desktop Window Frame matching user's design */}
-      <div
-        className="border-gradient before:rounded-[28px] [animation:fadeSlideIn_0.5s_ease-in-out_0.05s_both] xl:bg-neutral-900/80 bg-neutral-900/60 rounded-[28px] mr-auto ml-auto shadow-[0_20px_120px_-20px_rgba(0,0,0,0.7)] backdrop-blur-xl border border-white/10 overflow-hidden"
-      >
-        {/* Desktop chrome */}
-        <div
-          className="flex sm:px-6 [animation:fadeSlideIn_0.5s_ease-in-out_0.1s_both] border-white/5 border-b pt-3 pr-4 pb-3 pl-4 items-center justify-between bg-black/40"
-        >
-          <div className="flex gap-3 items-center [animation:fadeSlideIn_0.5s_ease-in-out_0.15s_both]">
-            <div className="flex gap-2 items-center">
-              <span className="h-3.5 w-3.5 rounded-full bg-red-500/90 inline-block cursor-pointer hover:opacity-80" onClick={onBackToLanding} title="Exit to Landing"></span>
-              <span className="h-3.5 w-3.5 rounded-full bg-amber-400/90 inline-block cursor-pointer hover:opacity-80" onClick={() => setActiveTab('dashboard')} title="Dashboard"></span>
-              <span className="h-3.5 w-3.5 rounded-full bg-emerald-500/90 inline-block cursor-pointer hover:opacity-80" onClick={() => setActiveTab('swap')} title="Shielded Swap"></span>
-            </div>
-            <div className="inline-flex items-center gap-2 px-3">
-              <span className="text-xl font-semibold tracking-tight text-white font-geist">ZCross Wallet</span>
-              <span className="text-xs text-white/40 font-geist">Desktop Node</span>
-              <span className="ml-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                Pure Shielded Mode (0 Leaks)
-              </span>
-            </div>
-          </div>
-
-          {/* Top actions */}
-          <div className="flex items-center gap-2 sm:gap-3 [animation:fadeSlideIn_0.5s_ease-in-out_0.2s_both] relative">
-            <div className="hidden md:flex items-center gap-2">
-              <button
-                onClick={() => setActiveTab('swap')}
-                className={`inline-flex gap-2 border-gradient before:rounded-lg text-sm rounded-lg pt-1.5 pr-3 pb-1.5 pl-3 gap-x-2 gap-y-2 items-center font-geist cursor-pointer transition ${
-                  activeTab === 'swap' 
-                    ? 'bg-amber-400 text-neutral-950 font-bold shadow-lg' 
-                    : 'text-slate-300 bg-white/5 hover:bg-white/10'
-                }`}
-              >
-                <Plus className="w-4 h-4" />
-                New Shielded Swap
-              </button>
-            </div>
-
+    <div className="min-h-screen bg-white dark:bg-[#080c14] text-slate-900 dark:text-slate-100 antialiased selection:bg-black dark:selection:bg-amber-400 dark:selection:text-black font-sans transition-colors duration-200">
+      {/* Top Application Bar */}
+      <header className="sticky top-0 z-40 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-gray-100 dark:border-slate-800 transition-colors">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
+          {/* Brand & Back Button */}
+          <div className="flex items-center gap-2 sm:gap-4 shrink-0">
             <button
-              onClick={() => setShowOptionsDropdown(!showOptionsDropdown)}
-              className="inline-flex border-gradient before:rounded-lg hover:bg-white/10 bg-white/5 rounded-lg pt-2 pr-2 pb-2 pl-2 items-center justify-center cursor-pointer transition"
+              onClick={onBackToLanding}
+              className="inline-flex items-center justify-center gap-1.5 text-xs text-gray-600 dark:text-slate-300 hover:text-black dark:hover:text-white p-2 sm:px-3 sm:py-1.5 rounded-full bg-gray-50 dark:bg-slate-900 hover:bg-gray-100 dark:hover:bg-slate-800 border border-gray-200 dark:border-slate-800 transition font-medium cursor-pointer shrink-0"
+              aria-label="Back to landing"
             >
-              <MoreHorizontal className="w-4 h-4 text-slate-300" />
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Back</span>
             </button>
 
-            {/* Options Dropdown */}
-            {showOptionsDropdown && (
-              <div className="absolute right-0 top-10 z-30 w-60 rounded-xl bg-neutral-900 border border-white/10 shadow-2xl p-2 text-sm text-slate-300">
-                <button
-                  onClick={() => { setActiveTab('swap'); setShowOptionsDropdown(false); }}
-                  className="w-full text-left px-3 py-2 rounded-lg hover:bg-white/5 hover:text-white flex items-center gap-2"
-                >
-                  <ArrowLeftRight className="w-4 h-4 text-amber-400" />
-                  Shielded Intent Swap
-                </button>
-                <button
-                  onClick={() => { onOpenAuditor(); setShowOptionsDropdown(false); }}
-                  className="w-full text-left px-3 py-2 rounded-lg hover:bg-white/5 hover:text-white flex items-center gap-2"
-                >
-                  <Shield className="w-4 h-4 text-emerald-400" />
-                  Audit Zero-Leak Proofs
-                </button>
-                <button
-                  onClick={() => { onBackToLanding(); setShowOptionsDropdown(false); }}
-                  className="w-full text-left px-3 py-2 rounded-lg hover:bg-white/5 hover:text-white flex items-center gap-2 border-t border-white/5 mt-1 pt-2"
-                >
-                  <ArrowLeft className="w-4 h-4 text-slate-400" />
-                  Back to Landing Page
-                </button>
-              </div>
-            )}
+            <div 
+              onClick={onBackToLanding}
+              className="flex items-center gap-1.5 sm:gap-2 cursor-pointer select-none"
+            >
+              <ZCrossLogo className="w-6 h-6 sm:w-7 sm:h-7 shrink-0" />
+              <span className="tracking-tight font-bold text-lg sm:text-2xl text-slate-900 dark:text-white">ZCross</span>
+            </div>
+          </div>
+
+          {/* Center Tabs Navigation (Desktop) */}
+          <nav className="hidden xl:flex items-center bg-gray-100/90 dark:bg-slate-900/90 p-1 rounded-full border border-gray-200/60 dark:border-slate-800 shrink-0 mx-2">
+            <button
+              onClick={() => setActiveTab('swap')}
+              className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold transition cursor-pointer ${
+                activeTab === 'swap'
+                  ? 'bg-black dark:bg-amber-500 text-white dark:text-black shadow-xs font-bold'
+                  : 'text-gray-600 dark:text-slate-400 hover:text-black dark:hover:text-white hover:bg-white/60 dark:hover:bg-slate-800'
+              }`}
+            >
+              <ArrowLeftRight className="w-3.5 h-3.5" />
+              <span>Shielded Swap</span>
+            </button>
+
+            <button
+              onClick={() => {
+                setActiveTab('history');
+                fetchSwaps();
+              }}
+              className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold transition cursor-pointer ${
+                activeTab === 'history'
+                  ? 'bg-black dark:bg-amber-500 text-white dark:text-black shadow-xs font-bold'
+                  : 'text-gray-600 dark:text-slate-400 hover:text-black dark:hover:text-white hover:bg-white/60 dark:hover:bg-slate-800'
+              }`}
+            >
+              <Clock className="w-3.5 h-3.5" />
+              <span>Settlement History</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('vault')}
+              className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold transition cursor-pointer ${
+                activeTab === 'vault'
+                  ? 'bg-black dark:bg-amber-500 text-white dark:text-black shadow-xs font-bold'
+                  : 'text-gray-600 dark:text-slate-400 hover:text-black dark:hover:text-white hover:bg-white/60 dark:hover:bg-slate-800'
+              }`}
+            >
+              <Layers className="w-3.5 h-3.5" />
+              <span>Vault &amp; Corridors</span>
+            </button>
+          </nav>
+
+          {/* Header Action Badges: Desktop */}
+          <div className="hidden sm:flex items-center gap-2 shrink-0">
+            <button
+              onClick={() => setShowFiatModal(true)}
+              className="inline-flex items-center gap-1.5 text-xs text-slate-800 dark:text-slate-200 hover:text-black dark:hover:text-white px-3.5 py-1.5 rounded-full bg-white dark:bg-slate-900 hover:bg-gray-100 dark:hover:bg-slate-800 border border-gray-200 dark:border-slate-800 transition font-semibold cursor-pointer shadow-2xs"
+              title="Fund via Google Pay"
+            >
+              <GooglePayLogo className="w-3.5 h-3.5" />
+              <span>Buy ZEC</span>
+            </button>
+
+            <button
+              onClick={() => setShowAddressBook(true)}
+              className="inline-flex items-center gap-1.5 text-xs text-slate-800 dark:text-slate-200 hover:text-black dark:hover:text-white px-3.5 py-1.5 rounded-full bg-white dark:bg-slate-900 hover:bg-gray-100 dark:hover:bg-slate-800 border border-gray-200 dark:border-slate-800 transition font-semibold cursor-pointer shadow-2xs"
+              title="Open Address Book"
+            >
+              <BookOpen className="w-3.5 h-3.5 text-slate-700 dark:text-slate-300" />
+              <span className="hidden md:inline">Address Book</span>
+            </button>
+
+            <ThemeToggle variant="badge" />
+            <ShieldedWalletBadge />
+            <WalletButton />
+          </div>
+
+          {/* Header Action Badges: Mobile */}
+          <div className="sm:hidden flex items-center gap-1.5 shrink-0">
+            <ThemeToggle variant="icon" />
+            <ShieldedWalletBadge />
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-900 hover:bg-gray-200 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 border border-gray-200 dark:border-slate-800 flex items-center justify-center transition cursor-pointer shrink-0"
+              title="Toggle Menu"
+            >
+              {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            </button>
           </div>
         </div>
 
-        {/* Content grid */}
-        <div className="grid grid-cols-12 min-h-[720px]">
-          {/* Sidebar */}
-          <aside className="col-span-12 md:col-span-3 lg:col-span-3 border-white/5 border-r bg-black/25">
-            <div className="p-4 sm:p-6">
-              <div className="mb-6 [animation:fadeSlideIn_0.5s_ease-in-out_0.25s_both]">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="h-10 w-10 rounded-lg bg-gradient-to-tr from-amber-400 to-amber-600 flex items-center justify-center text-neutral-950 font-bold text-lg shadow-lg border border-amber-300/30">
-                    🛡️
+        {/* Mobile Dropdown Drawer */}
+        {mobileMenuOpen && (
+          <div className="sm:hidden border-t border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 py-3 space-y-2 shadow-lg animate-in slide-in-from-top-1 duration-150">
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setShowFiatModal(true);
+              }}
+              className="w-full flex items-center justify-between p-2.5 rounded-xl bg-gray-50 dark:bg-slate-900 hover:bg-gray-100 dark:hover:bg-slate-800 border border-gray-200 dark:border-slate-800 text-xs font-semibold text-slate-800 dark:text-slate-200 cursor-pointer"
+            >
+              <span className="flex items-center gap-2">
+                <GooglePayLogo className="w-4 h-4" />
+                <span>Buy ZEC</span>
+              </span>
+              <span className="text-[10px] uppercase font-bold bg-black dark:bg-amber-500 text-white dark:text-black px-2 py-0.5 rounded-full">GPay</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setShowAddressBook(true);
+              }}
+              className="w-full flex items-center justify-between p-2.5 rounded-xl bg-gray-50 dark:bg-slate-900 hover:bg-gray-100 dark:hover:bg-slate-800 border border-gray-200 dark:border-slate-800 text-xs font-semibold text-slate-800 dark:text-slate-200 cursor-pointer"
+            >
+              <span className="flex items-center gap-2">
+                <BookOpen className="w-4 h-4 text-slate-800 dark:text-slate-300" />
+                <span>Address Book &amp; Web3 Domains</span>
+              </span>
+            </button>
+
+            <ThemeToggle variant="switch" />
+
+            <div className="pt-1">
+              <WalletButton className="w-full justify-center" />
+            </div>
+          </div>
+        )}
+
+        {/* Sub-Header Tabs for Small / Medium Screens */}
+        <div className="xl:hidden w-full px-3 py-2 bg-gray-50/90 dark:bg-slate-950/90 backdrop-blur-md border-t border-gray-100 dark:border-slate-800 flex items-center justify-center">
+          <nav className="flex items-center bg-gray-200/80 dark:bg-slate-900/90 p-1 rounded-full w-full max-w-sm justify-between shadow-2xs border border-transparent dark:border-slate-800">
+            <button
+              onClick={() => setActiveTab('swap')}
+              className={`flex-1 py-1.5 rounded-full text-xs font-semibold transition text-center cursor-pointer ${
+                activeTab === 'swap' ? 'bg-black dark:bg-amber-500 text-white dark:text-black shadow-xs font-bold' : 'text-gray-600 dark:text-slate-400 hover:text-black dark:hover:text-white'
+              }`}
+            >
+              Swap
+            </button>
+            <button
+              onClick={() => {
+                setActiveTab('history');
+                fetchSwaps();
+              }}
+              className={`flex-1 py-1.5 rounded-full text-xs font-semibold transition text-center cursor-pointer ${
+                activeTab === 'history' ? 'bg-black dark:bg-amber-500 text-white dark:text-black shadow-xs font-bold' : 'text-gray-600 dark:text-slate-400 hover:text-black dark:hover:text-white'
+              }`}
+            >
+              History
+            </button>
+            <button
+              onClick={() => setActiveTab('vault')}
+              className={`flex-1 py-1.5 rounded-full text-xs font-semibold transition text-center cursor-pointer ${
+                activeTab === 'vault' ? 'bg-black dark:bg-amber-500 text-white dark:text-black shadow-xs font-bold' : 'text-gray-600 dark:text-slate-400 hover:text-black dark:hover:text-white'
+              }`}
+            >
+              Corridors
+            </button>
+          </nav>
+        </div>
+      </header>
+
+      {/* Main App Container */}
+      <main className="max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-10">
+        {activeTab === 'swap' && (
+          <div className="space-y-6">
+            <SwapCard
+              network={network}
+              destinations={destinations}
+              onQuoteGenerated={onQuoteGenerated}
+            />
+          </div>
+        )}
+
+        {activeTab === 'history' && (
+          <div className="max-w-5xl mx-auto space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Settlement History</h2>
+                <p className="text-xs text-gray-500 dark:text-slate-400 mt-1">
+                  Complete audit trail of all shielded cross-chain intents and multi-rail fiat payments.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                {/* Sub-Tab Navigation: Swaps vs Fiat Rails */}
+                <div className="flex items-center bg-gray-100 dark:bg-slate-900 p-1 rounded-full border border-gray-200 dark:border-slate-800 text-xs">
+                  <button
+                    onClick={() => setHistorySubTab('swaps')}
+                    className={`px-3 py-1.5 rounded-full font-semibold transition cursor-pointer flex items-center gap-1.5 ${
+                      historySubTab === 'swaps'
+                        ? 'bg-black dark:bg-amber-500 text-white dark:text-black shadow-xs font-bold'
+                        : 'text-gray-600 dark:text-slate-400 hover:text-black dark:hover:text-white'
+                    }`}
+                  >
+                    <span>Cross-Chain Swaps</span>
+                    <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-white/20 dark:bg-black/20 font-mono">
+                      {swaps.length}
+                    </span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setHistorySubTab('fiat');
+                      fetchFiatOrders();
+                    }}
+                    className={`px-3 py-1.5 rounded-full font-semibold transition cursor-pointer flex items-center gap-1.5 relative ${
+                      historySubTab === 'fiat'
+                        ? 'bg-black dark:bg-amber-500 text-white dark:text-black shadow-xs font-bold'
+                        : 'text-gray-600 dark:text-slate-400 hover:text-black dark:hover:text-white'
+                    }`}
+                  >
+                    <span>Google Pay Settlements</span>
+                    <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-white/20 dark:bg-black/20 font-mono">
+                      {fiatOrders.length}
+                    </span>
+                    {fiatOrders.some((o) => o.status === 'PENDING') && (
+                      <span 
+                        className="w-2 h-2 rounded-full bg-amber-500 animate-pulse absolute -top-0.5 -right-0.5 border border-white dark:border-slate-900" 
+                        title="Active pending Google Pay settlement"
+                      />
+                    )}
+                  </button>
+                </div>
+
+                <button
+                  onClick={() => {
+                    fetchSwaps();
+                    fetchFiatOrders();
+                  }}
+                  disabled={loadingSwaps || loadingFiatOrders}
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 text-gray-700 dark:text-slate-200 hover:text-black dark:hover:text-white text-xs font-semibold hover:bg-gray-50 dark:hover:bg-slate-800 transition shadow-xs cursor-pointer"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${loadingSwaps || loadingFiatOrders ? 'animate-spin' : ''}`} />
+                  <span className="hidden sm:inline">Refresh</span>
+                </button>
+              </div>
+            </div>
+
+            {historySubTab === 'swaps' ? (
+              swaps.length === 0 ? (
+                <div className="text-center py-20 px-4 bg-gray-50/80 dark:bg-slate-900/60 rounded-3xl border border-gray-200 dark:border-slate-800">
+                  <div className="w-12 h-12 rounded-2xl bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 flex items-center justify-center text-gray-400 dark:text-slate-400 mx-auto mb-3 shadow-xs">
+                    <Clock className="w-6 h-6" />
                   </div>
-                  <div>
-                    <p className="text-sm font-semibold text-white font-geist">Shielded Operator</p>
-                    <p className="text-xs text-amber-400 font-geist">Orchard Halo 2 • Mainnet</p>
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white mb-1">No Swaps Initiated Yet</h3>
+                  <p className="text-xs text-gray-500 dark:text-slate-400 max-w-sm mx-auto mb-6">
+                    Your settlement history will appear here once you create an intent.
+                  </p>
+                  <button
+                    onClick={() => setActiveTab('swap')}
+                    className="px-5 py-2.5 rounded-full bg-black dark:bg-amber-500 text-white dark:text-black font-semibold text-xs hover:bg-gray-800 dark:hover:bg-amber-400 transition shadow-sm cursor-pointer"
+                  >
+                    Create Shielded Swap →
+                  </button>
+                </div>
+              ) : (
+                <div className="bg-white dark:bg-slate-900/90 rounded-3xl border border-gray-200/90 dark:border-slate-800 shadow-xl overflow-hidden">
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left text-xs">
+                      <thead className="bg-gray-50/90 dark:bg-slate-950/90 border-b border-gray-200 dark:border-slate-800 text-gray-500 dark:text-slate-400 uppercase tracking-wider font-semibold text-[10px]">
+                        <tr>
+                          <th className="px-6 py-4">Intent / Time</th>
+                          <th className="px-6 py-4">Route</th>
+                          <th className="px-6 py-4">Amounts</th>
+                          <th className="px-6 py-4">Status</th>
+                          <th className="px-6 py-4">Destination Tx</th>
+                          <th className="px-6 py-4 text-right">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-100 dark:divide-slate-800">
+                        {swaps.map((item) => (
+                          <tr key={item.id} className="hover:bg-gray-50/70 dark:hover:bg-slate-800/50 transition">
+                            <td className="px-6 py-4">
+                              <div className="font-semibold text-slate-900 dark:text-white flex items-center gap-1.5">
+                                <span>{item.id.slice(0, 8)}...</span>
+                                <button
+                                  onClick={() => copyToClipboard(item.id, item.id)}
+                                  className="text-gray-400 dark:text-slate-500 hover:text-black dark:hover:text-white cursor-pointer"
+                                  title="Copy Swap ID"
+                                >
+                                  {copiedId === item.id ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                                </button>
+                              </div>
+                              <div className="text-[11px] text-gray-500 dark:text-slate-400 mt-0.5">
+                                {new Date(item.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} • {new Date(item.created_at).toLocaleDateString()}
+                              </div>
+                            </td>
+
+                            <td className="px-6 py-4">
+                              <div className="flex items-center gap-2">
+                                <span className="text-amber-800 font-bold bg-amber-50 border border-amber-200 px-2 py-0.5 rounded text-[11px]">
+                                  ZEC
+                                </span>
+                                <ArrowRight className="w-3 h-3 text-gray-400" />
+                                <span className="text-slate-900 font-bold">{item.dest_token}</span>
+                                <span className="text-[10px] text-gray-500 uppercase font-mono px-1.5 py-0.5 rounded bg-gray-100 border border-gray-200">
+                                  {item.dest_chain}
+                                </span>
+                              </div>
+                              <div className="text-[11px] text-gray-500 mt-0.5 font-mono">
+                                To: {item.dest_recipient.slice(0, 6)}...{item.dest_recipient.slice(-4)}
+                              </div>
+                            </td>
+
+                            <td className="px-6 py-4">
+                              <div className="text-slate-900 font-bold">{item.origin_amount} ZEC</div>
+                              <div className="text-emerald-700 text-xs font-semibold">
+                                ≈ {item.dest_amount_est} {item.dest_token}
+                              </div>
+                            </td>
+
+                            <td className="px-6 py-4">
+                              {getStatusBadge(item.status)}
+                            </td>
+
+                            <td className="px-6 py-4">
+                              {item.dest_tx_hash ? (
+                                <a
+                                  href={getExplorerUrl(item.dest_chain, item.dest_tx_hash)}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1 text-cyan-700 hover:text-cyan-900 underline font-mono text-[11px]"
+                                >
+                                  <span>{item.dest_tx_hash.slice(0, 8)}...</span>
+                                  <ExternalLink className="w-3 h-3" />
+                                </a>
+                              ) : (
+                                <span className="text-gray-400 text-xs">Pending settlement</span>
+                              )}
+                            </td>
+
+                            <td className="px-6 py-4 text-right">
+                              <div className="flex items-center justify-end gap-2">
+                                {item.status === 'SETTLED' ? (
+                                  <button
+                                    onClick={() => handleViewReceipt(item.id)}
+                                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-semibold hover:bg-emerald-100 transition shadow-2xs cursor-pointer"
+                                  >
+                                    <FileText className="w-3 h-3 text-emerald-600" />
+                                    <span>Receipt</span>
+                                  </button>
+                                ) : (
+                                  <button
+                                    onClick={() => handleSimulateSettle(item.id)}
+                                    disabled={simulatingId === item.id}
+                                    className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full bg-black text-white text-xs font-semibold hover:bg-gray-800 transition cursor-pointer shadow-xs disabled:opacity-50"
+                                  >
+                                    <Zap className="w-3 h-3 text-amber-400" />
+                                    <span>{simulatingId === item.id ? 'Settling...' : '1-Click Settle'}</span>
+                                  </button>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
+                </div>
+              )
+            ) : (
+              /* Google Pay Orders View */
+              fiatOrders.length === 0 ? (
+                <div className="text-center py-20 px-4 bg-gray-50/80 dark:bg-slate-900/60 rounded-3xl border border-gray-200 dark:border-slate-800">
+                  <div className="w-12 h-12 rounded-2xl bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 flex items-center justify-center text-gray-400 dark:text-slate-400 mx-auto mb-3 shadow-xs">
+                    <GooglePayLogo className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white mb-1">No Google Pay Settlements Recorded</h3>
+                  <p className="text-xs text-gray-500 dark:text-slate-400 max-w-sm mx-auto mb-6">
+                    Use Google Pay to instantly fund your Orchard shielded ZEC vault with biometric 1-tap checkout.
+                  </p>
+                  <button
+                    onClick={() => {
+                      setShowFiatModal(true);
+                    }}
+                    className="px-5 py-2.5 rounded-full bg-black dark:bg-amber-500 text-white dark:text-black font-semibold text-xs hover:bg-gray-800 dark:hover:bg-amber-400 transition shadow-sm cursor-pointer inline-flex items-center gap-2"
+                  >
+                    <GooglePayLogo className="w-4 h-4" />
+                    <span>Buy ZEC with Google Pay →</span>
+                  </button>
+                </div>
+              ) : (
+                <div className="bg-white dark:bg-slate-900/90 rounded-3xl border border-gray-200/90 dark:border-slate-800 shadow-xl overflow-hidden">
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left text-xs">
+                      <thead className="bg-gray-50/90 dark:bg-slate-950/90 border-b border-gray-200 dark:border-slate-800 text-gray-500 dark:text-slate-400 uppercase tracking-wider font-semibold text-[10px]">
+                        <tr>
+                          <th className="px-6 py-4">Order / Time</th>
+                          <th className="px-6 py-4">Method &amp; Provider</th>
+                          <th className="px-6 py-4">Amounts</th>
+                          <th className="px-6 py-4">Settlement Status</th>
+                          <th className="px-6 py-4">Shielded Vault</th>
+                          <th className="px-6 py-4 text-right">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-100 dark:divide-slate-800">
+                        {fiatOrders.map((order) => {
+                          const isPending = order.status === 'PENDING';
+
+                          return (
+                            <tr key={order.orderId} className={`transition ${isPending ? 'bg-amber-50/40 dark:bg-amber-950/20' : 'hover:bg-gray-50/70 dark:hover:bg-slate-800/50'}`}>
+                              <td className="px-6 py-4">
+                                <div className="font-semibold text-slate-900 dark:text-white flex items-center gap-1.5 font-mono">
+                                  <span>{order.orderId.slice(0, 14)}...</span>
+                                  <button
+                                    onClick={() => copyToClipboard(order.orderId, order.orderId)}
+                                    className="text-gray-400 dark:text-slate-500 hover:text-black dark:hover:text-white cursor-pointer"
+                                    title="Copy Order ID"
+                                  >
+                                    {copiedId === order.orderId ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                                  </button>
+                                </div>
+                                <div className="text-[11px] text-gray-500 dark:text-slate-400 mt-0.5">
+                                  {new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} • {new Date(order.createdAt).toLocaleDateString()}
+                                </div>
+                              </td>
+
+                              <td className="px-6 py-4">
+                                <div className="flex items-center gap-2">
+                                  <span className="text-[10px] font-bold uppercase bg-black dark:bg-amber-500 text-white dark:text-black px-2 py-0.5 rounded-full flex items-center gap-1">
+                                    <GooglePayLogo className="w-3 h-3" />
+                                    Google Pay
+                                  </span>
+                                </div>
+                                <div className="text-[11px] text-gray-500 dark:text-slate-400 mt-1 capitalize font-medium">
+                                  {order.providerId === 'google_pay_direct' ? 'Native Web API' : order.providerId}
+                                  {order.googlePayTransactionId && (
+                                    <span className="font-mono text-[9px] text-gray-400 ml-1">
+                                      ({order.googlePayTransactionId.slice(0, 8)}...)
+                                    </span>
+                                  )}
+                                </div>
+                              </td>
+
+                              <td className="px-6 py-4">
+                                <div className="text-slate-900 dark:text-white font-bold font-mono">
+                                  ${order.fiatAmount} {order.fiatCurrency}
+                                </div>
+                                <div className="text-emerald-700 dark:text-emerald-400 text-xs font-semibold font-mono">
+                                  ➔ {order.cryptoAmount} ZEC
+                                </div>
+                              </td>
+
+                              <td className="px-6 py-4">
+                                {isPending ? (
+                                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-100/90 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-800 text-[10px] font-bold animate-pulse">
+                                    <Clock className="w-3 h-3 text-amber-600 animate-spin" />
+                                    Pending Token Settlement
+                                  </span>
+                                ) : (
+                                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 text-[10px] font-bold">
+                                    <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                                    Settled (Shielded)
+                                  </span>
+                                )}
+                              </td>
+
+                              <td className="px-6 py-4 font-mono text-[11px] text-gray-600 dark:text-slate-400 truncate max-w-[180px]">
+                                {order.destinationAddress 
+                                  ? `${order.destinationAddress.slice(0, 10)}...${order.destinationAddress.slice(-6)}`
+                                  : 'Shielded Orchard'}
+                              </td>
+
+                              <td className="px-6 py-4 text-right">
+                                {isPending ? (
+                                  <button
+                                    onClick={() => handleClearGooglePayOrder(order.orderId, order.cryptoAmount)}
+                                    disabled={clearingOrderId === order.orderId}
+                                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition shadow-xs cursor-pointer disabled:opacity-50"
+                                  >
+                                    <Zap className="w-3 h-3" />
+                                    <span>{clearingOrderId === order.orderId ? 'Settling...' : 'Confirm Settle'}</span>
+                                  </button>
+                                ) : (
+                                  <span className="text-[11px] text-emerald-700 dark:text-emerald-400 font-semibold flex items-center justify-end gap-1">
+                                    <Shield className="w-3 h-3" />
+                                    100% Shielded
+                                  </span>
+                                )}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )
+            )}
+          </div>
+        )}
+
+        {activeTab === 'vault' && (
+          <div className="max-w-5xl mx-auto space-y-8">
+            <div>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Shielded Vault &amp; Liquidity Corridors</h2>
+              <p className="text-xs text-gray-500 dark:text-slate-400 mt-1">
+                Current pool holdings and decentralized solver connectivity.
+              </p>
+            </div>
+
+            {/* Featured Vault Card */}
+            <div className="bg-slate-950 dark:bg-slate-900/90 text-white rounded-2xl sm:rounded-3xl p-5 sm:p-10 shadow-2xl relative overflow-hidden border border-gray-800 dark:border-slate-800">
+              <div className="flex items-center justify-between mb-4 sm:mb-6">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-full bg-amber-400/20 flex items-center justify-center border border-amber-400/30">
+                    <TokenIcon symbol="ZEC" className="w-4 h-4" />
+                  </div>
+                  <span className="text-xs font-bold text-amber-400 uppercase tracking-wider font-mono">
+                    Shielded Zcash Vault
+                  </span>
                 </div>
               </div>
 
-              <nav className="space-y-6">
-                <div className="[animation:fadeSlideIn_0.5s_ease-in-out_0.3s_both]">
-                  <p className="mb-2 text-xs uppercase tracking-wider text-slate-400 font-geist">Overview</p>
-                  <ul className="space-y-1">
-                    <li>
-                      <button
-                        onClick={() => setActiveTab('dashboard')}
-                        className={`w-full group flex items-center gap-3 text-sm rounded-lg pt-2 pr-3 pb-2 pl-3 font-geist transition cursor-pointer ${
-                          activeTab === 'dashboard'
-                            ? 'text-white bg-white/10 font-semibold'
-                            : 'text-slate-300 hover:bg-white/5'
-                        }`}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="w-4 h-4"
-                        >
-                          <rect width="7" height="9" x="3" y="3" rx="1"></rect>
-                          <rect width="7" height="5" x="14" y="3" rx="1"></rect>
-                          <rect width="7" height="9" x="14" y="12" rx="1"></rect>
-                          <rect width="7" height="5" x="3" y="16" rx="1"></rect>
-                        </svg>
-                        Dashboard
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        onClick={() => setActiveTab('swap')}
-                        className={`w-full group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-geist transition cursor-pointer ${
-                          activeTab === 'swap'
-                            ? 'text-amber-400 bg-amber-400/10 font-bold border border-amber-400/20'
-                            : 'text-amber-300/80 hover:bg-amber-400/5'
-                        }`}
-                      >
-                        <ArrowLeftRight className="w-4 h-4 text-amber-400" />
-                        Shielded Swap (Active)
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        onClick={() => setActiveTab('accounts')}
-                        className={`w-full group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-geist transition cursor-pointer ${
-                          activeTab === 'accounts'
-                            ? 'text-white bg-white/10 font-semibold'
-                            : 'text-slate-300 hover:bg-white/5'
-                        }`}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="w-4 h-4 text-slate-400 group-hover:text-slate-200"
-                        >
-                          <line x1="12" x2="12" y1="2" y2="22"></line>
-                          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                        </svg>
-                        Vault Balances
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        onClick={() => setActiveTab('transactions')}
-                        className={`w-full group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-geist transition cursor-pointer ${
-                          activeTab === 'transactions'
-                            ? 'text-white bg-white/10 font-semibold'
-                            : 'text-slate-300 hover:bg-white/5'
-                        }`}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="w-4 h-4 text-slate-400 group-hover:text-slate-200"
-                        >
-                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                          <polyline points="7 10 12 15 17 10"></polyline>
-                          <line x1="12" x2="12" y1="15" y2="3"></line>
-                        </svg>
-                        Settlement History
-                      </button>
-                    </li>
-                  </ul>
-                </div>
+              <div className="text-3xl sm:text-6xl font-bold tracking-tight mb-2">
+                {balanceZec > 0 ? `${balanceZec.toFixed(4)} ZEC` : '17.50000000 ZEC'}
+              </div>
+              <div className="text-xs sm:text-sm text-gray-400 mb-6 sm:mb-8 font-light">
+                ≈ ${((balanceZec > 0 ? balanceZec : 17.5) * zecPriceUsd).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD • Connected Orchard Vault
+              </div>
 
-                <div className="[animation:fadeSlideIn_0.5s_ease-in-out_0.35s_both]">
-                  <p className="mb-2 text-xs uppercase tracking-wider text-slate-400 font-geist">Cross-Chain Tools</p>
-                  <ul className="space-y-1">
-                    <li>
-                      <button
-                        onClick={() => setActiveTab('corridors')}
-                        className={`w-full group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-geist transition cursor-pointer ${
-                          activeTab === 'corridors'
-                            ? 'text-white bg-white/10 font-semibold'
-                            : 'text-slate-300 hover:bg-white/5'
-                        }`}
-                      >
-                        <Layers className="w-4 h-4 text-cyan-400" />
-                        Execution Corridors
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        onClick={() => setActiveTab('watcher')}
-                        className={`w-full group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-geist transition cursor-pointer ${
-                          activeTab === 'watcher'
-                            ? 'text-white bg-white/10 font-semibold'
-                            : 'text-slate-300 hover:bg-white/5'
-                        }`}
-                      >
-                        <Terminal className="w-4 h-4 text-emerald-400" />
-                        Compact Block Watcher
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        onClick={onOpenAuditor}
-                        className="w-full group flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-300 hover:bg-white/5 font-geist transition cursor-pointer"
-                      >
-                        <Shield className="w-4 h-4 text-amber-400" />
-                        Zero-Leak Auditor
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-
-                <div className="[animation:fadeSlideIn_0.5s_ease-in-out_0.4s_both]">
-                  <p className="mb-2 text-xs uppercase tracking-wider text-slate-400 font-geist">Shielded Vault</p>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="rounded-lg border-gradient before:rounded-lg bg-white/5 p-3 text-center">
-                      <p className="text-xl font-semibold text-white font-geist">17.50 ZEC</p>
-                      <p className="text-xs text-slate-400 font-geist">Pure Orchard</p>
-                    </div>
-                    <div className="rounded-lg border-gradient before:rounded-lg bg-white/5 p-3 text-center">
-                      <p className="text-xl font-semibold text-emerald-300 font-geist">+$12,450</p>
-                      <p className="text-xs text-slate-400 font-geist">Settled Vol</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-1 [animation:fadeSlideIn_0.5s_ease-in-out_0.45s_both]">
-                  <button
-                    onClick={() => showNotification('Viewing Key Settings: Export audit receipts or compliance credentials.')}
-                    className="w-full group flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-300 hover:bg-white/5 font-geist transition cursor-pointer text-left"
-                  >
-                    <Key className="w-4 h-4 text-slate-400 group-hover:text-slate-200" />
-                    Viewing Key Credentials
-                  </button>
-
-                  <button
-                    onClick={onOpenAuditor}
-                    className="w-full group flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-300 hover:bg-white/5 font-geist transition cursor-pointer text-left"
-                  >
-                    <HelpCircle className="w-4 h-4 text-slate-400 group-hover:text-slate-200" />
-                    Protocol Specifications
-                  </button>
-                </div>
-              </nav>
+              <div className="flex flex-wrap items-center gap-4">
+                <button
+                  onClick={() => setActiveTab('swap')}
+                  className="px-6 py-3 rounded-full bg-white dark:bg-amber-500 text-black font-semibold text-xs hover:bg-gray-100 dark:hover:bg-amber-400 transition shadow-sm cursor-pointer"
+                >
+                  Initiate Shielded Swap →
+                </button>
+              </div>
             </div>
-          </aside>
 
-          {/* Main content pane */}
-          <section className="col-span-12 md:col-span-9 lg:col-span-9 relative flex flex-col">
-            <div className="relative h-full min-h-[720px] flex flex-col">
-              {activeTab === 'swap' ? (
-                /* Cross-Chain Swap Active Tab */
-                <div className="flex-1 sm:px-8 overflow-y-auto pt-8 pr-4 pb-8 pl-4 space-y-6">
-                  <div className="flex items-center justify-between">
+            {/* Active Cross-Chain Corridors */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white tracking-tight">Active Cross-Chain Liquidity Corridors</h3>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {destinations.map((dest) => (
+                  <div
+                    key={`${dest.chain}-${dest.symbol}`}
+                    className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 hover:border-gray-300 dark:hover:border-slate-700 hover:shadow-md transition flex flex-col justify-between"
+                  >
                     <div>
-                      <h2 className="text-2xl text-white mb-1 font-geist tracking-tighter font-bold">
-                        Shielded Cross-Chain Swap Engine
-                      </h2>
-                      <p className="text-sm text-slate-400 font-geist">
-                        Route pure Zcash Orchard notes into Arbitrum USDC, Solana SOL, or Bitcoin with 0 leaks.
-                      </p>
-                    </div>
-
-                    <button
-                      onClick={() => setActiveTab('dashboard')}
-                      className="text-xs text-slate-400 hover:text-white px-3 py-1.5 rounded-lg bg-white/5 border border-white/10"
-                    >
-                      ← Back to Dashboard
-                    </button>
-                  </div>
-
-                  <SwapCard
-                    network={network}
-                    destinations={destinations}
-                    onQuoteGenerated={onQuoteGenerated}
-                  />
-                </div>
-              ) : activeTab === 'accounts' ? (
-                /* Accounts Tab */
-                <div className="flex-1 sm:px-8 overflow-y-auto pt-8 pr-4 pb-8 pl-4 space-y-6">
-                  <div>
-                    <h2 className="text-2xl text-white mb-1 font-geist tracking-tighter font-bold">
-                      Connected Vault Balances
-                    </h2>
-                    <p className="text-sm text-slate-400 font-geist">
-                      Shielded Orchard holdings and destination execution accounts.
-                    </p>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="border-gradient before:rounded-xl bg-white/5 p-5 rounded-xl border border-amber-400/20">
                       <div className="flex items-center justify-between mb-3">
-                        <span className="text-amber-400 font-bold text-sm">Zcash Shielded Orchard</span>
-                        <span className="badge-tag badge-gold">Halo 2 Prover</span>
-                      </div>
-                      <div className="text-3xl font-bold text-white mb-1">17.50000000 ZEC</div>
-                      <div className="text-xs text-emerald-400">~$24,850.42 USD • Pure Shielded Invariant</div>
-                    </div>
-
-                    <div className="border-gradient before:rounded-xl bg-white/5 p-5 rounded-xl border border-cyan-400/20">
-                      <div className="flex items-center justify-between mb-3">
-                        <span className="text-cyan-400 font-bold text-sm">Arbitrum One</span>
-                        <span className="badge-tag badge-cyan">NEAR Intents Payout</span>
-                      </div>
-                      <div className="text-3xl font-bold text-white mb-1">12,450.00 USDC</div>
-                      <div className="text-xs text-slate-400">Fast Sub-Minute Settlement</div>
-                    </div>
-
-                    <div className="border-gradient before:rounded-xl bg-white/5 p-5 rounded-xl border border-purple-400/20">
-                      <div className="flex items-center justify-between mb-3">
-                        <span className="text-purple-400 font-bold text-sm">Solana Native</span>
-                        <span className="badge-tag badge-cyan">Raydium Solver</span>
-                      </div>
-                      <div className="text-3xl font-bold text-white mb-1">42.5000 SOL</div>
-                      <div className="text-xs text-slate-400">Direct UTXO-to-Account Relay</div>
-                    </div>
-
-                    <div className="border-gradient before:rounded-xl bg-white/5 p-5 rounded-xl border border-orange-400/20">
-                      <div className="flex items-center justify-between mb-3">
-                        <span className="text-orange-400 font-bold text-sm">Bitcoin Native</span>
-                        <span className="badge-tag badge-gold">UTXO Channel</span>
-                      </div>
-                      <div className="text-3xl font-bold text-white mb-1">0.35400000 BTC</div>
-                      <div className="text-xs text-slate-400">Taproot Settlement Channel</div>
-                    </div>
-                  </div>
-
-                  <div className="pt-4 flex gap-3">
-                    <button
-                      onClick={() => setActiveTab('swap')}
-                      className="bg-amber-400 text-neutral-950 font-bold px-6 py-2.5 rounded-lg text-sm hover:bg-amber-300 transition shadow"
-                    >
-                      + Initiate Shielded Swap
-                    </button>
-                    <button
-                      onClick={onOpenAuditor}
-                      className="bg-white/10 text-white font-medium px-6 py-2.5 rounded-lg text-sm hover:bg-white/15 transition border border-white/10"
-                    >
-                      Audit Proofs
-                    </button>
-                  </div>
-                </div>
-              ) : activeTab === 'corridors' ? (
-                /* Corridors Tab */
-                <div className="flex-1 sm:px-8 overflow-y-auto pt-8 pr-4 pb-8 pl-4 space-y-6">
-                  <div>
-                    <h2 className="text-2xl text-white mb-1 font-geist tracking-tighter font-bold">
-                      Active Execution Corridors
-                    </h2>
-                    <p className="text-sm text-slate-400 font-geist">
-                      Routing shielded ZEC directly to decentralized liquidity via NEAR Intents.
-                    </p>
-                  </div>
-
-                  <div className="space-y-3">
-                    {destinations.map((dest, idx) => (
-                      <div key={idx} className="border-gradient before:rounded-xl bg-white/5 p-4 rounded-xl flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <span className="text-2xl">{dest.icon}</span>
-                          <div>
-                            <div className="text-white font-semibold text-sm">{dest.chainName} ({dest.symbol})</div>
-                            <div className="text-xs text-slate-400 font-mono">{dest.assetId}</div>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center gap-4">
-                          <span className="badge-tag badge-emerald text-[10px]">Active &amp; Quoting</span>
-                          <button
-                            onClick={() => setActiveTab('swap')}
-                            className="bg-white/10 hover:bg-white/20 text-white text-xs px-3 py-1.5 rounded-lg transition"
-                          >
-                            Swap Now →
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ) : activeTab === 'watcher' ? (
-                /* Watcher Daemon Tab */
-                <div className="flex-1 sm:px-8 overflow-y-auto pt-8 pr-4 pb-8 pl-4 space-y-6">
-                  <div>
-                    <h2 className="text-2xl text-white mb-1 font-geist tracking-tighter font-bold">
-                      Compact Block Watcher Daemon
-                    </h2>
-                    <p className="text-sm text-slate-400 font-geist">
-                      Continuous background listener indexing Orchard Merkle commitments.
-                    </p>
-                  </div>
-
-                  <div className="bg-neutral-950 border border-white/10 rounded-xl p-4 font-mono text-xs text-emerald-400 shadow-inner space-y-2">
-                    <div className="text-slate-400">// ZCross Solver Daemon CLI: npm run solver</div>
-                    <div>[Watcher] Connected to Zcash compact block stream at block #2,891,402</div>
-                    <div>[Watcher] Scanning Orchard action commitments for vault Unified Address...</div>
-                    <div className="text-amber-400">[Watcher] In-band memo decoder ready (ChaCha20-Poly1305, 512B constant pad)</div>
-                    <div>[NEAR Intents] 1Click execution quotes synced with 15 market makers</div>
-                    <div className="text-cyan-400">[Heartbeat] Daemon healthy. 0 dropped packets. Zero-leak invariant verified.</div>
-                  </div>
-                </div>
-              ) : (
-                /* Primary Dashboard Tab (Exact Alex Chen View from User Code with Authentic Domain Text) */
-                <div className="flex-1 sm:px-8 overflow-y-auto pt-8 pr-4 pb-8 pl-4 space-y-6">
-                  {/* Header */}
-                  <div className="[animation:fadeSlideIn_0.5s_ease-in-out_0.5s_both]">
-                    <h2 className="text-2xl text-white mb-1 font-geist tracking-tighter font-bold">
-                      Welcome back, Shielded Operator
-                    </h2>
-                    <p className="text-sm text-slate-400 font-geist">
-                      Real-time status of your Orchard notes and cross-chain execution pipeline.
-                    </p>
-                  </div>
-
-                  {/* Stats cards */}
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 [animation:fadeSlideIn_0.5s_ease-in-out_0.55s_both]">
-                    <div className="rounded-xl border-gradient before:rounded-xl bg-white/5 p-4 backdrop-blur-sm">
-                      <div className="flex items-center justify-between mb-2">
-                        <p className="text-xs text-slate-400 uppercase tracking-wider font-geist">
-                          Total Shielded Balance
-                        </p>
-                        <Shield className="w-4 h-4 text-emerald-400" />
-                      </div>
-                      <p className="text-2xl text-white mb-1 font-geist tracking-tighter">
-                        $24,850.42
-                      </p>
-                      <div className="flex items-center gap-1 text-xs">
-                        <span className="text-emerald-400 font-geist">17.50000000 ZEC</span>
-                        <span className="text-slate-500 font-geist">(Orchard Pool)</span>
-                      </div>
-                    </div>
-
-                    <div className="rounded-xl border-gradient before:rounded-xl bg-white/5 p-4 backdrop-blur-sm">
-                      <div className="flex items-center justify-between mb-2">
-                        <p className="text-xs text-slate-400 uppercase tracking-wider font-geist">
-                          Cross-Chain Settled
-                        </p>
-                        <Zap className="w-4 h-4 text-cyan-400" />
-                      </div>
-                      <p className="text-2xl text-white mb-1 font-geist tracking-tighter">
-                        $12,450.00
-                      </p>
-                      <div className="flex items-center gap-1 text-xs">
-                        <span className="text-cyan-400 font-geist">6 Corridors</span>
-                        <span className="text-slate-500 font-geist">via NEAR Intents</span>
-                      </div>
-                    </div>
-
-                    <div className="border-gradient before:rounded-xl bg-white/5 rounded-xl pt-4 pr-4 pb-4 pl-4 backdrop-blur-sm">
-                      <div className="flex items-center justify-between mb-2">
-                        <p className="text-xs text-slate-400 uppercase tracking-wider font-geist">
-                          Zero-Leak Privacy Score
-                        </p>
-                        <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                      </div>
-                      <p className="text-2xl text-white mb-1 font-geist tracking-tighter">100%</p>
-                      <div className="w-full bg-white/10 rounded-full h-1.5 mt-2">
-                        <div
-                          className="bg-gradient-to-r from-emerald-400 to-emerald-500 h-1.5 rounded-full"
-                          style={{ width: '100%' }}
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Recent transactions */}
-                  <div className="[animation:fadeSlideIn_0.5s_ease-in-out_0.6s_both]">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-white font-geist">
-                        Recent Shielded Cross-Chain Transactions
-                      </h3>
-                      <button 
-                        onClick={() => setActiveTab('transactions')}
-                        className="text-sm text-slate-400 hover:text-white transition font-geist cursor-pointer"
-                      >
-                        View all
-                      </button>
-                    </div>
-
-                    <div className="space-y-2">
-                      <div className="border-gradient before:rounded-lg flex bg-white/5 rounded-lg pt-4 pr-4 pb-4 pl-4 backdrop-blur-sm items-center justify-between hover:bg-white/10 transition">
-                        <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
-                            <Zap className="w-5 h-5 text-emerald-400" />
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-8 h-8 rounded-full bg-gray-50 dark:bg-slate-800 flex items-center justify-center border border-gray-200 dark:border-slate-700">
+                            <TokenIcon symbol={dest.symbol} chain={dest.chain} className="w-4 h-4" />
                           </div>
                           <div>
-                            <p className="text-sm font-medium text-white font-geist">
-                              1.00 ZEC ➔ 1,420.00 USDC (Arbitrum One)
-                            </p>
-                            <p className="text-xs text-slate-400 font-geist">Settled in 64s via NEAR Intents • 0 Transparent Hops</p>
+                            <div className="text-sm font-bold text-slate-900 dark:text-white">{dest.symbol}</div>
+                            <div className="text-xs text-gray-500 dark:text-slate-400">{dest.chainName}</div>
                           </div>
                         </div>
-                        <p className="text-base font-semibold text-emerald-400 font-geist">
-                          +$1,420.00 USDC
-                        </p>
+                        <span className="text-[10px] font-semibold text-emerald-800 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/80 px-2 py-0.5 rounded-full">
+                          Live
+                        </span>
                       </div>
 
-                      <div className="rounded-lg border-gradient before:rounded-lg bg-white/5 p-4 backdrop-blur-sm flex items-center justify-between hover:bg-white/10 transition">
-                        <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
-                            <ArrowLeftRight className="w-5 h-5 text-purple-400" />
-                          </div>
-                          <div>
-                            <p className="text-sm font-medium text-white font-geist">
-                              0.50 ZEC ➔ 5.91 SOL (Solana Native)
-                            </p>
-                            <p className="text-xs text-slate-400 font-geist">
-                              Settled in 42s via Raydium Solver • 512B Uniform Memo
-                            </p>
-                          </div>
-                        </div>
-                        <p className="text-base font-semibold text-purple-400 font-geist">+5.91 SOL</p>
-                      </div>
-
-                      <div className="rounded-lg border-gradient before:rounded-lg bg-white/5 p-4 backdrop-blur-sm flex items-center justify-between hover:bg-white/10 transition">
-                        <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 rounded-lg bg-amber-500/20 flex items-center justify-center">
-                            <Shield className="w-5 h-5 text-amber-400" />
-                          </div>
-                          <div>
-                            <p className="text-sm font-medium text-white font-geist">
-                              Shielded Inbound: Orchard Note
-                            </p>
-                            <p className="text-xs text-slate-400 font-geist">Received via Zashi Wallet • Halo 2 Proof Confirmed</p>
-                          </div>
-                        </div>
-                        <p className="text-base font-semibold text-amber-400 font-geist">+2.5000 ZEC</p>
+                      <div className="text-xs text-gray-400 dark:text-slate-500 font-mono truncate mb-4">
+                        {dest.assetId}
                       </div>
                     </div>
-                  </div>
 
-                  {/* Quick actions */}
-                  <div className="[animation:fadeSlideIn_0.5s_ease-in-out_0.65s_both]">
-                    <h3 className="text-lg font-semibold text-white mb-4 font-geist">
-                      Protocol Quick Actions
-                    </h3>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-slate-800 text-xs">
+                      <span className="text-gray-500 dark:text-slate-400 font-medium">Latency: ~45s</span>
                       <button
                         onClick={() => setActiveTab('swap')}
-                        className="border-gradient before:rounded-lg hover:bg-white/10 transition bg-white/5 rounded-lg pt-4 pr-4 pb-4 pl-4 backdrop-blur-sm cursor-pointer text-center group"
+                        className="text-slate-900 dark:text-slate-200 hover:text-amber-600 dark:hover:text-amber-400 font-semibold cursor-pointer"
                       >
-                        <ArrowLeftRight className="w-6 h-6 text-amber-400 mx-auto mb-2 group-hover:scale-110 transition" />
-                        <p className="text-xs text-slate-300 font-geist">Shielded Swap</p>
-                      </button>
-
-                      <button
-                        onClick={() => setActiveTab('corridors')}
-                        className="border-gradient before:rounded-lg hover:bg-white/10 transition bg-white/5 rounded-lg pt-4 pr-4 pb-4 pl-4 backdrop-blur-sm cursor-pointer text-center group"
-                      >
-                        <Layers className="w-6 h-6 text-cyan-400 mx-auto mb-2 group-hover:scale-110 transition" />
-                        <p className="text-xs text-slate-300 font-geist">Corridors</p>
-                      </button>
-
-                      <button
-                        onClick={() => setActiveTab('swap')}
-                        className="rounded-lg border-gradient before:rounded-lg bg-white/5 p-4 backdrop-blur-sm hover:bg-white/10 transition cursor-pointer text-center group"
-                      >
-                        <Zap className="w-6 h-6 text-emerald-400 mx-auto mb-2 group-hover:scale-110 transition" />
-                        <p className="text-xs text-slate-300 font-geist">Deposit Note</p>
-                      </button>
-
-                      <button
-                        onClick={onOpenAuditor}
-                        className="border-gradient before:rounded-lg hover:bg-white/10 transition bg-white/5 rounded-lg pt-4 pr-4 pb-4 pl-4 backdrop-blur-sm cursor-pointer text-center group"
-                      >
-                        <Shield className="w-6 h-6 text-amber-400 mx-auto mb-2 group-hover:scale-110 transition" />
-                        <p className="text-xs text-slate-300 font-geist">Audit Proofs</p>
+                        Swap →
                       </button>
                     </div>
                   </div>
-                </div>
-              )}
+                ))}
+              </div>
             </div>
-          </section>
-        </div>
-      </div>
+          </div>
+        )}
+      </main>
+
+      {/* Address Book Modal */}
+      {showAddressBook && (
+        <AddressBookModal
+          onSelectAddress={(addr) => {
+            // When opened from header, close modal
+            setShowAddressBook(false);
+          }}
+          onClose={() => setShowAddressBook(false)}
+        />
+      )}
+
+      {/* Google Pay Shielded On-Ramp Modal */}
+      {showFiatModal && (
+        <FiatOnrampModal
+          onSuccess={() => fetchFiatOrders()}
+          onClose={() => {
+            setShowFiatModal(false);
+            fetchFiatOrders();
+          }}
+        />
+      )}
     </div>
   );
 };

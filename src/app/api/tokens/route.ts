@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { nearIntentsClient } from '@/core/near-intents/client';
+import { ZEC_BASE_PRICE_USD } from '@/core/onramp/types';
 
 export const dynamic = 'force-dynamic';
 
@@ -13,8 +14,8 @@ export async function GET() {
         name: 'Zcash (Shielded Orchard)',
         pool: 'Orchard (Halo 2)',
         decimals: 8,
-        icon: '🛡️',
-        priceUsd: 1420.0,
+        icon: 'zec',
+        priceUsd: ZEC_BASE_PRICE_USD,
       },
       destinations: popular,
     });

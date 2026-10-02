@@ -6,6 +6,7 @@
 
 import { swapStore } from './store';
 import { solverEngine } from './engine';
+import { refundEngine } from './refunds';
 import { deserializeIntentMemo } from '../crypto/memo';
 
 const SLEEP_MS = 3000;
@@ -38,7 +39,7 @@ async function runDaemon() {
 
       if (pendingDeposits.length > 0) {
         for (const swap of pendingDeposits) {
-          console.log('\x1b[35m%s\x1b[0m', `[Block #${blockHeight}] 🛡️ Shielded Note Detected in Orchard Merkle Tree!`);
+          console.log('\x1b[35m%s\x1b[0m', `[Block #${blockHeight}] [Shielded] Note Detected in Orchard Merkle Tree!`);
           console.log(`  Swap ID: ${swap.id}`);
           console.log(`  Amount: ${swap.origin_amount} ZEC`);
           console.log(`  Vault UA: ${swap.deposit_ua.slice(0, 32)}...`);
@@ -68,6 +69,9 @@ async function runDaemon() {
           console.log(`  ✓ Cryptographic Receipt Generated (Hash: ${receipt.intentHash.slice(0, 16)}...)\n`);
         }
       }
+
+      // Check for timed-out intents requiring automated shielded refunds
+      await refundEngine.checkAndExecuteRefunds();
     } catch (err: any) {
       console.error('[Watcher Error]:', err.message);
     }

@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
 :root {
   --bg-base: #06090e;
   --bg-surface: #0c111a;
@@ -37,16 +35,17 @@
 }
 
 body {
-  background-color: var(--bg-base);
-  color: var(--text-main);
+  background-color: #ffffff;
+  color: #0f172a;
   font-family: var(--font-main);
   min-height: 100vh;
   overflow-x: hidden;
-  background-image: 
-    radial-gradient(circle at 15% 15%, rgba(244, 183, 40, 0.06) 0%, transparent 45%),
-    radial-gradient(circle at 85% 75%, rgba(0, 240, 255, 0.05) 0%, transparent 45%),
-    radial-gradient(circle at 50% 50%, rgba(12, 17, 26, 0.9) 0%, #06090e 100%);
-  background-attachment: fixed;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+html.dark body {
+  background-color: #080c14;
+  color: #f8fafc;
 }
 
 /* Border Gradient matching user's component */
@@ -73,28 +72,6 @@ body {
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@keyframes auraPulse {
-  0%, 100% {
-    transform: scale(1) translate(0, 0);
-    opacity: 0.85;
-  }
-  50% {
-    transform: scale(1.15) translate(-15px, 20px);
-    opacity: 1;
-  }
-}
-
-@keyframes auraFloat {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-    opacity: 0.75;
-  }
-  50% {
-    transform: translate(30px, -20px) scale(1.1);
-    opacity: 0.95;
   }
 }
 
@@ -256,3 +233,25 @@ body {
 .pulse-indicator {
   animation: pulseGlow 2s infinite ease-in-out;
 }
+
+/* Standards Sliding Marquee: Left to Right */
+@keyframes marquee-slide-right {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
+    transform: translate3d(0%, 0, 0);
+  }
+}
+
+.animate-marquee-right {
+  display: flex;
+  width: max-content;
+  animation: marquee-slide-right 32s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-right:hover {
+  animation-play-state: paused;
+}
+

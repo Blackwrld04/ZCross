@@ -23,157 +23,115 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ receipt, onClose }) 
   };
 
   return (
-    <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      background: 'rgba(0, 0, 0, 0.85)',
-      backdropFilter: 'blur(10px)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 1100,
-      padding: '20px',
-    }}>
-      <div className="glass-panel" style={{
-        maxWidth: '600px',
-        width: '100%',
-        maxHeight: '90vh',
-        overflowY: 'auto',
-        padding: '32px',
-        border: '1px solid rgba(16, 185, 129, 0.4)',
-        boxShadow: '0 0 35px rgba(16, 185, 129, 0.2)',
-      }}>
+    <div 
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div 
+        className="relative w-full max-w-xl max-h-[92vh] overflow-y-auto bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl shadow-2xl p-6 sm:p-8 text-slate-900 dark:text-white"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '10px',
-              background: 'rgba(16, 185, 129, 0.15)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              border: '1px solid rgba(16, 185, 129, 0.4)',
-            }}>
-              <ShieldCheck size={24} color="#10b981" />
+        <div className="flex items-start justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/60 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+              <ShieldCheck className="w-6 h-6" />
             </div>
             <div>
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 800 }}>Zero-Leak Audit Receipt</h2>
-              <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                Cryptographic Settlement & Compliance Record
-              </div>
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight">Settlement Audit Receipt</h2>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                Cryptographic Settlement &amp; Compliance Proof
+              </p>
             </div>
           </div>
 
           <button
             onClick={onClose}
-            style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              border: 'none',
-              borderRadius: '8px',
-              padding: '8px',
-              color: 'var(--text-muted)',
-              cursor: 'pointer',
-            }}
+            className="p-2 rounded-full bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition cursor-pointer"
           >
-            <X size={20} />
+            <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Content Box */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '24px' }}>
+        {/* Details Box */}
+        <div className="space-y-4 mb-6">
           {/* Key Facts */}
-          <div style={{ background: 'var(--bg-surface-elevated)', borderRadius: '12px', padding: '16px', border: '1px solid var(--border-subtle)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', fontSize: '0.85rem' }}>
-              <span style={{ color: 'var(--text-muted)' }}>Swap ID:</span>
-              <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 600 }}>{receipt.swapId}</span>
+          <div className="p-4 rounded-2xl bg-gray-50 dark:bg-slate-950/60 border border-gray-200 dark:border-slate-800 space-y-2.5 text-xs">
+            <div className="flex justify-between">
+              <span className="text-gray-500 dark:text-gray-400 font-medium">Swap ID:</span>
+              <span className="font-mono text-slate-900 dark:text-white font-semibold">{receipt.swapId}</span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', fontSize: '0.85rem' }}>
-              <span style={{ color: 'var(--text-muted)' }}>Settled At:</span>
-              <span>{new Date(receipt.settledAt).toUTCString()}</span>
+            <div className="flex justify-between">
+              <span className="text-gray-500 dark:text-gray-400 font-medium">Settled At:</span>
+              <span className="text-slate-700 dark:text-slate-300">{new Date(receipt.settledAt).toUTCString()}</span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', fontSize: '0.85rem' }}>
-              <span style={{ color: 'var(--text-muted)' }}>Input (Shielded):</span>
-              <span style={{ fontWeight: 700, color: 'var(--zcash-yellow)' }}>{receipt.origin.amountZec} ZEC ({receipt.origin.pool})</span>
+            <div className="flex justify-between">
+              <span className="text-gray-500 dark:text-gray-400 font-medium">Shielded Input:</span>
+              <span className="font-bold text-amber-800 dark:text-amber-300">{receipt.origin.amountZec} ZEC ({receipt.origin.pool})</span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
-              <span style={{ color: 'var(--text-muted)' }}>Output (Delivered):</span>
-              <span style={{ fontWeight: 700, color: 'var(--cyan-accent)' }}>{receipt.destination.amountReceived} {receipt.destination.asset} ({receipt.destination.chain.toUpperCase()})</span>
-            </div>
-          </div>
-
-          {/* Cryptographic Invariants Audit */}
-          <div style={{
-            background: 'rgba(16, 185, 129, 0.05)',
-            border: '1px solid rgba(16, 185, 129, 0.25)',
-            borderRadius: '12px',
-            padding: '16px',
-          }}>
-            <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#10b981', marginBottom: '12px' }}>
-              Cryptographic Invariants Passed:
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.8rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <CheckCircle size={14} color="#10b981" />
-                <span><strong>Zero Transparent Hops:</strong> No t-address was used in the transaction path.</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <CheckCircle size={14} color="#10b981" />
-                <span><strong>Memo Privacy:</strong> {receipt.privacyVerification.memoEncryption}</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <CheckCircle size={14} color="#10b981" />
-                <span><strong>Graph Unlinkability:</strong> Sender spending key & UTXO balance remain unrevealed.</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <CheckCircle size={14} color="#10b981" />
-                <span><strong>Auditor Fingerprint:</strong> <code style={{ fontFamily: 'var(--font-mono)' }}>{receipt.privacyVerification.complianceViewingKeyFingerprint}</code></span>
-              </div>
+            <div className="flex justify-between">
+              <span className="text-gray-500 dark:text-gray-400 font-medium">Output Delivered:</span>
+              <span className="font-bold text-emerald-700 dark:text-emerald-400">
+                {receipt.destination.amountReceived} {receipt.destination.asset} ({receipt.destination.chain.toUpperCase()})
+              </span>
             </div>
           </div>
 
-          {/* Destination Transaction Link */}
-          <div style={{ background: 'var(--bg-surface-elevated)', borderRadius: '12px', padding: '14px', border: '1px solid var(--border-subtle)' }}>
-            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px' }}>Destination Chain Proof:</div>
+          {/* Cryptographic Invariants */}
+          <div className="p-4 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-800/60 space-y-2 text-xs">
+            <div className="font-bold text-emerald-900 dark:text-emerald-300 mb-1">
+              Settlement Verification Invariants:
+            </div>
+            <div className="flex items-center gap-2 text-emerald-950 dark:text-emerald-200">
+              <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+              <span><strong>Shielded Isolation:</strong> 100% shielded Orchard execution path</span>
+            </div>
+            <div className="flex items-center gap-2 text-emerald-950 dark:text-emerald-200">
+              <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+              <span><strong>Uniform Padding:</strong> {receipt.privacyVerification.memoEncryption}</span>
+            </div>
+            <div className="flex items-center gap-2 text-emerald-950 dark:text-emerald-200">
+              <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+              <span><strong>Graph Unlinkability:</strong> Sender spending key &amp; UTXO balance never revealed</span>
+            </div>
+            <div className="flex items-center gap-2 text-emerald-950 dark:text-emerald-200">
+              <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+              <span>
+                <strong>Viewing Key Fingerprint:</strong>{' '}
+                <code className="font-mono text-emerald-800 dark:text-emerald-300 text-[11px] font-semibold">{receipt.privacyVerification.complianceViewingKeyFingerprint}</code>
+              </span>
+            </div>
+          </div>
+
+          {/* Destination Tx Hash */}
+          <div className="p-3.5 rounded-2xl bg-gray-50 dark:bg-slate-950/60 border border-gray-200 dark:border-slate-800">
+            <div className="text-[11px] text-gray-500 dark:text-gray-400 mb-1">Destination Transaction Proof:</div>
             <a
               href={receipt.destination.explorerUrl}
               target="_blank"
               rel="noopener noreferrer"
-              style={{
-                color: 'var(--cyan-accent)',
-                textDecoration: 'none',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.85rem',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                wordBreak: 'break-all',
-              }}
+              className="inline-flex items-center gap-1.5 text-cyan-700 dark:text-cyan-400 hover:text-cyan-900 dark:hover:text-cyan-300 font-mono text-xs break-all underline"
             >
               <span>{receipt.destination.transactionHash}</span>
-              <ExternalLink size={14} />
+              <ExternalLink className="w-3.5 h-3.5 flex-shrink-0" />
             </a>
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div style={{ display: 'flex', gap: '12px' }}>
+        {/* Actions */}
+        <div className="flex items-center gap-3">
           <button
             onClick={downloadJson}
-            className="btn-primary"
-            style={{ flex: 1, padding: '12px', fontSize: '0.9rem' }}
+            className="flex-1 py-3 px-4 rounded-full bg-black hover:bg-gray-800 dark:bg-amber-500 dark:hover:bg-amber-400 text-white dark:text-black font-semibold text-xs flex items-center justify-center gap-2 transition cursor-pointer shadow-sm"
           >
-            <Download size={16} />
+            <Download className="w-4 h-4" />
             <span>Download Verifiable JSON</span>
           </button>
           <button
             onClick={onClose}
-            className="btn-secondary"
-            style={{ padding: '12px 20px', fontSize: '0.9rem' }}
+            className="py-3 px-6 rounded-full bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold text-xs transition cursor-pointer"
           >
             Close
           </button>

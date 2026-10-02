@@ -8,6 +8,8 @@ import { ReceiptModal } from '@/components/ReceiptModal';
 import { PrivacyAuditor } from '@/components/PrivacyAuditor';
 import { DestinationToken } from '@/components/SwapCard';
 import { AuditReceiptData } from '@/core/crypto/receipt';
+import { WalletProvider } from '@/core/wallet/WalletContext';
+import { EmbeddedWalletProvider } from '@/core/zcash/EmbeddedWalletContext';
 
 export default function Home() {
   const [view, setView] = useState<'landing' | 'wallet'>('landing');
@@ -19,23 +21,23 @@ export default function Home() {
       symbol: 'USDC',
       assetId: 'nep141:arb-0xaf88d065e77c8cc2239327c5edb3a432268e5831.omft.near',
       decimals: 6,
-      icon: '💵',
+      icon: 'usdc',
     },
     {
       chain: 'sol',
       chainName: 'Solana',
       symbol: 'SOL',
-      assetId: '1cs_v1:sol:native:sol',
+      assetId: 'nep141:sol.omft.near',
       decimals: 9,
-      icon: '🟣',
+      icon: 'sol',
     },
     {
       chain: 'btc',
       chainName: 'Bitcoin Native',
       symbol: 'BTC',
-      assetId: '1cs_v1:btc:native:coin',
+      assetId: 'nep141:btc.omft.near',
       decimals: 8,
-      icon: '₿',
+      icon: 'btc',
     },
     {
       chain: 'eth',
@@ -43,7 +45,7 @@ export default function Home() {
       symbol: 'USDC',
       assetId: 'nep141:eth-0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.omft.near',
       decimals: 6,
-      icon: '💎',
+      icon: 'usdc',
     },
     {
       chain: 'base',
@@ -51,7 +53,7 @@ export default function Home() {
       symbol: 'USDC',
       assetId: 'nep141:base-0x833589fcd6edb6e08f4c7c32d4f71b54bda02913.omft.near',
       decimals: 6,
-      icon: '🔵',
+      icon: 'usdc',
     },
   ]);
 
@@ -61,6 +63,13 @@ export default function Home() {
 
   // Fetch live token metadata from API
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('view') === 'wallet' || params.get('tab') === 'wallet') {
+        setView('wallet');
+      }
+    }
+
     fetch('/api/tokens')
       .then((res) => res.json())
       .then((data) => {
@@ -87,42 +96,46 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen relative font-geist">
-      {/* Render Selected View */}
-      {view === 'landing' ? (
-        <LandingPage
-          onOpenWallet={() => setView('wallet')}
-          onOpenAuditor={() => setShowAuditor(true)}
-        />
-      ) : (
-        <WalletDashboard
-          network={network}
-          destinations={destinations}
-          onQuoteGenerated={(quote) => setActiveQuote(quote)}
-          onOpenAuditor={() => setShowAuditor(true)}
-          onBackToLanding={() => setView('landing')}
-        />
-      )}
+    <WalletProvider>
+      <EmbeddedWalletProvider>
+        <div className="min-h-screen relative font-geist bg-white dark:bg-[#080c14] text-slate-900 dark:text-slate-100 transition-colors">
+          {/* Render Selected View */}
+          {view === 'landing' ? (
+            <LandingPage
+              onOpenWallet={() => setView('wallet')}
+              onOpenAuditor={() => setShowAuditor(true)}
+            />
+          ) : (
+            <WalletDashboard
+              network={network}
+              destinations={destinations}
+              onQuoteGenerated={(quote) => setActiveQuote(quote)}
+              onBackToLanding={() => setView('landing')}
+              onSelectReceipt={(receipt) => setActiveReceipt(receipt)}
+            />
+          )}
 
-      {/* Active Modals */}
-      {activeQuote && (
-        <DepositModal
-          quoteData={activeQuote}
-          onClose={() => setActiveQuote(null)}
-          onViewReceipt={handleFetchReceipt}
-        />
-      )}
+          {/* Active Modals */}
+          {activeQuote && (
+            <DepositModal
+              quoteData={activeQuote}
+              onClose={() => setActiveQuote(null)}
+              onViewReceipt={handleFetchReceipt}
+            />
+          )}
 
-      {activeReceipt && (
-        <ReceiptModal
-          receipt={activeReceipt}
-          onClose={() => setActiveReceipt(null)}
-        />
-      )}
+          {activeReceipt && (
+            <ReceiptModal
+              receipt={activeReceipt}
+              onClose={() => setActiveReceipt(null)}
+            />
+          )}
 
-      {showAuditor && (
-        <PrivacyAuditor onClose={() => setShowAuditor(false)} />
-      )}
-    </div>
+          {showAuditor && (
+            <PrivacyAuditor onClose={() => setShowAuditor(false)} />
+          )}
+        </div>
+      </EmbeddedWalletProvider>
+    </WalletProvider>
   );
 }
