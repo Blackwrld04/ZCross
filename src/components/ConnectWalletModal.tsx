@@ -170,7 +170,7 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
       }}
     >
       <div 
-        className="relative w-full max-w-[420px] bg-white dark:bg-slate-900 border border-gray-200/90 dark:border-slate-800 rounded-[28px] shadow-2xl p-6 sm:p-7 text-slate-900 dark:text-white my-auto animate-in zoom-in-95 duration-150"
+        className="relative w-full max-w-[420px] bg-white dark:bg-black border border-gray-200/90 dark:border-white/10 rounded-[28px] shadow-2xl p-6 sm:p-7 text-slate-900 dark:text-white my-auto animate-in zoom-in-95 duration-150"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -181,14 +181,14 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition flex items-center justify-center cursor-pointer"
+            className="w-8 h-8 rounded-full bg-gray-100 dark:bg-zinc-900 hover:bg-gray-200 dark:hover:bg-zinc-800 text-gray-500 dark:text-zinc-400 hover:text-black dark:hover:text-white transition flex items-center justify-center cursor-pointer"
             title="Close"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        <p className="text-xs text-gray-500 dark:text-gray-400 mb-5">
+        <p className="text-xs text-gray-500 dark:text-zinc-400 mb-5">
           Select your Web3 wallet to connect and settle cross-chain funds.
         </p>
 
@@ -210,10 +210,10 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
               type="button"
               onClick={handleConnectSolflare}
               disabled={isConnecting}
-              className={`w-full bg-gray-50/80 dark:bg-slate-950/60 hover:bg-gray-100/90 dark:hover:bg-slate-850 active:scale-[0.98] border rounded-2xl px-3.5 py-3 flex items-center justify-between transition-all cursor-pointer group shadow-2xs ${
+              className={`w-full bg-gray-50/80 dark:bg-black hover:bg-gray-100/90 dark:hover:bg-zinc-900 active:scale-[0.98] border rounded-2xl px-3.5 py-3 flex items-center justify-between transition-all cursor-pointer group shadow-2xs ${
                 detectedWallets.solflare 
                   ? 'border-orange-300 dark:border-orange-500/50 bg-orange-50/50 dark:bg-orange-950/30 hover:border-orange-400' 
-                  : 'border-gray-200 dark:border-slate-800 hover:border-gray-300 dark:hover:border-slate-700'
+                  : 'border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20'
               }`}
             >
               <div className="flex items-center gap-1.5 min-w-0">
@@ -230,10 +230,10 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
               type="button"
               onClick={handleConnectPhantom}
               disabled={isConnecting}
-              className={`w-full bg-gray-50/80 dark:bg-slate-950/60 hover:bg-gray-100/90 dark:hover:bg-slate-850 active:scale-[0.98] border rounded-2xl px-3.5 py-3 flex items-center justify-between transition-all cursor-pointer group shadow-2xs ${
+              className={`w-full bg-gray-50/80 dark:bg-black hover:bg-gray-100/90 dark:hover:bg-zinc-900 active:scale-[0.98] border rounded-2xl px-3.5 py-3 flex items-center justify-between transition-all cursor-pointer group shadow-2xs ${
                 detectedWallets.phantom 
                   ? 'border-purple-300 dark:border-purple-500/50 bg-purple-50/50 dark:bg-purple-950/30 hover:border-purple-400' 
-                  : 'border-gray-200 dark:border-slate-800 hover:border-gray-300 dark:hover:border-slate-700'
+                  : 'border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20'
               }`}
             >
               <div className="flex items-center gap-1.5 min-w-0">
@@ -250,10 +250,10 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
               type="button"
               onClick={() => handleConnectEVMWallet('metamask')}
               disabled={isConnecting}
-              className={`w-full bg-gray-50/80 dark:bg-slate-950/60 hover:bg-gray-100/90 dark:hover:bg-slate-850 active:scale-[0.98] border rounded-2xl px-3.5 py-3 flex items-center justify-between transition-all cursor-pointer group shadow-2xs ${
+              className={`w-full bg-gray-50/80 dark:bg-black hover:bg-gray-100/90 dark:hover:bg-zinc-900 active:scale-[0.98] border rounded-2xl px-3.5 py-3 flex items-center justify-between transition-all cursor-pointer group shadow-2xs ${
                 detectedWallets.metamask 
                   ? 'border-amber-300 dark:border-amber-500/50 bg-amber-50/50 dark:bg-amber-950/30 hover:border-amber-400' 
-                  : 'border-gray-200 dark:border-slate-800 hover:border-gray-300 dark:hover:border-slate-700'
+                  : 'border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20'
               }`}
             >
               <div className="flex items-center gap-1.5 min-w-0">
@@ -270,10 +270,10 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
               type="button"
               onClick={() => handleConnectEVMWallet('rabby')}
               disabled={isConnecting}
-              className={`w-full bg-gray-50/80 dark:bg-slate-950/60 hover:bg-gray-100/90 dark:hover:bg-slate-850 active:scale-[0.98] border rounded-2xl px-3.5 py-3 flex items-center justify-between transition-all cursor-pointer group shadow-2xs ${
+              className={`w-full bg-gray-50/80 dark:bg-black hover:bg-gray-100/90 dark:hover:bg-zinc-900 active:scale-[0.98] border rounded-2xl px-3.5 py-3 flex items-center justify-between transition-all cursor-pointer group shadow-2xs ${
                 detectedWallets.rabby 
                   ? 'border-indigo-300 dark:border-indigo-500/50 bg-indigo-50/50 dark:bg-indigo-950/30 hover:border-indigo-400' 
-                  : 'border-gray-200 dark:border-slate-800 hover:border-gray-300 dark:hover:border-slate-700'
+                  : 'border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20'
               }`}
             >
               <div className="flex items-center gap-1.5 min-w-0">
@@ -290,10 +290,10 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
               type="button"
               onClick={() => handleConnectEVMWallet('zerion')}
               disabled={isConnecting}
-              className={`w-full bg-gray-50/80 dark:bg-slate-950/60 hover:bg-gray-100/90 dark:hover:bg-slate-850 active:scale-[0.98] border rounded-2xl px-3.5 py-3 flex items-center justify-between transition-all cursor-pointer group shadow-2xs ${
+              className={`w-full bg-gray-50/80 dark:bg-black hover:bg-gray-100/90 dark:hover:bg-zinc-900 active:scale-[0.98] border rounded-2xl px-3.5 py-3 flex items-center justify-between transition-all cursor-pointer group shadow-2xs ${
                 detectedWallets.zerion 
                   ? 'border-blue-300 dark:border-blue-500/50 bg-blue-50/50 dark:bg-blue-950/30 hover:border-blue-400' 
-                  : 'border-gray-200 dark:border-slate-800 hover:border-gray-300 dark:hover:border-slate-700'
+                  : 'border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20'
               }`}
             >
               <div className="flex items-center gap-1.5 min-w-0">
@@ -310,10 +310,10 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
               type="button"
               onClick={() => handleConnectEVMWallet('coinbase')}
               disabled={isConnecting}
-              className={`w-full bg-gray-50/80 dark:bg-slate-950/60 hover:bg-gray-100/90 dark:hover:bg-slate-850 active:scale-[0.98] border rounded-2xl px-3.5 py-3 flex items-center justify-between transition-all cursor-pointer group shadow-2xs ${
+              className={`w-full bg-gray-50/80 dark:bg-black hover:bg-gray-100/90 dark:hover:bg-zinc-900 active:scale-[0.98] border rounded-2xl px-3.5 py-3 flex items-center justify-between transition-all cursor-pointer group shadow-2xs ${
                 detectedWallets.coinbase 
                   ? 'border-blue-300 dark:border-blue-500/50 bg-blue-50/50 dark:bg-blue-950/30 hover:border-blue-400' 
-                  : 'border-gray-200 dark:border-slate-800 hover:border-gray-300 dark:hover:border-slate-700'
+                  : 'border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20'
               }`}
             >
               <div className="flex items-center gap-1.5 min-w-0">
@@ -330,10 +330,10 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
               type="button"
               onClick={() => handleConnectEVMWallet('trust')}
               disabled={isConnecting}
-              className={`w-full bg-gray-50/80 dark:bg-slate-950/60 hover:bg-gray-100/90 dark:hover:bg-slate-850 active:scale-[0.98] border rounded-2xl px-3.5 py-3 flex items-center justify-between transition-all cursor-pointer group shadow-2xs ${
+              className={`w-full bg-gray-50/80 dark:bg-black hover:bg-gray-100/90 dark:hover:bg-zinc-900 active:scale-[0.98] border rounded-2xl px-3.5 py-3 flex items-center justify-between transition-all cursor-pointer group shadow-2xs ${
                 detectedWallets.trust 
                   ? 'border-blue-300 dark:border-blue-500/50 bg-blue-50/50 dark:bg-blue-950/30 hover:border-blue-400' 
-                  : 'border-gray-200 dark:border-slate-800 hover:border-gray-300 dark:hover:border-slate-700'
+                  : 'border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20'
               }`}
             >
               <div className="flex items-center gap-1.5 min-w-0">
@@ -350,7 +350,7 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
               type="button"
               onClick={() => handleConnectEVMWallet('rainbow')}
               disabled={isConnecting}
-              className="w-full bg-gray-50/80 dark:bg-slate-950/60 hover:bg-gray-100/90 dark:hover:bg-slate-850 active:scale-[0.98] border border-gray-200 dark:border-slate-800 hover:border-gray-300 dark:hover:border-slate-700 rounded-2xl px-3.5 py-3 flex items-center justify-between transition-all cursor-pointer group shadow-2xs"
+              className="w-full bg-gray-50/80 dark:bg-black hover:bg-gray-100/90 dark:hover:bg-zinc-900 active:scale-[0.98] border border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 rounded-2xl px-3.5 py-3 flex items-center justify-between transition-all cursor-pointer group shadow-2xs"
             >
               <span className="text-sm font-semibold text-slate-900 dark:text-white truncate">Rainbow</span>
               <RainbowLogo className="w-7 h-7 flex-shrink-0 rounded-lg shadow-xs" />
@@ -361,10 +361,10 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
               type="button"
               onClick={handleConnectBackpack}
               disabled={isConnecting}
-              className={`w-full bg-gray-50/80 dark:bg-slate-950/60 hover:bg-gray-100/90 dark:hover:bg-slate-850 active:scale-[0.98] border rounded-2xl px-3.5 py-3 flex items-center justify-between transition-all cursor-pointer group shadow-2xs ${
+              className={`w-full bg-gray-50/80 dark:bg-black hover:bg-gray-100/90 dark:hover:bg-zinc-900 active:scale-[0.98] border rounded-2xl px-3.5 py-3 flex items-center justify-between transition-all cursor-pointer group shadow-2xs ${
                 detectedWallets.backpack 
                   ? 'border-red-300 dark:border-red-500/50 bg-red-50/50 dark:bg-red-950/30 hover:border-red-400' 
-                  : 'border-gray-200 dark:border-slate-800 hover:border-gray-300 dark:hover:border-slate-700'
+                  : 'border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20'
               }`}
             >
               <div className="flex items-center gap-1.5 min-w-0">
@@ -381,7 +381,7 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
               type="button"
               onClick={() => handleConnectEVMWallet('okx')}
               disabled={isConnecting}
-              className="w-full bg-gray-50/80 dark:bg-slate-950/60 hover:bg-gray-100/90 dark:hover:bg-slate-850 active:scale-[0.98] border border-gray-200 dark:border-slate-800 hover:border-gray-300 dark:hover:border-slate-700 rounded-2xl px-3.5 py-3 flex items-center justify-between transition-all cursor-pointer group shadow-2xs"
+              className="w-full bg-gray-50/80 dark:bg-black hover:bg-gray-100/90 dark:hover:bg-zinc-900 active:scale-[0.98] border border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 rounded-2xl px-3.5 py-3 flex items-center justify-between transition-all cursor-pointer group shadow-2xs"
             >
               <span className="text-sm font-semibold text-slate-900 dark:text-white truncate">OKX Wallet</span>
               <OKXLogo className="w-7 h-7 flex-shrink-0 rounded-lg shadow-xs" />
@@ -392,7 +392,7 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
               type="button"
               onClick={() => handleConnectEVMWallet('ctrl')}
               disabled={isConnecting}
-              className="w-full bg-gray-50/80 dark:bg-slate-950/60 hover:bg-gray-100/90 dark:hover:bg-slate-850 active:scale-[0.98] border border-gray-200 dark:border-slate-800 hover:border-gray-300 dark:hover:border-slate-700 rounded-2xl px-3.5 py-3 flex items-center justify-between transition-all cursor-pointer group shadow-2xs"
+              className="w-full bg-gray-50/80 dark:bg-black hover:bg-gray-100/90 dark:hover:bg-zinc-900 active:scale-[0.98] border border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 rounded-2xl px-3.5 py-3 flex items-center justify-between transition-all cursor-pointer group shadow-2xs"
             >
               <span className="text-sm font-semibold text-slate-900 dark:text-white truncate">Ctrl</span>
               <CtrlLogo className="w-7 h-7 flex-shrink-0 rounded-lg shadow-xs" />
@@ -402,7 +402,7 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
             <button
               type="button"
               onClick={handleConnectKeplr}
-              className="w-full bg-gray-50/80 dark:bg-slate-950/60 hover:bg-gray-100/90 dark:hover:bg-slate-850 active:scale-[0.98] border border-gray-200 dark:border-slate-800 hover:border-gray-300 dark:hover:border-slate-700 rounded-2xl px-3.5 py-3 flex items-center justify-between transition-all cursor-pointer group shadow-2xs"
+              className="w-full bg-gray-50/80 dark:bg-black hover:bg-gray-100/90 dark:hover:bg-zinc-900 active:scale-[0.98] border border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 rounded-2xl px-3.5 py-3 flex items-center justify-between transition-all cursor-pointer group shadow-2xs"
             >
               <span className="text-sm font-semibold text-slate-900 dark:text-white truncate">Keplr</span>
               <KeplrLogo className="w-7 h-7 flex-shrink-0 rounded-lg shadow-xs" />
@@ -411,10 +411,10 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
         </div>
 
         {/* Direct Address Input Form */}
-        <form onSubmit={handleApplyCustomAddress} className="pt-4 border-t border-gray-100 dark:border-slate-800 space-y-2.5">
-          <div className="text-xs font-semibold text-gray-700 dark:text-gray-300 flex items-center justify-between">
+        <form onSubmit={handleApplyCustomAddress} className="pt-4 border-t border-gray-100 dark:border-white/10 space-y-2.5">
+          <div className="text-xs font-semibold text-gray-700 dark:text-zinc-300 flex items-center justify-between">
             <span>Or Enter Destination Address Directly</span>
-            <span className="text-[10px] text-gray-400 dark:text-gray-500 font-mono">EVM / Solana</span>
+            <span className="text-[10px] text-gray-400 dark:text-zinc-500 font-mono">EVM / Solana</span>
           </div>
           <div className="flex items-center gap-2">
             <input
@@ -422,7 +422,7 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
               value={customAddress}
               onChange={(e) => setCustomAddress(e.target.value)}
               placeholder="Paste 0x... or Solana address"
-              className="flex-1 px-3.5 py-2.5 rounded-xl bg-gray-50 dark:bg-slate-950 border border-gray-200 dark:border-slate-800 text-xs font-mono text-slate-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-black dark:focus:border-amber-400 focus:bg-white dark:focus:bg-slate-900 transition"
+              className="flex-1 px-3.5 py-2.5 rounded-xl bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 text-xs font-mono text-slate-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 focus:outline-none focus:border-black dark:focus:border-amber-400 focus:bg-white dark:focus:bg-black transition"
             />
             <button
               type="submit"
@@ -434,7 +434,7 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
         </form>
 
         {/* Security Footer */}
-        <div className="mt-4 pt-3 border-t border-gray-100 dark:border-slate-800 flex items-center justify-between text-[11px] text-gray-400 dark:text-gray-500">
+        <div className="mt-4 pt-3 border-t border-gray-100 dark:border-white/10 flex items-center justify-between text-[11px] text-gray-400 dark:text-zinc-500">
           <span className="flex items-center gap-1">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
             <span>Zero Private Keys Accessed</span>

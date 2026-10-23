@@ -131,13 +131,13 @@ export const WalletButton: React.FC<WalletButtonProps> = ({
           </button>
 
           {isOpen && (
-            <div className="absolute right-0 mt-2 w-64 rounded-2xl bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 shadow-xl p-3 z-50 text-xs animate-in fade-in zoom-in-95">
-              <div className="text-[11px] font-semibold text-gray-500 dark:text-gray-400 mb-1.5 px-1 flex items-center gap-1.5">
+            <div className="absolute right-0 mt-2 w-64 rounded-2xl bg-white dark:bg-black border border-gray-200 dark:border-white/10 shadow-2xl p-3 z-50 text-xs animate-in fade-in zoom-in-95">
+              <div className="text-[11px] font-semibold text-gray-500 dark:text-zinc-400 mb-1.5 px-1 flex items-center gap-1.5">
                 {getWalletIcon('w-3.5 h-3.5')}
                 <span>Connected {activeWalletName || (isSolTarget ? 'Solana' : 'EVM')}</span>
               </div>
 
-              <div className="p-2.5 rounded-xl bg-gray-50 dark:bg-slate-950 border border-gray-200 dark:border-slate-800 mb-2 font-mono text-[11px] text-slate-800 dark:text-slate-200 break-all select-all">
+              <div className="p-2.5 rounded-xl bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-white/10 mb-2 font-mono text-[11px] text-slate-800 dark:text-zinc-200 break-all select-all">
                 {activeAddress}
               </div>
 
@@ -145,7 +145,7 @@ export const WalletButton: React.FC<WalletButtonProps> = ({
                 <button
                   type="button"
                   onClick={() => copyToClipboard(activeAddress)}
-                  className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition cursor-pointer"
+                  className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-900 text-slate-700 dark:text-zinc-300 transition cursor-pointer"
                 >
                   <span className="flex items-center gap-1.5">
                     {copied ? <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
@@ -170,9 +170,9 @@ export const WalletButton: React.FC<WalletButtonProps> = ({
                 <button
                   type="button"
                   onClick={handleOpenModal}
-                  className="w-full flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition cursor-pointer"
+                  className="w-full flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-900 text-slate-700 dark:text-zinc-300 transition cursor-pointer"
                 >
-                  <RefreshCw className="w-3.5 h-3.5 text-gray-500 dark:text-gray-400" />
+                  <RefreshCw className="w-3.5 h-3.5 text-gray-500 dark:text-zinc-400" />
                   <span>Switch / Change Wallet</span>
                 </button>
 

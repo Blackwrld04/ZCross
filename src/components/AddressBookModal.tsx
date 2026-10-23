@@ -117,26 +117,26 @@ export const AddressBookModal: React.FC<AddressBookModalProps> = ({
 
   const modalContent = (
     <div 
-      className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm animate-in fade-in"
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md animate-in fade-in"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
       <div 
-        className="relative w-full max-w-lg max-h-[92vh] overflow-y-auto bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-[28px] shadow-2xl p-6 sm:p-7 text-slate-900 dark:text-white my-auto animate-in zoom-in-95 duration-150"
+        className="relative w-full max-w-lg max-h-[92vh] overflow-y-auto bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-[28px] shadow-2xl p-6 sm:p-7 text-slate-900 dark:text-white my-auto animate-in zoom-in-95 duration-150"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-black/5 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 flex items-center justify-center text-slate-900 dark:text-white">
+            <div className="w-9 h-9 rounded-xl bg-black/5 dark:bg-zinc-900 border border-gray-200 dark:border-white/10 flex items-center justify-center text-slate-900 dark:text-white">
               <BookOpen className="w-5 h-5 text-black dark:text-amber-400" />
             </div>
             <div>
               <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white font-serif">
                 Address Book
               </h2>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
+              <p className="text-xs text-gray-500 dark:text-zinc-400">
                 Verified cross-chain contacts &amp; shielded vaults
               </p>
             </div>
@@ -145,7 +145,7 @@ export const AddressBookModal: React.FC<AddressBookModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition flex items-center justify-center cursor-pointer"
+            className="w-8 h-8 rounded-full bg-gray-100 dark:bg-zinc-900 hover:bg-gray-200 dark:hover:bg-zinc-800 text-gray-500 dark:text-zinc-400 hover:text-black dark:hover:text-white transition flex items-center justify-center cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -156,13 +156,13 @@ export const AddressBookModal: React.FC<AddressBookModalProps> = ({
           <div className="space-y-3 mb-4">
             <div className="flex items-center gap-2">
               <div className="relative flex-1">
-                <Search className="w-3.5 h-3.5 absolute left-3 top-3 text-gray-400 dark:text-gray-500" />
+                <Search className="w-3.5 h-3.5 absolute left-3 top-3 text-gray-400 dark:text-zinc-500" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search name, domain, or address..."
-                  className="w-full pl-8 pr-3 py-2 bg-gray-50 dark:bg-slate-950 border border-gray-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-black dark:focus:border-amber-400"
+                  className="w-full pl-8 pr-3 py-2 bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl text-xs text-slate-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-500 focus:outline-none focus:border-black dark:focus:border-amber-400"
                 />
               </div>
 
@@ -192,7 +192,7 @@ export const AddressBookModal: React.FC<AddressBookModalProps> = ({
                   className={`px-3 py-1 rounded-full font-medium text-xs transition cursor-pointer whitespace-nowrap ${
                     selectedTab === tab.id
                       ? 'bg-black text-white dark:bg-amber-500 dark:text-black font-semibold shadow-xs'
-                      : 'bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
+                      : 'bg-gray-100 dark:bg-zinc-900 text-gray-600 dark:text-zinc-400 hover:text-black dark:hover:text-white'
                   }`}
                 >
                   {tab.label}
@@ -204,37 +204,37 @@ export const AddressBookModal: React.FC<AddressBookModalProps> = ({
 
         {/* ADD CONTACT FORM */}
         {isAdding ? (
-          <form onSubmit={handleSaveNew} className="p-4 bg-gray-50 dark:bg-slate-950/60 border border-gray-200 dark:border-slate-800 rounded-2xl space-y-3 mb-4">
+          <form onSubmit={handleSaveNew} className="p-4 bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 rounded-2xl space-y-3 mb-4">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-slate-900 dark:text-white">New Contact Details</span>
               <button
                 type="button"
                 onClick={() => setIsAdding(false)}
-                className="text-xs text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white cursor-pointer"
+                className="text-xs text-gray-500 dark:text-zinc-400 hover:text-black dark:hover:text-white cursor-pointer"
               >
                 Cancel
               </button>
             </div>
 
             <div>
-              <label className="text-[11px] font-semibold text-gray-600 dark:text-gray-400 block mb-1">Contact Label / Name</label>
+              <label className="text-[11px] font-semibold text-gray-600 dark:text-zinc-400 block mb-1">Contact Label / Name</label>
               <input
                 type="text"
                 value={newName}
                 onChange={(e) => setNewName(e.target.value)}
                 placeholder="e.g. My Ledger Cold Storage"
-                className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl text-xs font-medium text-slate-900 dark:text-white focus:outline-none focus:border-black dark:focus:border-amber-400"
+                className="w-full px-3 py-2 bg-white dark:bg-zinc-950 border border-gray-200 dark:border-white/10 rounded-xl text-xs font-medium text-slate-900 dark:text-white focus:outline-none focus:border-black dark:focus:border-amber-400"
                 required
               />
             </div>
 
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="text-[11px] font-semibold text-gray-600 dark:text-gray-400 block mb-1">Target Network</label>
+                <label className="text-[11px] font-semibold text-gray-600 dark:text-zinc-400 block mb-1">Target Network</label>
                 <select
                   value={newChain}
                   onChange={(e) => setNewChain(e.target.value as any)}
-                  className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none"
+                  className="w-full px-3 py-2 bg-white dark:bg-zinc-950 border border-gray-200 dark:border-white/10 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none"
                 >
                   <option value="arb">Arbitrum One (USDC)</option>
                   <option value="sol">Solana (SOL)</option>
@@ -246,19 +246,19 @@ export const AddressBookModal: React.FC<AddressBookModalProps> = ({
               </div>
 
               <div>
-                <label className="text-[11px] font-semibold text-gray-600 dark:text-gray-400 block mb-1">Tag (Optional)</label>
+                <label className="text-[11px] font-semibold text-gray-600 dark:text-zinc-400 block mb-1">Tag (Optional)</label>
                 <input
                   type="text"
                   value={newTag}
                   onChange={(e) => setNewTag(e.target.value)}
                   placeholder="e.g. Personal, Exchange"
-                  className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none"
+                  className="w-full px-3 py-2 bg-white dark:bg-zinc-950 border border-gray-200 dark:border-white/10 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none"
                 />
               </div>
             </div>
 
             <div>
-              <label className="text-[11px] font-semibold text-gray-600 dark:text-gray-400 block mb-1">
+              <label className="text-[11px] font-semibold text-gray-600 dark:text-zinc-400 block mb-1">
                 Recipient Address or Web3 Domain (.eth, .sol, .zec)
               </label>
               <input
@@ -266,7 +266,7 @@ export const AddressBookModal: React.FC<AddressBookModalProps> = ({
                 value={newAddress}
                 onChange={(e) => setNewAddress(e.target.value)}
                 placeholder="0x..., base58..., bc1..., or vitalik.eth"
-                className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl text-xs font-mono text-slate-900 dark:text-white focus:outline-none focus:border-black dark:focus:border-amber-400"
+                className="w-full px-3 py-2 bg-white dark:bg-zinc-950 border border-gray-200 dark:border-white/10 rounded-xl text-xs font-mono text-slate-900 dark:text-white focus:outline-none focus:border-black dark:focus:border-amber-400"
                 required
               />
             </div>
@@ -288,10 +288,10 @@ export const AddressBookModal: React.FC<AddressBookModalProps> = ({
           /* CONTACT LIST */
           <div className="max-h-[320px] overflow-y-auto space-y-2 pr-1 custom-scrollbar">
             {filteredContacts.length === 0 ? (
-              <div className="p-8 text-center bg-gray-50 dark:bg-slate-950/60 rounded-2xl border border-dashed border-gray-200 dark:border-slate-800">
-                <BookOpen className="w-8 h-8 text-gray-300 dark:text-gray-600 mx-auto mb-2" />
-                <p className="text-xs font-semibold text-gray-600 dark:text-gray-400">No contacts found</p>
-                <p className="text-[11px] text-gray-400 dark:text-gray-500 mt-1">
+              <div className="p-8 text-center bg-gray-50 dark:bg-black rounded-2xl border border-dashed border-gray-200 dark:border-white/10">
+                <BookOpen className="w-8 h-8 text-gray-300 dark:text-zinc-600 mx-auto mb-2" />
+                <p className="text-xs font-semibold text-gray-600 dark:text-zinc-400">No contacts found</p>
+                <p className="text-[11px] text-gray-400 dark:text-zinc-500 mt-1">
                   Add contacts or search with different keywords.
                 </p>
               </div>
@@ -303,10 +303,10 @@ export const AddressBookModal: React.FC<AddressBookModalProps> = ({
                     onSelectAddress(contact.address, contact.name);
                     onClose();
                   }}
-                  className="p-3 bg-gray-50 dark:bg-slate-950/60 hover:bg-gray-100/90 dark:hover:bg-slate-850 border border-gray-200 dark:border-slate-800 rounded-2xl transition cursor-pointer flex items-center justify-between gap-3 group"
+                  className="p-3 bg-gray-50 dark:bg-black hover:bg-gray-100/90 dark:hover:bg-zinc-900 border border-gray-200 dark:border-white/10 rounded-2xl transition cursor-pointer flex items-center justify-between gap-3 group"
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="w-8 h-8 rounded-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 flex items-center justify-center flex-shrink-0 shadow-2xs">
+                    <div className="w-8 h-8 rounded-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-white/10 flex items-center justify-center flex-shrink-0 shadow-2xs">
                       <TokenIcon symbol={contact.chain === 'zec' ? 'ZEC' : contact.chain === 'sol' ? 'SOL' : contact.chain === 'btc' ? 'BTC' : 'USDC'} chain={contact.chain} className="w-4 h-4" />
                     </div>
 
@@ -321,12 +321,12 @@ export const AddressBookModal: React.FC<AddressBookModalProps> = ({
                           </span>
                         )}
                         {contact.tag && (
-                          <span className="px-1.5 py-0.2 rounded bg-gray-200 dark:bg-slate-800 text-gray-700 dark:text-gray-300 text-[9px] font-semibold">
+                          <span className="px-1.5 py-0.2 rounded bg-gray-200 dark:bg-zinc-900 text-gray-700 dark:text-zinc-300 text-[9px] font-semibold">
                             {contact.tag}
                           </span>
                         )}
                       </div>
-                      <div className="text-[11px] font-mono text-gray-500 dark:text-gray-400 truncate max-w-[240px]">
+                      <div className="text-[11px] font-mono text-gray-500 dark:text-zinc-400 truncate max-w-[240px]">
                         {contact.address}
                       </div>
                     </div>
@@ -339,7 +339,7 @@ export const AddressBookModal: React.FC<AddressBookModalProps> = ({
                         e.stopPropagation();
                         handleCopy(contact.address, contact.id);
                       }}
-                      className="p-1.5 rounded-lg hover:bg-white dark:hover:bg-slate-800 text-gray-400 dark:text-gray-400 hover:text-black dark:hover:text-white transition"
+                      className="p-1.5 rounded-lg hover:bg-white dark:hover:bg-zinc-900 text-gray-400 dark:text-zinc-400 hover:text-black dark:hover:text-white transition"
                       title="Copy Address"
                     >
                       {copiedId === contact.id ? (
@@ -367,7 +367,7 @@ export const AddressBookModal: React.FC<AddressBookModalProps> = ({
         )}
 
         {/* Footer */}
-        <div className="mt-4 pt-3 border-t border-gray-100 dark:border-slate-800 flex items-center justify-between text-[11px] text-gray-400 dark:text-gray-500">
+        <div className="mt-4 pt-3 border-t border-gray-100 dark:border-white/10 flex items-center justify-between text-[11px] text-gray-400 dark:text-zinc-500">
           <span>Click any contact to auto-fill recipient</span>
           <span className="font-mono">{contacts.length} Saved</span>
         </div>
@@ -377,3 +377,4 @@ export const AddressBookModal: React.FC<AddressBookModalProps> = ({
 
   return createPortal(modalContent, document.body);
 };
+

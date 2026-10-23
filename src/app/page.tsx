@@ -98,7 +98,7 @@ export default function Home() {
   return (
     <WalletProvider>
       <EmbeddedWalletProvider>
-        <div className="min-h-screen relative font-geist bg-white dark:bg-[#080c14] text-slate-900 dark:text-slate-100 transition-colors">
+        <div className="min-h-screen relative font-geist bg-white dark:bg-black text-slate-900 dark:text-slate-100 transition-colors">
           {/* Render Selected View */}
           {view === 'landing' ? (
             <LandingPage

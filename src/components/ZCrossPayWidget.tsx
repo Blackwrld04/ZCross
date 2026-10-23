@@ -107,27 +107,27 @@ export function CheckoutPage() {
 }`;
 
   return (
-    <div className="w-full max-w-xl mx-auto bg-white border border-gray-200 rounded-[28px] shadow-xl p-6 sm:p-8 text-slate-900">
+    <div className="w-full max-w-xl mx-auto bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-[28px] shadow-xl p-6 sm:p-8 text-slate-900 dark:text-white">
       {/* Widget Tabs Header */}
-      <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-100 flex-wrap gap-2">
+      <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-100 dark:border-white/10 flex-wrap gap-2">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-black text-white flex items-center justify-center shadow-xs">
+          <div className="w-8 h-8 rounded-xl bg-black dark:bg-neutral-900 border border-transparent dark:border-white/10 text-white flex items-center justify-center shadow-xs">
             <ShoppingBag className="w-4 h-4 text-white" />
           </div>
           <div>
-            <span className="text-xs font-bold text-slate-900 uppercase tracking-wider font-mono">
+            <span className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider font-mono">
               Merchant Pay SDK
             </span>
-            <div className="text-xs text-gray-500">Drop-in Shielded Checkout</div>
+            <div className="text-xs text-gray-500 dark:text-neutral-400">Drop-in Shielded Checkout</div>
           </div>
         </div>
 
-        <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-full text-xs font-semibold">
+        <div className="flex items-center gap-1 bg-gray-100 dark:bg-neutral-950 p-1 rounded-full text-xs font-semibold border border-transparent dark:border-white/10">
           <button
             type="button"
             onClick={() => setActiveTab('checkout')}
             className={`px-3 py-1 rounded-full transition cursor-pointer ${
-              activeTab === 'checkout' ? 'bg-black text-white shadow-2xs font-bold' : 'text-gray-600 hover:text-black'
+              activeTab === 'checkout' ? 'bg-black dark:bg-white text-white dark:text-black shadow-2xs font-bold' : 'text-gray-600 dark:text-neutral-400 hover:text-black dark:hover:text-white'
             }`}
           >
             Live Widget Demo
@@ -136,7 +136,7 @@ export function CheckoutPage() {
             type="button"
             onClick={() => setActiveTab('code')}
             className={`px-3 py-1 rounded-full transition cursor-pointer flex items-center gap-1 ${
-              activeTab === 'code' ? 'bg-black text-white shadow-2xs font-bold' : 'text-gray-600 hover:text-black'
+              activeTab === 'code' ? 'bg-black dark:bg-white text-white dark:text-black shadow-2xs font-bold' : 'text-gray-600 dark:text-neutral-400 hover:text-black dark:hover:text-white'
             }`}
           >
             <Code2 className="w-3.5 h-3.5" />
@@ -149,24 +149,24 @@ export function CheckoutPage() {
         isSettled ? (
           /* Payment Settled Receipt */
           <div className="py-6 text-center space-y-4 animate-in fade-in">
-            <div className="w-16 h-16 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center mx-auto shadow-sm">
+            <div className="w-16 h-16 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto shadow-sm">
               <CheckCircle2 className="w-8 h-8" />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-slate-900">Payment Settled!</h3>
-              <p className="text-xs text-gray-500 mt-1 max-w-sm mx-auto">
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">Payment Settled!</h3>
+              <p className="text-xs text-gray-500 dark:text-neutral-400 mt-1 max-w-sm mx-auto">
                 Buyer paid from Zcash Orchard. Merchant atomically received <strong>${usdValue} {settleToken}</strong> on {settleChain.toUpperCase()}.
               </p>
             </div>
             {receiptTx && (
-              <div className="p-3 bg-gray-50 rounded-xl border border-gray-200 text-xs font-mono text-slate-800 break-all">
+              <div className="p-3 bg-gray-50 dark:bg-neutral-950 rounded-xl border border-gray-200 dark:border-white/10 text-xs font-mono text-slate-800 dark:text-slate-200 break-all">
                 Tx: {receiptTx}
               </div>
             )}
             <button
               type="button"
               onClick={() => setIsSettled(false)}
-              className="px-6 py-2.5 bg-black hover:bg-gray-800 text-white rounded-full text-xs font-bold transition cursor-pointer shadow-xs"
+              className="px-6 py-2.5 bg-black hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-200 text-white dark:text-black rounded-full text-xs font-bold transition cursor-pointer shadow-xs"
             >
               Simulate Another Order
             </button>
@@ -175,27 +175,27 @@ export function CheckoutPage() {
           /* Checkout View */
           <div className="space-y-5">
             {/* Merchant Details */}
-            <div className="p-4 bg-gray-50 border border-gray-200 rounded-2xl flex items-center justify-between">
+            <div className="p-4 bg-gray-50 dark:bg-neutral-950 border border-gray-200 dark:border-white/10 rounded-2xl flex items-center justify-between">
               <div>
-                <span className="text-[11px] font-semibold text-gray-500 uppercase">Merchant</span>
-                <h4 className="text-sm font-bold text-slate-900">{merchantName}</h4>
-                <p className="text-xs text-gray-500 mt-0.5">{itemDescription}</p>
+                <span className="text-[11px] font-semibold text-gray-500 dark:text-neutral-400 uppercase">Merchant</span>
+                <h4 className="text-sm font-bold text-slate-900 dark:text-white">{merchantName}</h4>
+                <p className="text-xs text-gray-500 dark:text-neutral-400 mt-0.5">{itemDescription}</p>
               </div>
               <div className="text-right">
-                <span className="text-[11px] font-semibold text-gray-500 uppercase">Total Due</span>
-                <div className="text-lg font-bold text-slate-900 font-mono">{amountZec} ZEC</div>
-                <div className="text-xs text-emerald-700 font-semibold">≈ ${usdValue} USD</div>
+                <span className="text-[11px] font-semibold text-gray-500 dark:text-neutral-400 uppercase">Total Due</span>
+                <div className="text-lg font-bold text-slate-900 dark:text-white font-mono">{amountZec} ZEC</div>
+                <div className="text-xs text-emerald-700 dark:text-emerald-400 font-semibold">≈ ${usdValue} USD</div>
               </div>
             </div>
 
             {/* In-Browser 1-Click Pay Option */}
-            <div className="p-4 bg-gray-50 border border-gray-200 rounded-2xl space-y-3">
+            <div className="p-4 bg-gray-50 dark:bg-neutral-950 border border-gray-200 dark:border-white/10 rounded-2xl space-y-3">
               <div className="flex items-center justify-between text-xs">
-                <span className="font-bold text-slate-900 flex items-center gap-1.5">
-                  <Shield className="w-4 h-4 fill-black text-black" />
+                <span className="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                  <Shield className="w-4 h-4 fill-black text-black dark:fill-white dark:text-white" />
                   <span>Option 1: Pay In-Browser (Instant 1-Click)</span>
                 </span>
-                <span className="font-mono text-[11px] text-gray-500">
+                <span className="font-mono text-[11px] text-gray-500 dark:text-neutral-400">
                   Vault: {balanceZec.toFixed(3)} ZEC
                 </span>
               </div>
@@ -204,7 +204,7 @@ export function CheckoutPage() {
                 type="button"
                 onClick={handle1ClickPay}
                 disabled={isPaying || balanceZec < amountZec}
-                className="w-full py-3.5 bg-black hover:bg-gray-800 active:scale-[0.99] text-white rounded-full font-bold text-xs flex items-center justify-center gap-2 transition cursor-pointer shadow-lg disabled:opacity-50"
+                className="w-full py-3.5 bg-black hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-200 active:scale-[0.99] text-white dark:text-black rounded-full font-bold text-xs flex items-center justify-center gap-2 transition cursor-pointer shadow-lg disabled:opacity-50"
               >
                 {isPaying ? (
                   <span className="flex items-center gap-2">
@@ -221,24 +221,24 @@ export function CheckoutPage() {
             </div>
 
             {/* Scan with Mobile Shielded Wallet Option */}
-            <div className="p-4 bg-gray-50 border border-gray-200 rounded-2xl flex items-center justify-between gap-4">
+            <div className="p-4 bg-gray-50 dark:bg-neutral-950 border border-gray-200 dark:border-white/10 rounded-2xl flex items-center justify-between gap-4">
               <div className="space-y-1">
-                <span className="text-xs font-bold text-slate-900">
+                <span className="text-xs font-bold text-slate-900 dark:text-white">
                   Option 2: Pay with Phone App
                 </span>
-                <p className="text-[11px] text-gray-500 leading-relaxed">
+                <p className="text-[11px] text-gray-500 dark:text-neutral-400 leading-relaxed">
                   Scan with Zashi or YWallet. In-band encrypted memo settles directly to merchant's Arbitrum USDC address.
                 </p>
-                <div className="pt-1 text-[10px] font-mono text-gray-400">
+                <div className="pt-1 text-[10px] font-mono text-gray-400 dark:text-neutral-500">
                   Settles to: {recipientAddress.slice(0, 10)}...{recipientAddress.slice(-6)}
                 </div>
               </div>
 
               {qrUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={qrUrl} alt="ZCross Pay QR" className="w-24 h-24 rounded-xl border border-gray-200 shadow-2xs flex-shrink-0" />
+                <img src={qrUrl} alt="ZCross Pay QR" className="w-24 h-24 rounded-xl border border-gray-200 dark:border-white/10 shadow-2xs flex-shrink-0" />
               ) : (
-                <div className="w-24 h-24 rounded-xl bg-gray-200 animate-pulse flex-shrink-0" />
+                <div className="w-24 h-24 rounded-xl bg-gray-200 dark:bg-neutral-900 animate-pulse flex-shrink-0" />
               )}
             </div>
           </div>
@@ -248,34 +248,34 @@ export function CheckoutPage() {
         <div className="space-y-5">
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-xs font-bold text-slate-800">1. HTML / Script Embed</span>
+              <span className="text-xs font-bold text-slate-800 dark:text-white">1. HTML / Script Embed</span>
               <button
                 type="button"
                 onClick={() => copyCode('html', htmlSnippet)}
-                className="text-xs font-semibold text-slate-700 hover:text-black flex items-center gap-1 cursor-pointer"
+                className="text-xs font-semibold text-slate-700 dark:text-neutral-300 hover:text-black dark:hover:text-white flex items-center gap-1 cursor-pointer"
               >
                 {copiedSnippet === 'html' ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copiedSnippet === 'html' ? 'Copied' : 'Copy HTML'}</span>
               </button>
             </div>
-            <pre className="p-3.5 bg-gray-950 text-cyan-200 rounded-2xl text-[11px] font-mono overflow-x-auto border border-gray-800 leading-relaxed">
+            <pre className="p-3.5 bg-gray-950 dark:bg-black text-cyan-200 rounded-2xl text-[11px] font-mono overflow-x-auto border border-gray-800 dark:border-white/10 leading-relaxed">
               {htmlSnippet}
             </pre>
           </div>
 
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-xs font-bold text-slate-800">2. React / Next.js Component</span>
+              <span className="text-xs font-bold text-slate-800 dark:text-white">2. React / Next.js Component</span>
               <button
                 type="button"
                 onClick={() => copyCode('react', reactSnippet)}
-                className="text-xs font-semibold text-slate-700 hover:text-black flex items-center gap-1 cursor-pointer"
+                className="text-xs font-semibold text-slate-700 dark:text-neutral-300 hover:text-black dark:hover:text-white flex items-center gap-1 cursor-pointer"
               >
                 {copiedSnippet === 'react' ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copiedSnippet === 'react' ? 'Copied' : 'Copy JSX'}</span>
               </button>
             </div>
-            <pre className="p-3.5 bg-gray-950 text-emerald-300 rounded-2xl text-[11px] font-mono overflow-x-auto border border-gray-800 leading-relaxed">
+            <pre className="p-3.5 bg-gray-950 dark:bg-black text-emerald-300 rounded-2xl text-[11px] font-mono overflow-x-auto border border-gray-800 dark:border-white/10 leading-relaxed">
               {reactSnippet}
             </pre>
           </div>
@@ -283,7 +283,7 @@ export function CheckoutPage() {
       )}
 
       {/* Widget Footer */}
-      <div className="mt-5 pt-3.5 border-t border-gray-100 flex items-center justify-between text-[11px] text-gray-400">
+      <div className="mt-5 pt-3.5 border-t border-gray-100 dark:border-white/10 flex items-center justify-between text-[11px] text-gray-400 dark:text-neutral-500">
         <span>Powered by ZCross Protocol &amp; NEAR Intents</span>
         <span>Zero Chargebacks • Instant Settlement</span>
       </div>

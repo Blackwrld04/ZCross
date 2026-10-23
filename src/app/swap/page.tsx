@@ -102,7 +102,7 @@ export default function SwapPage() {
   return (
     <WalletProvider>
       <EmbeddedWalletProvider>
-        <div className="min-h-screen relative font-geist bg-white dark:bg-[#080c14] text-slate-900 dark:text-slate-100 transition-colors">
+        <div className="min-h-screen relative font-geist bg-white dark:bg-black text-slate-900 dark:text-slate-100 transition-colors">
           <WalletDashboard
             network={network}
             destinations={destinations}

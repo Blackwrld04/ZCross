@@ -80,6 +80,14 @@ export function validateZcashAddress(address: string, expectedNetwork: 'mainnet'
 }
 
 /**
+ * Checks whether an address is pure shielded (Unified or Sapling) and not transparent.
+ */
+export function isShieldedAddress(address: string, expectedNetwork: 'mainnet' | 'testnet' = 'mainnet'): boolean {
+  const res = validateZcashAddress(address, expectedNetwork);
+  return res.isValid && res.isShielded;
+}
+
+/**
  * Get active solver vault UA based on network
  */
 export function getSolverVaultAddress(network: 'mainnet' | 'testnet' = 'mainnet'): string {

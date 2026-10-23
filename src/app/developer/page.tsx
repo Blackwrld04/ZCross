@@ -284,14 +284,14 @@ function DeveloperPortalContent() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#080c14] text-slate-900 dark:text-slate-100 font-sans selection:bg-amber-500 selection:text-black transition-colors">
+    <div className="min-h-screen bg-white dark:bg-black text-slate-900 dark:text-slate-100 font-sans selection:bg-amber-500 selection:text-black transition-colors">
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-white/90 dark:bg-[#080c14]/90 backdrop-blur-md border-b border-gray-200 dark:border-slate-800 transition-colors">
+      <header className="sticky top-0 z-40 bg-white/90 dark:bg-black/90 backdrop-blur-md border-b border-gray-200 dark:border-slate-800 transition-colors">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <div className="flex items-center gap-4 sm:gap-6">
             <Link
               href="/swap"
-              className="inline-flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white px-3.5 py-1.5 rounded-full bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 border border-gray-200 dark:border-slate-700 transition font-medium cursor-pointer"
+              className="inline-flex items-center gap-1.5 text-xs text-gray-600 dark:text-zinc-300 hover:text-black dark:hover:text-white px-3.5 py-1.5 rounded-full bg-gray-50 dark:bg-black hover:bg-gray-100 dark:hover:bg-zinc-900 border border-gray-200 dark:border-white/10 transition font-medium cursor-pointer"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Back to App</span>
@@ -302,7 +302,7 @@ function DeveloperPortalContent() {
               <div>
                 <div className="flex items-center gap-2">
                   <span className="font-bold text-xl tracking-tight text-slate-900 dark:text-white">Developer Portal</span>
-                  <span className="text-[10px] font-bold uppercase tracking-wider bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300 px-2 py-0.5 rounded-md border border-gray-200 dark:border-slate-700">
+                  <span className="text-[10px] font-bold uppercase tracking-wider bg-gray-100 dark:bg-zinc-900 text-gray-700 dark:text-zinc-300 px-2 py-0.5 rounded-md border border-gray-200 dark:border-white/10">
                     SDK v1.0
                   </span>
                 </div>
@@ -311,7 +311,7 @@ function DeveloperPortalContent() {
           </div>
 
           {/* Navigation Tabs */}
-          <nav className="hidden md:flex items-center bg-gray-100 dark:bg-slate-800/80 p-1 rounded-full border border-gray-200 dark:border-slate-700">
+          <nav className="hidden md:flex items-center bg-gray-100 dark:bg-black p-1 rounded-full border border-gray-200 dark:border-white/10">
             <button
               onClick={() => setActiveTab('sandbox')}
               className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold transition cursor-pointer ${
@@ -365,28 +365,28 @@ function DeveloperPortalContent() {
         </div>
 
         {/* Mobile Tab Row */}
-        <div className="md:hidden flex items-center justify-between border-t border-gray-100 px-3 py-2 bg-gray-50 text-[11px] font-medium overflow-x-auto gap-1">
+        <div className="md:hidden flex items-center justify-between border-t border-gray-100 dark:border-white/10 px-3 py-2 bg-gray-50 dark:bg-black text-[11px] font-medium overflow-x-auto gap-1">
           <button 
             onClick={() => setActiveTab('sandbox')}
-            className={`py-1 px-2.5 rounded-md ${activeTab === 'sandbox' ? 'bg-black text-white font-bold' : 'text-gray-600'}`}
+            className={`py-1 px-2.5 rounded-md ${activeTab === 'sandbox' ? 'bg-black text-white dark:bg-amber-500 dark:text-black font-bold' : 'text-gray-600 dark:text-zinc-400'}`}
           >
             REST Sandbox
           </button>
           <button 
             onClick={() => setActiveTab('memo')}
-            className={`py-1 px-2.5 rounded-md ${activeTab === 'memo' ? 'bg-black text-white font-bold' : 'text-gray-600'}`}
+            className={`py-1 px-2.5 rounded-md ${activeTab === 'memo' ? 'bg-black text-white dark:bg-amber-500 dark:text-black font-bold' : 'text-gray-600 dark:text-zinc-400'}`}
           >
             Memo Studio
           </button>
           <button 
             onClick={() => setActiveTab('widget')}
-            className={`py-1 px-2.5 rounded-md ${activeTab === 'widget' ? 'bg-black text-white font-bold' : 'text-gray-600'}`}
+            className={`py-1 px-2.5 rounded-md ${activeTab === 'widget' ? 'bg-black text-white dark:bg-amber-500 dark:text-black font-bold' : 'text-gray-600 dark:text-zinc-400'}`}
           >
             Merchant SDK
           </button>
           <button 
             onClick={() => setActiveTab('docs')}
-            className={`py-1 px-2.5 rounded-md ${activeTab === 'docs' ? 'bg-black text-white font-bold' : 'text-gray-600'}`}
+            className={`py-1 px-2.5 rounded-md ${activeTab === 'docs' ? 'bg-black text-white dark:bg-amber-500 dark:text-black font-bold' : 'text-gray-600 dark:text-zinc-400'}`}
           >
             Specs
           </button>
@@ -400,10 +400,10 @@ function DeveloperPortalContent() {
         {activeTab === 'sandbox' && (
           <div className="space-y-6">
             <div>
-              <h1 className="text-2xl font-bold tracking-tight text-slate-900 font-serif">
+              <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white font-serif">
                 Interactive REST API Sandbox
               </h1>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-gray-500 dark:text-zinc-400 mt-1">
                 Execute live requests against the local solver consensus service with rate limiting and idempotency inspection.
               </p>
             </div>
@@ -411,7 +411,7 @@ function DeveloperPortalContent() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               {/* Left Column: Endpoint Directory */}
               <div className="lg:col-span-4 space-y-2">
-                <div className="text-xs font-bold text-gray-500 uppercase tracking-wider px-1 mb-2">
+                <div className="text-xs font-bold text-gray-500 dark:text-zinc-400 uppercase tracking-wider px-1 mb-2">
                   Available Endpoints
                 </div>
                 {API_ENDPOINTS.map((endpoint) => (
@@ -420,16 +420,16 @@ function DeveloperPortalContent() {
                     onClick={() => setSelectedEndpoint(endpoint)}
                     className={`w-full text-left p-3.5 rounded-2xl border transition cursor-pointer flex flex-col gap-1.5 ${
                       selectedEndpoint.id === endpoint.id
-                        ? 'bg-black text-white border-black shadow-sm'
-                        : 'bg-white hover:bg-gray-50 border-gray-200 text-slate-900'
+                        ? 'bg-black text-white border-black dark:bg-zinc-900 dark:border-white/20 shadow-sm'
+                        : 'bg-white hover:bg-gray-50 border-gray-200 text-slate-900 dark:bg-black dark:hover:bg-zinc-950 dark:border-white/10 dark:text-zinc-200'
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-md ${
                           endpoint.method === 'POST'
-                            ? selectedEndpoint.id === endpoint.id ? 'bg-amber-400 text-black' : 'bg-amber-100 text-amber-800'
-                            : selectedEndpoint.id === endpoint.id ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-700'
+                            ? selectedEndpoint.id === endpoint.id ? 'bg-amber-400 text-black' : 'bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-400 dark:border dark:border-amber-800/40'
+                            : selectedEndpoint.id === endpoint.id ? 'bg-gray-800 text-white dark:bg-zinc-800' : 'bg-gray-100 text-gray-700 dark:bg-zinc-900 dark:text-zinc-300'
                         }`}>
                           {endpoint.method}
                         </span>
@@ -439,7 +439,7 @@ function DeveloperPortalContent() {
                       </div>
                     </div>
                     <span className={`text-[11px] font-mono truncate ${
-                      selectedEndpoint.id === endpoint.id ? 'text-gray-300' : 'text-gray-500'
+                      selectedEndpoint.id === endpoint.id ? 'text-gray-300 dark:text-zinc-400' : 'text-gray-500 dark:text-zinc-500'
                     }`}>
                       {endpoint.path}
                     </span>
@@ -447,13 +447,13 @@ function DeveloperPortalContent() {
                 ))}
 
                 {/* Idempotency Alert Box */}
-                <div className="mt-4 p-4 rounded-2xl bg-gray-50 border border-gray-200 text-xs space-y-1.5">
-                  <div className="flex items-center gap-1.5 font-bold text-slate-900">
-                    <Shield className="w-3.5 h-3.5 text-emerald-600" />
+                <div className="mt-4 p-4 rounded-2xl bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 text-xs space-y-1.5">
+                  <div className="flex items-center gap-1.5 font-bold text-slate-900 dark:text-white">
+                    <Shield className="w-3.5 h-3.5 text-emerald-500" />
                     Idempotency &amp; Rate Limits
                   </div>
-                  <p className="text-gray-600 leading-relaxed text-[11px]">
-                    All POST intent creation requests accept an <code className="font-mono bg-white px-1 py-0.5 rounded border border-gray-200">Idempotency-Key</code> header to prevent double spend during solver routing. Rate limit: 20 req/min per IP.
+                  <p className="text-gray-600 dark:text-zinc-400 leading-relaxed text-[11px]">
+                    All POST intent creation requests accept an <code className="font-mono bg-white dark:bg-zinc-900 px-1 py-0.5 rounded border border-gray-200 dark:border-white/10 text-slate-900 dark:text-zinc-200">Idempotency-Key</code> header to prevent double spend during solver routing. Rate limit: 20 req/min per IP.
                   </p>
                 </div>
               </div>
@@ -461,14 +461,14 @@ function DeveloperPortalContent() {
               {/* Right Column: Request Composer & Live Response */}
               <div className="lg:col-span-8 space-y-4">
                 {/* Request Header Bar */}
-                <div className="p-4 bg-gray-50 border border-gray-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="p-4 bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div className="flex items-center gap-2.5">
                     <span className={`text-xs font-mono font-bold px-2.5 py-1 rounded-lg ${
-                      selectedEndpoint.method === 'POST' ? 'bg-amber-400 text-black' : 'bg-black text-white'
+                      selectedEndpoint.method === 'POST' ? 'bg-amber-400 text-black' : 'bg-black text-white dark:bg-white dark:text-black'
                     }`}>
                       {selectedEndpoint.method}
                     </span>
-                    <span className="font-mono text-xs font-bold text-slate-900 break-all">
+                    <span className="font-mono text-xs font-bold text-slate-900 dark:text-white break-all">
                       {selectedEndpoint.path}
                     </span>
                   </div>
@@ -476,16 +476,16 @@ function DeveloperPortalContent() {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={copyCurl}
-                      className="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 bg-white hover:bg-gray-100 border border-gray-200 rounded-xl transition text-slate-700 cursor-pointer shadow-2xs"
+                      className="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 bg-white hover:bg-gray-100 border border-gray-200 rounded-xl transition text-slate-700 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:border-white/10 dark:text-zinc-200 cursor-pointer shadow-2xs"
                       title="Copy cURL command"
                     >
-                      {copiedCurl ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                      {copiedCurl ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
                       <span>{copiedCurl ? 'Copied cURL' : 'Copy cURL'}</span>
                     </button>
                     <button
                       onClick={handleExecuteSandbox}
                       disabled={isLoading}
-                      className="inline-flex items-center gap-1.5 text-xs font-bold px-4 py-1.5 bg-black hover:bg-gray-800 text-white rounded-xl transition shadow-xs cursor-pointer disabled:opacity-50"
+                      className="inline-flex items-center gap-1.5 text-xs font-bold px-4 py-1.5 bg-black hover:bg-gray-800 text-white dark:bg-amber-500 dark:hover:bg-amber-400 dark:text-black rounded-xl transition shadow-xs cursor-pointer disabled:opacity-50"
                     >
                       {isLoading ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
                       <span>{isLoading ? 'Executing...' : 'Send Request'}</span>
@@ -496,46 +496,46 @@ function DeveloperPortalContent() {
                 {/* Request Body (For POST) */}
                 {selectedEndpoint.method === 'POST' && (
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-gray-600">
+                    <label className="text-xs font-bold text-gray-600 dark:text-zinc-400">
                       Request JSON Payload:
                     </label>
                     <textarea
                       value={requestPayload}
                       onChange={(e) => setRequestPayload(e.target.value)}
                       rows={7}
-                      className="w-full font-mono text-xs p-3.5 bg-gray-900 text-emerald-400 rounded-2xl border border-gray-700 focus:outline-hidden focus:ring-2 focus:ring-black resize-y"
+                      className="w-full font-mono text-xs p-3.5 bg-gray-900 dark:bg-black text-emerald-400 rounded-2xl border border-gray-700 dark:border-white/10 focus:outline-hidden focus:ring-2 focus:ring-amber-500 resize-y"
                     />
                   </div>
                 )}
 
                 {/* Live Response Panel */}
-                <div className="p-4 rounded-2xl border border-gray-200 bg-white space-y-3 shadow-xs">
-                  <div className="flex items-center justify-between pb-2 border-b border-gray-100">
+                <div className="p-4 rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-black space-y-3 shadow-xs">
+                  <div className="flex items-center justify-between pb-2 border-b border-gray-100 dark:border-white/10">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold text-slate-900">Response</span>
+                      <span className="text-xs font-bold text-slate-900 dark:text-white">Response</span>
                       {responseStatus !== null && (
                         <span className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-md ${
                           responseStatus >= 200 && responseStatus < 300
-                            ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
-                            : 'bg-red-100 text-red-800 border border-red-200'
+                            ? 'bg-emerald-100 text-emerald-800 border border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-400 dark:border-emerald-800/40'
+                            : 'bg-red-100 text-red-800 border border-red-200 dark:bg-red-950/60 dark:text-red-400 dark:border-red-800/40'
                         }`}>
                           {responseStatus} {responseStatus === 200 ? 'OK' : 'Response'}
                         </span>
                       )}
                     </div>
                     {responseLatency !== null && (
-                      <span className="text-xs font-mono text-gray-500">
-                        Roundtrip: <span className="font-bold text-slate-800">{responseLatency}ms</span>
+                      <span className="text-xs font-mono text-gray-500 dark:text-zinc-400">
+                        Roundtrip: <span className="font-bold text-slate-800 dark:text-zinc-200">{responseLatency}ms</span>
                       </span>
                     )}
                   </div>
 
                   {responseData ? (
-                    <pre className="font-mono text-xs p-3.5 bg-gray-950 text-gray-100 rounded-xl overflow-x-auto max-h-[360px] leading-relaxed border border-gray-800">
+                    <pre className="font-mono text-xs p-3.5 bg-gray-950 dark:bg-black text-gray-100 rounded-xl overflow-x-auto max-h-[360px] leading-relaxed border border-gray-800 dark:border-white/10">
                       {JSON.stringify(responseData, null, 2)}
                     </pre>
                   ) : (
-                    <div className="py-12 text-center text-xs text-gray-400 font-mono">
+                    <div className="py-12 text-center text-xs text-gray-400 dark:text-zinc-600 font-mono">
                       Click &ldquo;Send Request&rdquo; to execute live query against solver
                     </div>
                   )}
@@ -549,42 +549,42 @@ function DeveloperPortalContent() {
         {activeTab === 'memo' && (
           <div className="space-y-6">
             <div>
-              <h1 className="text-2xl font-bold tracking-tight text-slate-900 font-serif">
+              <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white font-serif">
                 ZIP-302 / ZIP-321 Memo Studio
               </h1>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-gray-500 dark:text-zinc-400 mt-1">
                 Zero-Knowledge Invariant: All Orchard transaction memos must be padded to precisely 512 bytes with 0x00 to guarantee zero length metadata leakage.
               </p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               {/* Memo Generator Inputs */}
-              <div className="lg:col-span-5 p-5 bg-white border border-gray-200 rounded-3xl space-y-4 shadow-xs">
-                <div className="flex items-center justify-between pb-2 border-b border-gray-100">
-                  <h3 className="text-sm font-bold text-slate-900">Intent Payload Builder</h3>
-                  <span className="text-[11px] font-mono font-bold bg-black text-white px-2 py-0.5 rounded-full">
+              <div className="lg:col-span-5 p-5 bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-3xl space-y-4 shadow-xs">
+                <div className="flex items-center justify-between pb-2 border-b border-gray-100 dark:border-white/10">
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-white">Intent Payload Builder</h3>
+                  <span className="text-[11px] font-mono font-bold bg-black text-white dark:bg-amber-500 dark:text-black px-2 py-0.5 rounded-full">
                     {memoByteSize} / 512 Bytes
                   </span>
                 </div>
 
                 <div className="space-y-3 text-xs">
                   <div>
-                    <label className="font-semibold text-gray-700 block mb-1">Swap ID (8-16 chars):</label>
+                    <label className="font-semibold text-gray-700 dark:text-zinc-300 block mb-1">Swap ID (8-16 chars):</label>
                     <input
                       type="text"
                       value={memoSwapId}
                       onChange={(e) => setMemoSwapId(e.target.value)}
-                      className="w-full font-mono p-2.5 rounded-xl border border-gray-200 focus:outline-hidden focus:ring-1 focus:ring-black"
+                      className="w-full font-mono p-2.5 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-black text-slate-900 dark:text-white focus:outline-hidden focus:ring-1 focus:ring-amber-500"
                     />
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="font-semibold text-gray-700 block mb-1">Target Chain:</label>
+                      <label className="font-semibold text-gray-700 dark:text-zinc-300 block mb-1">Target Chain:</label>
                       <select
                         value={memoChain}
                         onChange={(e) => setMemoChain(e.target.value)}
-                        className="w-full font-medium p-2.5 rounded-xl border border-gray-200 bg-white cursor-pointer"
+                        className="w-full font-medium p-2.5 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-black text-slate-900 dark:text-white cursor-pointer focus:outline-hidden focus:ring-1 focus:ring-amber-500"
                       >
                         <option value="arb">Arbitrum One (arb)</option>
                         <option value="sol">Solana (sol)</option>
@@ -594,33 +594,33 @@ function DeveloperPortalContent() {
                       </select>
                     </div>
                     <div>
-                      <label className="font-semibold text-gray-700 block mb-1">Token Symbol:</label>
+                      <label className="font-semibold text-gray-700 dark:text-zinc-300 block mb-1">Token Symbol:</label>
                       <input
                         type="text"
                         value={memoToken}
                         onChange={(e) => setMemoToken(e.target.value)}
-                        className="w-full font-mono p-2.5 rounded-xl border border-gray-200"
+                        className="w-full font-mono p-2.5 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-black text-slate-900 dark:text-white focus:outline-hidden focus:ring-1 focus:ring-amber-500"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="font-semibold text-gray-700 block mb-1">Recipient Destination Address:</label>
+                    <label className="font-semibold text-gray-700 dark:text-zinc-300 block mb-1">Recipient Destination Address:</label>
                     <input
                       type="text"
                       value={memoRecipient}
                       onChange={(e) => setMemoRecipient(e.target.value)}
-                      className="w-full font-mono p-2.5 rounded-xl border border-gray-200"
+                      className="w-full font-mono p-2.5 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-black text-slate-900 dark:text-white focus:outline-hidden focus:ring-1 focus:ring-amber-500"
                     />
                   </div>
 
                   <div>
-                    <label className="font-semibold text-gray-700 block mb-1">Slippage Tolerance (BPS, 100 = 1%):</label>
+                    <label className="font-semibold text-gray-700 dark:text-zinc-300 block mb-1">Slippage Tolerance (BPS, 100 = 1%):</label>
                     <input
                       type="number"
                       value={memoSlippage}
                       onChange={(e) => setMemoSlippage(Number(e.target.value))}
-                      className="w-full font-mono p-2.5 rounded-xl border border-gray-200"
+                      className="w-full font-mono p-2.5 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-black text-slate-900 dark:text-white focus:outline-hidden focus:ring-1 focus:ring-amber-500"
                     />
                   </div>
                 </div>
@@ -632,9 +632,9 @@ function DeveloperPortalContent() {
                       setCopiedMemoHex(true);
                       setTimeout(() => setCopiedMemoHex(false), 2000);
                     }}
-                    className="w-full py-2.5 px-4 bg-black hover:bg-gray-800 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
+                    className="w-full py-2.5 px-4 bg-black hover:bg-gray-800 text-white dark:bg-amber-500 dark:hover:bg-amber-400 dark:text-black rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
                   >
-                    {copiedMemoHex ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                    {copiedMemoHex ? <Check className="w-3.5 h-3.5 text-emerald-400 dark:text-black" /> : <Copy className="w-3.5 h-3.5" />}
                     <span>{copiedMemoHex ? 'Copied 512-Byte Hex Payload!' : 'Copy 512-Byte Raw Hex'}</span>
                   </button>
                 </div>
@@ -643,10 +643,10 @@ function DeveloperPortalContent() {
               {/* Memo Inspector & Byte Visualizer */}
               <div className="lg:col-span-7 space-y-4">
                 {/* Byte Layout Inspector */}
-                <div className="p-5 bg-white border border-gray-200 rounded-3xl space-y-3 shadow-xs">
+                <div className="p-5 bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-3xl space-y-3 shadow-xs">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-sm font-bold text-slate-900">512-Byte Uniform Memory Buffer</h3>
-                    <span className="text-xs text-emerald-600 font-bold flex items-center gap-1">
+                    <h3 className="text-sm font-bold text-slate-900 dark:text-white">512-Byte Uniform Memory Buffer</h3>
+                    <span className="text-xs text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
                       <CheckCircle2 className="w-3.5 h-3.5" />
                       Zero Metadata Leakage Guaranteed
                     </span>
@@ -654,28 +654,28 @@ function DeveloperPortalContent() {
 
                   {/* Hex Viewer */}
                   <div className="space-y-1">
-                    <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">
+                    <span className="text-[11px] font-bold text-gray-500 dark:text-zinc-400 uppercase tracking-wider">
                       Zero-Padded Hexdump (First 128 Bytes + Null Terminator):
                     </span>
-                    <div className="p-3.5 bg-gray-950 text-gray-200 rounded-2xl font-mono text-[11px] leading-relaxed break-all border border-gray-800 max-h-[160px] overflow-y-auto">
+                    <div className="p-3.5 bg-gray-950 dark:bg-black text-gray-200 rounded-2xl font-mono text-[11px] leading-relaxed break-all border border-gray-800 dark:border-white/10 max-h-[160px] overflow-y-auto">
                       <span className="text-amber-400 font-bold">{memoEncodedHex.slice(0, 160)}</span>
-                      <span className="text-gray-600">0000000000000000000000000000000000000000... (Padded to 1024 hex chars)</span>
+                      <span className="text-gray-600 dark:text-zinc-600">0000000000000000000000000000000000000000... (Padded to 1024 hex chars)</span>
                     </div>
                   </div>
 
                   {/* Simulated Solver IVK Decryption */}
-                  <div className="pt-3 border-t border-gray-100 space-y-2">
+                  <div className="pt-3 border-t border-gray-100 dark:border-white/10 space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                      <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
                         <Lock className="w-3.5 h-3.5 text-amber-500" />
                         Solver Incoming Viewing Key (IVK) Decrypted Payload
                       </span>
-                      <span className="text-[10px] font-mono font-bold bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full border border-emerald-200">
+                      <span className="text-[10px] font-mono font-bold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800/40">
                         Protocol Verified: z-intent/v1
                       </span>
                     </div>
 
-                    <pre className="p-3.5 bg-gray-50 text-slate-800 rounded-xl font-mono text-xs border border-gray-200 overflow-x-auto">
+                    <pre className="p-3.5 bg-gray-50 dark:bg-black text-slate-800 dark:text-zinc-200 rounded-xl font-mono text-xs border border-gray-200 dark:border-white/10 overflow-x-auto">
                       {JSON.stringify(memoDecodedObj, null, 2)}
                     </pre>
                   </div>
@@ -689,60 +689,60 @@ function DeveloperPortalContent() {
         {activeTab === 'widget' && (
           <div className="space-y-6">
             <div>
-              <h1 className="text-2xl font-bold tracking-tight text-slate-900 font-serif">
+              <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white font-serif">
                 ZCross Pay — Shielded Checkout Widget
               </h1>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-gray-500 dark:text-zinc-400 mt-1">
                 Drop-in payment button allowing e-commerce websites and dApps to accept ZEC shielded payments or cross-chain settlements in 3 lines of code.
               </p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               {/* Merchant Configuration Controls */}
-              <div className="lg:col-span-5 p-5 bg-white border border-gray-200 rounded-3xl space-y-4 shadow-xs">
-                <h3 className="text-sm font-bold text-slate-900 pb-2 border-b border-gray-100 flex items-center gap-2">
-                  <ShoppingBag className="w-4 h-4 text-slate-800" />
+              <div className="lg:col-span-5 p-5 bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-3xl space-y-4 shadow-xs">
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white pb-2 border-b border-gray-100 dark:border-white/10 flex items-center gap-2">
+                  <ShoppingBag className="w-4 h-4 text-slate-800 dark:text-zinc-200" />
                   Merchant Parameter Configurator
                 </h3>
 
                 <div className="space-y-3 text-xs">
                   <div>
-                    <label className="font-semibold text-gray-700 block mb-1">Merchant Store Name:</label>
+                    <label className="font-semibold text-gray-700 dark:text-zinc-300 block mb-1">Merchant Store Name:</label>
                     <input
                       type="text"
                       value={merchantName}
                       onChange={(e) => setMerchantName(e.target.value)}
-                      className="w-full font-medium p-2.5 rounded-xl border border-gray-200 focus:ring-1 focus:ring-black"
+                      className="w-full font-medium p-2.5 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-black text-slate-900 dark:text-white focus:outline-hidden focus:ring-1 focus:ring-amber-500"
                     />
                   </div>
 
                   <div>
-                    <label className="font-semibold text-gray-700 block mb-1">Product / Item Description:</label>
+                    <label className="font-semibold text-gray-700 dark:text-zinc-300 block mb-1">Product / Item Description:</label>
                     <input
                       type="text"
                       value={itemTitle}
                       onChange={(e) => setItemTitle(e.target.value)}
-                      className="w-full font-medium p-2.5 rounded-xl border border-gray-200"
+                      className="w-full font-medium p-2.5 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-black text-slate-900 dark:text-white focus:outline-hidden focus:ring-1 focus:ring-amber-500"
                     />
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="font-semibold text-gray-700 block mb-1">Amount (ZEC):</label>
+                      <label className="font-semibold text-gray-700 dark:text-zinc-300 block mb-1">Amount (ZEC):</label>
                       <input
                         type="number"
                         step="0.01"
                         value={priceZec}
                         onChange={(e) => setPriceZec(parseFloat(e.target.value) || 0)}
-                        className="w-full font-mono p-2.5 rounded-xl border border-gray-200"
+                        className="w-full font-mono p-2.5 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-black text-slate-900 dark:text-white focus:outline-hidden focus:ring-1 focus:ring-amber-500"
                       />
                     </div>
                     <div>
-                      <label className="font-semibold text-gray-700 block mb-1">Auto-Settle Into:</label>
+                      <label className="font-semibold text-gray-700 dark:text-zinc-300 block mb-1">Auto-Settle Into:</label>
                       <select
                         value={payoutChain}
                         onChange={(e) => setPayoutChain(e.target.value as any)}
-                        className="w-full font-medium p-2.5 rounded-xl border border-gray-200 bg-white cursor-pointer"
+                        className="w-full font-medium p-2.5 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-black text-slate-900 dark:text-white cursor-pointer focus:outline-hidden focus:ring-1 focus:ring-amber-500"
                       >
                         <option value="arb">Arbitrum USDC</option>
                         <option value="sol">Solana SOL</option>
@@ -752,18 +752,18 @@ function DeveloperPortalContent() {
                   </div>
 
                   <div>
-                    <label className="font-semibold text-gray-700 block mb-1">Payout Address (Arbitrum / Solana):</label>
+                    <label className="font-semibold text-gray-700 dark:text-zinc-300 block mb-1">Payout Address (Arbitrum / Solana):</label>
                     <input
                       type="text"
                       value={payoutAddress}
                       onChange={(e) => setPayoutAddress(e.target.value)}
-                      className="w-full font-mono p-2.5 rounded-xl border border-gray-200 text-xs"
+                      className="w-full font-mono p-2.5 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-black text-slate-900 dark:text-white focus:outline-hidden focus:ring-1 focus:ring-amber-500 text-xs"
                     />
                   </div>
                 </div>
 
-                <div className="p-3.5 bg-gray-50 rounded-2xl border border-gray-200 text-[11px] text-gray-600 space-y-1">
-                  <div className="font-bold text-slate-900">Zero In-Browser Signing Friction</div>
+                <div className="p-3.5 bg-gray-50 dark:bg-black rounded-2xl border border-gray-200 dark:border-white/10 text-[11px] text-gray-600 dark:text-zinc-400 space-y-1">
+                  <div className="font-bold text-slate-900 dark:text-white">Zero In-Browser Signing Friction</div>
                   <p>
                     Customers using ZCross in-browser vault pay with 1 click. Mobile customers scan the ZIP-321 QR code via Zashi or YWallet.
                   </p>
@@ -774,7 +774,7 @@ function DeveloperPortalContent() {
               <div className="lg:col-span-7 flex flex-col items-center">
                 <div className="w-full max-w-[440px]">
                   <div className="text-center mb-3">
-                    <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">
+                    <span className="text-[11px] font-bold text-gray-500 dark:text-zinc-400 uppercase tracking-wider">
                       Live Embedded Customer Checkout Preview
                     </span>
                   </div>
@@ -796,56 +796,56 @@ function DeveloperPortalContent() {
         {activeTab === 'docs' && (
           <div className="max-w-4xl mx-auto space-y-8">
             <div>
-              <h1 className="text-2xl font-bold tracking-tight text-slate-900 font-serif">
+              <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white font-serif">
                 Protocol Architecture &amp; Developer Specification
               </h1>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-gray-500 dark:text-zinc-400 mt-1">
                 Formal cryptographic invariants governing cross-chain intents over shielded Zcash Orchard.
               </p>
             </div>
 
             <div className="space-y-6">
-              <div className="p-6 bg-white border border-gray-200 rounded-3xl space-y-3 shadow-xs">
-                <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                  <Shield className="w-4 h-4 text-emerald-600" />
+              <div className="p-6 bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-3xl space-y-3 shadow-xs">
+                <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-emerald-500" />
                   1. ZIP-316 Unified Addresses &amp; Orchard Invariant
                 </h3>
-                <p className="text-xs text-gray-600 leading-relaxed">
+                <p className="text-xs text-gray-600 dark:text-zinc-400 leading-relaxed">
                   All cross-chain deposit addresses generated by ZCross are ZIP-316 Unified Addresses containing exclusively an Orchard receiver (`pool: orchard`). Transparent receivers (`p2pkh` / `t-addresses`) and Sprout/Sapling receivers are intentionally rejected by consensus rules to guarantee zero transaction-graph leakage.
                 </p>
               </div>
 
-              <div className="p-6 bg-white border border-gray-200 rounded-3xl space-y-3 shadow-xs">
-                <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+              <div className="p-6 bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-3xl space-y-3 shadow-xs">
+                <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
                   <Lock className="w-4 h-4 text-amber-500" />
                   2. 512-Byte In-Band Encrypted Memo (ZIP-302)
                 </h3>
-                <p className="text-xs text-gray-600 leading-relaxed">
+                <p className="text-xs text-gray-600 dark:text-zinc-400 leading-relaxed">
                   Destination chains, asset contracts, slippage limits, and recipient addresses are encrypted directly inside the Zcash note memo ciphertext. The payload is null-padded to precisely 512 bytes. Only the decentralized solver cluster holding the corresponding Incoming Viewing Key (IVK) can decrypt the execution payload.
                 </p>
               </div>
 
-              <div className="p-6 bg-white border border-gray-200 rounded-3xl space-y-3 shadow-xs">
-                <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+              <div className="p-6 bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-3xl space-y-3 shadow-xs">
+                <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
                   <Zap className="w-4 h-4 text-amber-400" />
                   3. Atomic Solver Settlement Timeline
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs pt-2">
-                  <div className="p-3 bg-gray-50 rounded-xl border border-gray-200">
-                    <span className="font-bold text-slate-900 block">Step 1: Quote</span>
-                    <span className="text-gray-500 text-[11px]">15-min guaranteed exchange rate lock</span>
+                  <div className="p-3 bg-gray-50 dark:bg-black rounded-xl border border-gray-200 dark:border-white/10">
+                    <span className="font-bold text-slate-900 dark:text-white block">Step 1: Quote</span>
+                    <span className="text-gray-500 dark:text-zinc-500 text-[11px]">15-min guaranteed exchange rate lock</span>
                   </div>
-                  <div className="p-3 bg-gray-50 rounded-xl border border-gray-200">
-                    <span className="font-bold text-slate-900 block">Step 2: Deposit</span>
-                    <span className="text-gray-500 text-[11px]">Shielded Orchard note broadcasted</span>
+                  <div className="p-3 bg-gray-50 dark:bg-black rounded-xl border border-gray-200 dark:border-white/10">
+                    <span className="font-bold text-slate-900 dark:text-white block">Step 2: Deposit</span>
+                    <span className="text-gray-500 dark:text-zinc-500 text-[11px]">Shielded Orchard note broadcasted</span>
                   </div>
-                  <div className="p-3 bg-gray-50 rounded-xl border border-gray-200">
-                    <span className="font-bold text-slate-900 block">Step 3: Solve</span>
-                    <span className="text-gray-500 text-[11px]">IVK decrypts memo; fills destination chain</span>
+                  <div className="p-3 bg-gray-50 dark:bg-black rounded-xl border border-gray-200 dark:border-white/10">
+                    <span className="font-bold text-slate-900 dark:text-white block">Step 3: Solve</span>
+                    <span className="text-gray-500 dark:text-zinc-500 text-[11px]">IVK decrypts memo; fills destination chain</span>
                   </div>
-                  <div className="p-3 bg-gray-50 rounded-xl border border-gray-200">
-                    <span className="font-bold text-slate-900 block">Step 4: Audit</span>
-                    <span className="text-gray-500 text-[11px]">Cryptographic SHA-256 audit receipt issued</span>
+                  <div className="p-3 bg-gray-50 dark:bg-black rounded-xl border border-gray-200 dark:border-white/10">
+                    <span className="font-bold text-slate-900 dark:text-white block">Step 4: Audit</span>
+                    <span className="text-gray-500 dark:text-zinc-500 text-[11px]">Cryptographic SHA-256 audit receipt issued</span>
                   </div>
                 </div>
               </div>

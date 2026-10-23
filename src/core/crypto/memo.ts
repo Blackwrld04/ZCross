@@ -98,3 +98,14 @@ export function deserializeIntentMemo(memoBufferOrHex: Buffer | string): CrossCh
     throw new Error(`Failed to parse 512-byte intent memo: ${err.message}`);
   }
 }
+
+/**
+ * Convenience aliases for memo serialization and deserialization
+ */
+export function serializeMemo(intent: Omit<CrossChainIntentMemo, 'protocol' | 'version'>): Buffer {
+  return serializeIntentMemo(intent).buffer;
+}
+
+export function deserializeMemo(memoBufferOrHex: Buffer | string): CrossChainIntentMemo {
+  return deserializeIntentMemo(memoBufferOrHex);
+}

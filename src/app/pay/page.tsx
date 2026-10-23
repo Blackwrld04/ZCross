@@ -106,9 +106,9 @@ function PaymentCheckoutContent() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#080c14] text-slate-900 dark:text-slate-100 flex flex-col justify-between selection:bg-amber-500 selection:text-black transition-colors">
+    <div className="min-h-screen bg-slate-50 dark:bg-black text-slate-900 dark:text-slate-100 flex flex-col justify-between selection:bg-amber-500 selection:text-black transition-colors">
       {/* Top Navbar */}
-      <header className="w-full bg-white dark:bg-[#080c14]/90 border-b border-gray-200 dark:border-slate-800 py-3.5 px-6 sticky top-0 z-30 shadow-2xs backdrop-blur-md transition-colors">
+      <header className="w-full bg-white dark:bg-black/90 border-b border-gray-200 dark:border-slate-800 py-3.5 px-6 sticky top-0 z-30 shadow-2xs backdrop-blur-md transition-colors">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-2 group">
@@ -133,9 +133,9 @@ function PaymentCheckoutContent() {
                 setShowLinkGenerator(true);
                 handleCreateLink();
               }}
-              className="inline-flex items-center gap-1.5 text-xs text-slate-800 dark:text-slate-200 hover:text-black dark:hover:text-white px-3.5 py-1.5 rounded-full bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 border border-gray-200 dark:border-slate-700 transition font-semibold cursor-pointer shadow-2xs"
+              className="inline-flex items-center gap-1.5 text-xs text-slate-800 dark:text-zinc-200 hover:text-black dark:hover:text-white px-3.5 py-1.5 rounded-full bg-gray-100 dark:bg-zinc-900 hover:bg-gray-200 dark:hover:bg-zinc-800 border border-gray-200 dark:border-white/10 transition font-semibold cursor-pointer shadow-2xs"
             >
-              <Share2 className="w-3.5 h-3.5 text-slate-700 dark:text-slate-300" />
+              <Share2 className="w-3.5 h-3.5 text-slate-700 dark:text-zinc-300" />
               <span className="hidden sm:inline">Create Payment Link</span>
             </button>
 
@@ -154,16 +154,16 @@ function PaymentCheckoutContent() {
       <main className="max-w-2xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {isSettled ? (
           /* Payment Settlement Confirmation Screen */
-          <div className="bg-white border border-gray-200 rounded-[32px] p-8 sm:p-10 shadow-xl text-center space-y-6 animate-in zoom-in-95 duration-200">
-            <div className="w-20 h-20 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center mx-auto shadow-sm">
+          <div className="bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-[32px] p-8 sm:p-10 shadow-xl text-center space-y-6 animate-in zoom-in-95 duration-200">
+            <div className="w-20 h-20 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto shadow-sm">
               <Check className="w-10 h-10 stroke-[2.5]" />
             </div>
 
             <div>
-              <span className="text-xs font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full border border-emerald-200">
+              <span className="text-xs font-bold uppercase tracking-wider bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 px-3 py-1 rounded-full border border-emerald-200 dark:border-emerald-800">
                 100% Shielded Settlement
               </span>
-              <h1 className="text-3xl font-extrabold text-slate-900 mt-3 font-serif">
+              <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white mt-3 font-serif">
                 Payment Complete
               </h1>
               <p className="text-xs text-gray-500 mt-1.5 max-w-sm mx-auto">
@@ -172,26 +172,26 @@ function PaymentCheckoutContent() {
             </div>
 
             {/* Receipt Summary Card */}
-            <div className="bg-gray-50 rounded-2xl p-5 border border-gray-200 text-left space-y-3 font-mono text-xs">
-              <div className="flex justify-between items-center text-slate-700 font-sans">
-                <span className="text-gray-500">Merchant</span>
-                <span className="font-bold text-slate-900">{merchantName}</span>
+            <div className="bg-gray-50 dark:bg-neutral-950 rounded-2xl p-5 border border-gray-200 dark:border-white/10 text-left space-y-3 font-mono text-xs text-slate-800 dark:text-slate-200">
+              <div className="flex justify-between items-center text-slate-700 dark:text-slate-300 font-sans">
+                <span className="text-gray-500 dark:text-slate-400">Merchant</span>
+                <span className="font-bold text-slate-900 dark:text-white">{merchantName}</span>
               </div>
-              <div className="flex justify-between items-center text-slate-700 font-sans">
-                <span className="text-gray-500">Item</span>
-                <span className="font-semibold text-slate-900">{itemDescription}</span>
+              <div className="flex justify-between items-center text-slate-700 dark:text-slate-300 font-sans">
+                <span className="text-gray-500 dark:text-slate-400">Item</span>
+                <span className="font-semibold text-slate-900 dark:text-white">{itemDescription}</span>
               </div>
-              <div className="flex justify-between items-center text-slate-700 font-sans">
-                <span className="text-gray-500">Amount Paid</span>
-                <span className="font-bold text-emerald-800">{amountZec} ZEC (≈ ${usdValue} USD)</span>
+              <div className="flex justify-between items-center text-slate-700 dark:text-slate-300 font-sans">
+                <span className="text-gray-500 dark:text-slate-400">Amount Paid</span>
+                <span className="font-bold text-emerald-800 dark:text-emerald-400">{amountZec} ZEC (≈ ${usdValue} USD)</span>
               </div>
-              <div className="flex justify-between items-center text-slate-700 font-sans pt-2 border-t border-gray-200">
-                <span className="text-gray-500">Privacy Pool</span>
-                <span className="text-emerald-700 font-bold">Orchard Halo 2 (ZIP-321)</span>
+              <div className="flex justify-between items-center text-slate-700 dark:text-slate-300 font-sans pt-2 border-t border-gray-200 dark:border-white/10">
+                <span className="text-gray-500 dark:text-slate-400">Privacy Pool</span>
+                <span className="text-emerald-700 dark:text-emerald-400 font-bold">Orchard Halo 2 (ZIP-321)</span>
               </div>
               <div className="pt-1">
-                <span className="text-gray-500 text-[11px] block mb-1 font-sans">Settlement Tx Hash</span>
-                <div className="text-[11px] text-slate-900 truncate bg-white p-2 rounded-lg border border-gray-200 select-all">
+                <span className="text-gray-500 dark:text-slate-400 text-[11px] block mb-1 font-sans">Settlement Tx Hash</span>
+                <div className="text-[11px] text-slate-900 dark:text-slate-200 truncate bg-white dark:bg-black p-2 rounded-lg border border-gray-200 dark:border-white/10 select-all">
                   {settledTxid || 'tx_orchard_7ff10a8c2901'}
                 </div>
               </div>
@@ -200,14 +200,14 @@ function PaymentCheckoutContent() {
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <Link
                 href="/swap"
-                className="flex-1 py-3.5 bg-black hover:bg-gray-800 text-white rounded-full font-bold text-xs transition text-center shadow-md"
+                className="flex-1 py-3.5 bg-black hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-200 text-white dark:text-black rounded-full font-bold text-xs transition text-center shadow-md cursor-pointer"
               >
                 Return to ZCross App
               </Link>
               <button
                 type="button"
                 onClick={() => setIsSettled(false)}
-                className="py-3.5 px-6 bg-white hover:bg-gray-50 border border-gray-300 text-slate-800 rounded-full font-semibold text-xs transition cursor-pointer"
+                className="py-3.5 px-6 bg-white hover:bg-gray-50 dark:bg-black dark:hover:bg-neutral-900 border border-gray-300 dark:border-white/10 text-slate-800 dark:text-slate-200 rounded-full font-semibold text-xs transition cursor-pointer"
               >
                 Pay Another
               </button>
@@ -215,7 +215,7 @@ function PaymentCheckoutContent() {
           </div>
         ) : (
           /* Active Payment Card */
-          <div className="bg-white border border-gray-200 rounded-[32px] p-6 sm:p-9 shadow-xl space-y-6">
+          <div className="bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-[32px] p-6 sm:p-9 shadow-xl space-y-6 text-slate-900 dark:text-white">
             {/* Merchant & Order Header */}
             <div className="flex items-start justify-between border-b border-gray-100 pb-5">
               <div className="flex items-center gap-3">
@@ -243,14 +243,14 @@ function PaymentCheckoutContent() {
             </div>
 
             {/* Payment Rail Selector Tabs */}
-            <div className="flex items-center p-1 bg-gray-100 rounded-2xl border border-gray-200">
+            <div className="flex items-center p-1 bg-gray-100 dark:bg-neutral-950 rounded-2xl border border-gray-200 dark:border-white/10">
               <button
                 type="button"
                 onClick={() => setSelectedMethod('qr')}
                 className={`flex-1 py-2 rounded-xl text-xs font-bold transition cursor-pointer flex items-center justify-center gap-1.5 ${
                   selectedMethod === 'qr'
-                    ? 'bg-white text-black shadow-xs'
-                    : 'text-gray-500 hover:text-black'
+                    ? 'bg-white dark:bg-neutral-900 text-black dark:text-white shadow-xs'
+                    : 'text-gray-500 dark:text-neutral-400 hover:text-black dark:hover:text-white'
                 }`}
               >
                 <ZcashIcon className="w-3.5 h-3.5" />
@@ -262,8 +262,8 @@ function PaymentCheckoutContent() {
                 onClick={() => setSelectedMethod('browser_wallet')}
                 className={`flex-1 py-2 rounded-xl text-xs font-bold transition cursor-pointer flex items-center justify-center gap-1.5 ${
                   selectedMethod === 'browser_wallet'
-                    ? 'bg-white text-black shadow-xs'
-                    : 'text-gray-500 hover:text-black'
+                    ? 'bg-white dark:bg-neutral-900 text-black dark:text-white shadow-xs'
+                    : 'text-gray-500 dark:text-neutral-400 hover:text-black dark:hover:text-white'
                 }`}
               >
                 <Zap className="w-3.5 h-3.5 text-amber-500" />
@@ -275,8 +275,8 @@ function PaymentCheckoutContent() {
                 onClick={() => setSelectedMethod('google_pay')}
                 className={`flex-1 py-2 rounded-xl text-xs font-bold transition cursor-pointer flex items-center justify-center gap-1.5 ${
                   selectedMethod === 'google_pay'
-                    ? 'bg-white text-black shadow-xs'
-                    : 'text-gray-500 hover:text-black'
+                    ? 'bg-white dark:bg-neutral-900 text-black dark:text-white shadow-xs'
+                    : 'text-gray-500 dark:text-neutral-400 hover:text-black dark:hover:text-white'
                 }`}
               >
                 <GooglePayLogo className="w-3.5 h-3.5" />
@@ -287,7 +287,7 @@ function PaymentCheckoutContent() {
             {/* TAB 1: QR CODE & WALLET URI */}
             {selectedMethod === 'qr' && (
               <div className="space-y-5 text-center">
-                <div className="p-4 bg-gray-50 border border-gray-200 rounded-3xl inline-block mx-auto shadow-inner">
+                <div className="p-4 bg-gray-50 dark:bg-neutral-950 border border-gray-200 dark:border-white/10 rounded-3xl inline-block mx-auto shadow-inner">
                   {qrDataUrl ? (
                     <img 
                       src={qrDataUrl} 
@@ -302,10 +302,10 @@ function PaymentCheckoutContent() {
                 </div>
 
                 <div>
-                  <span className="text-xs font-bold text-slate-800 block">
+                  <span className="text-xs font-bold text-slate-800 dark:text-white block">
                     Scan with any shielded Zcash wallet
                   </span>
-                  <div className="flex items-center justify-center gap-3 mt-1.5 text-xs text-gray-500">
+                  <div className="flex items-center justify-center gap-3 mt-1.5 text-xs text-gray-500 dark:text-neutral-400">
                     <span className="flex items-center gap-1">
                       <ZashiLogo className="w-3.5 h-3.5" />
                       <span>Zashi</span>
@@ -321,19 +321,19 @@ function PaymentCheckoutContent() {
                 </div>
 
                 {/* Recipient Address Box */}
-                <div className="p-3 bg-gray-50 border border-gray-200 rounded-2xl text-left space-y-1">
-                  <div className="flex items-center justify-between text-[11px] text-gray-500">
-                    <span className="font-semibold text-slate-700 flex items-center gap-1">
-                      <Lock className="w-3 h-3 text-emerald-600" />
+                <div className="p-3 bg-gray-50 dark:bg-neutral-950 border border-gray-200 dark:border-white/10 rounded-2xl text-left space-y-1">
+                  <div className="flex items-center justify-between text-[11px] text-gray-500 dark:text-neutral-400">
+                    <span className="font-semibold text-slate-700 dark:text-neutral-300 flex items-center gap-1">
+                      <Lock className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                       Destination Unified Address
                     </span>
                     <button
                       type="button"
                       onClick={() => handleCopy(recipientAddress, 'addr')}
-                      className="text-slate-700 hover:text-black font-semibold flex items-center gap-1 cursor-pointer"
+                      className="text-slate-700 dark:text-neutral-300 hover:text-black dark:hover:text-white font-semibold flex items-center gap-1 cursor-pointer"
                     >
                       {copiedField === 'addr' ? (
-                        <span className="text-emerald-600 flex items-center gap-0.5">
+                        <span className="text-emerald-600 dark:text-emerald-400 flex items-center gap-0.5">
                           <Check className="w-3 h-3" /> Copied
                         </span>
                       ) : (
@@ -343,7 +343,7 @@ function PaymentCheckoutContent() {
                       )}
                     </button>
                   </div>
-                  <p className="font-mono text-xs text-slate-800 break-all select-all">
+                  <p className="font-mono text-xs text-slate-800 dark:text-neutral-200 break-all select-all">
                     {recipientAddress}
                   </p>
                 </div>
@@ -351,7 +351,7 @@ function PaymentCheckoutContent() {
                 <div className="flex gap-2.5">
                   <a
                     href={zip321Uri}
-                    className="flex-1 py-3 bg-black hover:bg-gray-800 text-white rounded-full font-bold text-xs flex items-center justify-center gap-2 transition cursor-pointer shadow-md"
+                    className="flex-1 py-3 bg-black hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-200 text-white dark:text-black rounded-full font-bold text-xs flex items-center justify-center gap-2 transition cursor-pointer shadow-md"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
                     <span>Open in Mobile Wallet</span>
@@ -360,7 +360,7 @@ function PaymentCheckoutContent() {
                   <button
                     type="button"
                     onClick={() => handleCopy(zip321Uri, 'uri')}
-                    className="py-3 px-4 bg-gray-100 hover:bg-gray-200 text-slate-800 rounded-full font-semibold text-xs flex items-center justify-center gap-1.5 transition cursor-pointer"
+                    className="py-3 px-4 bg-gray-100 hover:bg-gray-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 text-slate-800 dark:text-neutral-200 border border-transparent dark:border-white/10 rounded-full font-semibold text-xs flex items-center justify-center gap-1.5 transition cursor-pointer"
                   >
                     {copiedField === 'uri' ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
                     <span>{copiedField === 'uri' ? 'URI Copied' : 'Copy ZIP-321 URI'}</span>
@@ -499,7 +499,7 @@ function PaymentCheckoutContent() {
       </main>
 
       {/* Footer */}
-      <footer className="w-full py-6 border-t border-gray-200 text-center text-xs text-gray-500">
+      <footer className="w-full py-6 border-t border-gray-200 dark:border-white/10 text-center text-xs text-gray-500 dark:text-gray-400">
         <p>Protected by ZCross Zero-Knowledge Privacy Architecture • ZIP-321 Compatible</p>
       </footer>
 
@@ -518,26 +518,26 @@ function PaymentCheckoutContent() {
       {/* Link Generator Modal */}
       {showLinkGenerator && (
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in"
           onClick={(e) => {
             if (e.target === e.currentTarget) setShowLinkGenerator(false);
           }}
         >
           <div 
-            className="w-full max-w-lg bg-white rounded-[28px] border border-gray-200 p-6 sm:p-7 shadow-2xl space-y-4"
+            className="w-full max-w-lg bg-white dark:bg-black rounded-[28px] border border-gray-200 dark:border-white/10 p-6 sm:p-7 shadow-2xl space-y-4 text-slate-900 dark:text-white"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+            <div className="flex items-center justify-between pb-3 border-b border-gray-100 dark:border-white/10">
               <div className="flex items-center gap-2">
-                <Share2 className="w-4 h-4 text-slate-800" />
-                <h3 className="text-base font-bold text-slate-900 font-serif">
+                <Share2 className="w-4 h-4 text-slate-800 dark:text-slate-200" />
+                <h3 className="text-base font-bold text-slate-900 dark:text-white font-serif">
                   Generate Shareable Payment Request Link
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={() => setShowLinkGenerator(false)}
-                className="w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500 cursor-pointer"
+                className="w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 flex items-center justify-center text-gray-500 dark:text-gray-400 cursor-pointer"
               >
                 ✕
               </button>
@@ -545,21 +545,21 @@ function PaymentCheckoutContent() {
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="font-semibold text-slate-700 block mb-1">
+                <label className="font-semibold text-slate-700 dark:text-slate-300 block mb-1">
                   Recipient Unified Address (ZIP-316)
                 </label>
                 <input
                   type="text"
                   value={genTo}
                   onChange={(e) => setGenTo(e.target.value)}
-                  className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl font-mono text-[11px] text-slate-800 focus:outline-none"
+                  className="w-full p-2.5 bg-gray-50 dark:bg-neutral-950 border border-gray-200 dark:border-white/10 rounded-xl font-mono text-[11px] text-slate-800 dark:text-white focus:outline-none"
                   placeholder="u1q..."
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="font-semibold text-slate-700 block mb-1">
+                  <label className="font-semibold text-slate-700 dark:text-slate-300 block mb-1">
                     Amount (ZEC)
                   </label>
                   <input
@@ -567,34 +567,34 @@ function PaymentCheckoutContent() {
                     step="0.05"
                     value={genAmount}
                     onChange={(e) => setGenAmount(e.target.value)}
-                    className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl font-mono font-bold text-slate-900 focus:outline-none"
+                    className="w-full p-2.5 bg-gray-50 dark:bg-neutral-950 border border-gray-200 dark:border-white/10 rounded-xl font-mono font-bold text-slate-900 dark:text-white focus:outline-none"
                     placeholder="0.25"
                   />
                 </div>
 
                 <div>
-                  <label className="font-semibold text-slate-700 block mb-1">
+                  <label className="font-semibold text-slate-700 dark:text-slate-300 block mb-1">
                     Merchant / Payee Name
                   </label>
                   <input
                     type="text"
                     value={genMerchant}
                     onChange={(e) => setGenMerchant(e.target.value)}
-                    className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-slate-900 focus:outline-none font-medium"
+                    className="w-full p-2.5 bg-gray-50 dark:bg-neutral-950 border border-gray-200 dark:border-white/10 rounded-xl text-slate-900 dark:text-white focus:outline-none font-medium"
                     placeholder="Company Name"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="font-semibold text-slate-700 block mb-1">
+                <label className="font-semibold text-slate-700 dark:text-slate-300 block mb-1">
                   Item / Service Description
                 </label>
                 <input
                   type="text"
                   value={genItem}
                   onChange={(e) => setGenItem(e.target.value)}
-                  className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-slate-900 focus:outline-none font-medium"
+                  className="w-full p-2.5 bg-gray-50 dark:bg-neutral-950 border border-gray-200 dark:border-white/10 rounded-xl text-slate-900 dark:text-white focus:outline-none font-medium"
                   placeholder="Invoice description"
                 />
               </div>
@@ -603,15 +603,15 @@ function PaymentCheckoutContent() {
             <button
               type="button"
               onClick={handleCreateLink}
-              className="w-full py-2.5 bg-black hover:bg-gray-800 text-white rounded-xl font-bold text-xs transition cursor-pointer"
+              className="w-full py-2.5 bg-black hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-200 text-white dark:text-black rounded-xl font-bold text-xs transition cursor-pointer"
             >
               Generate Link
             </button>
 
             {generatedUrl && (
-              <div className="p-3 bg-gray-50 rounded-xl border border-gray-200 space-y-2">
-                <div className="text-[11px] text-gray-500 font-medium">Your Shareable Payment Link:</div>
-                <div className="text-[11px] font-mono text-slate-800 break-all select-all bg-white p-2 rounded-lg border border-gray-200">
+              <div className="p-3 bg-gray-50 dark:bg-neutral-950 rounded-xl border border-gray-200 dark:border-white/10 space-y-2">
+                <div className="text-[11px] text-gray-500 dark:text-gray-400 font-medium">Your Shareable Payment Link:</div>
+                <div className="text-[11px] font-mono text-slate-800 dark:text-slate-200 break-all select-all bg-white dark:bg-black p-2 rounded-lg border border-gray-200 dark:border-white/10">
                   {generatedUrl}
                 </div>
                 <button
@@ -640,7 +640,7 @@ export default function PaymentCheckoutPage() {
     <WalletProvider>
       <EmbeddedWalletProvider>
         <Suspense fallback={
-          <div className="min-h-screen flex items-center justify-center bg-slate-50 text-slate-900">
+          <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-black text-slate-900 dark:text-white">
             <RefreshCw className="w-6 h-6 animate-spin text-gray-400" />
           </div>
         }>

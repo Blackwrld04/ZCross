@@ -30,7 +30,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ receipt, onClose }) 
       }}
     >
       <div 
-        className="relative w-full max-w-xl max-h-[92vh] overflow-y-auto bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl shadow-2xl p-6 sm:p-8 text-slate-900 dark:text-white"
+        className="relative w-full max-w-xl max-h-[92vh] overflow-y-auto bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-3xl shadow-2xl p-6 sm:p-8 text-slate-900 dark:text-white"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -41,7 +41,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ receipt, onClose }) 
             </div>
             <div>
               <h2 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight">Settlement Audit Receipt</h2>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
+              <p className="text-xs text-gray-500 dark:text-zinc-400">
                 Cryptographic Settlement &amp; Compliance Proof
               </p>
             </div>
@@ -49,7 +49,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ receipt, onClose }) 
 
           <button
             onClick={onClose}
-            className="p-2 rounded-full bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition cursor-pointer"
+            className="p-2 rounded-full bg-gray-100 dark:bg-zinc-900 hover:bg-gray-200 dark:hover:bg-zinc-800 text-gray-500 dark:text-zinc-400 hover:text-black dark:hover:text-white transition cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -58,21 +58,21 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ receipt, onClose }) 
         {/* Details Box */}
         <div className="space-y-4 mb-6">
           {/* Key Facts */}
-          <div className="p-4 rounded-2xl bg-gray-50 dark:bg-slate-950/60 border border-gray-200 dark:border-slate-800 space-y-2.5 text-xs">
+          <div className="p-4 rounded-2xl bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 space-y-2.5 text-xs">
             <div className="flex justify-between">
-              <span className="text-gray-500 dark:text-gray-400 font-medium">Swap ID:</span>
+              <span className="text-gray-500 dark:text-zinc-400 font-medium">Swap ID:</span>
               <span className="font-mono text-slate-900 dark:text-white font-semibold">{receipt.swapId}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-500 dark:text-gray-400 font-medium">Settled At:</span>
-              <span className="text-slate-700 dark:text-slate-300">{new Date(receipt.settledAt).toUTCString()}</span>
+              <span className="text-gray-500 dark:text-zinc-400 font-medium">Settled At:</span>
+              <span className="text-slate-700 dark:text-zinc-300">{new Date(receipt.settledAt).toUTCString()}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-500 dark:text-gray-400 font-medium">Shielded Input:</span>
+              <span className="text-gray-500 dark:text-zinc-400 font-medium">Shielded Input:</span>
               <span className="font-bold text-amber-800 dark:text-amber-300">{receipt.origin.amountZec} ZEC ({receipt.origin.pool})</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-500 dark:text-gray-400 font-medium">Output Delivered:</span>
+              <span className="text-gray-500 dark:text-zinc-400 font-medium">Output Delivered:</span>
               <span className="font-bold text-emerald-700 dark:text-emerald-400">
                 {receipt.destination.amountReceived} {receipt.destination.asset} ({receipt.destination.chain.toUpperCase()})
               </span>
@@ -106,8 +106,8 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ receipt, onClose }) 
           </div>
 
           {/* Destination Tx Hash */}
-          <div className="p-3.5 rounded-2xl bg-gray-50 dark:bg-slate-950/60 border border-gray-200 dark:border-slate-800">
-            <div className="text-[11px] text-gray-500 dark:text-gray-400 mb-1">Destination Transaction Proof:</div>
+          <div className="p-3.5 rounded-2xl bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10">
+            <div className="text-[11px] text-gray-500 dark:text-zinc-400 mb-1">Destination Transaction Proof:</div>
             <a
               href={receipt.destination.explorerUrl}
               target="_blank"
@@ -131,7 +131,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ receipt, onClose }) 
           </button>
           <button
             onClick={onClose}
-            className="py-3 px-6 rounded-full bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold text-xs transition cursor-pointer"
+            className="py-3 px-6 rounded-full bg-gray-100 dark:bg-zinc-900 hover:bg-gray-200 dark:hover:bg-zinc-800 text-slate-800 dark:text-zinc-200 font-semibold text-xs transition cursor-pointer"
           >
             Close
           </button>

@@ -399,7 +399,7 @@ export const SwapCard: React.FC<SwapCardProps> = ({
 
         {/* Right / Swap Form Section */}
         <div className={`${showChart ? 'lg:col-span-5' : 'w-full'}`}>
-          <div className="bg-white dark:bg-slate-900/95 border border-gray-200/90 dark:border-slate-800 rounded-2xl sm:rounded-[28px] shadow-xl dark:shadow-2xl dark:shadow-black/50 p-3.5 sm:p-6 md:p-8 text-slate-900 dark:text-white transition-colors duration-200">
+          <div className="bg-white dark:bg-black border border-gray-200/90 dark:border-white/10 rounded-2xl sm:rounded-[28px] shadow-xl dark:shadow-2xl dark:shadow-black p-3.5 sm:p-6 md:p-8 text-slate-900 dark:text-white transition-colors duration-200">
             {/* Header with Live Corridor Beacon, Chart Toggle & Slippage */}
             <div className="flex items-center justify-between mb-4 sm:mb-5 flex-wrap gap-2">
               <div>
@@ -408,7 +408,7 @@ export const SwapCard: React.FC<SwapCardProps> = ({
                     {direction === 'outbound' ? 'Shielded Swap' : 'Cross-Chain Shield'}
                   </h2>
                 </div>
-                <p className="text-[11px] sm:text-xs text-gray-500 dark:text-slate-400 mt-0.5">
+                <p className="text-[11px] sm:text-xs text-gray-500 dark:text-zinc-400 mt-0.5">
                   {direction === 'outbound'
                     ? 'Atomic cross-chain settlement from Zcash Orchard'
                     : `Shield funds directly from ${selectedDest.chainName} into Orchard`}
@@ -423,7 +423,7 @@ export const SwapCard: React.FC<SwapCardProps> = ({
                   className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full text-xs font-semibold transition cursor-pointer border shadow-2xs ${
                     showChart
                       ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800'
-                      : 'bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-200 border-gray-200 dark:border-slate-700'
+                      : 'bg-white dark:bg-zinc-900 hover:bg-gray-100 dark:hover:bg-zinc-800 text-gray-700 dark:text-zinc-200 border-gray-200 dark:border-white/10'
                   }`}
                   title={showChart ? 'Hide Price Chart' : 'Show Interactive Price Chart'}
                 >
@@ -432,7 +432,7 @@ export const SwapCard: React.FC<SwapCardProps> = ({
                 </button>
 
                 {/* Slippage Presets */}
-                <div className="flex items-center gap-0.5 sm:gap-1 bg-gray-50 dark:bg-slate-950/80 border border-gray-200 dark:border-slate-800 p-0.5 sm:p-1 rounded-full text-xs">
+                <div className="flex items-center gap-0.5 sm:gap-1 bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 p-0.5 sm:p-1 rounded-full text-xs">
                   {[50, 100, 200].map((bps) => (
                     <button
                       key={bps}
@@ -441,7 +441,7 @@ export const SwapCard: React.FC<SwapCardProps> = ({
                       className={`px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full transition cursor-pointer font-mono text-[10px] sm:text-[11px] ${
                         slippageBps === bps
                           ? 'bg-black dark:bg-amber-500 text-white dark:text-black font-semibold shadow-xs'
-                          : 'text-gray-600 dark:text-slate-400 hover:text-black dark:hover:text-white'
+                          : 'text-gray-600 dark:text-zinc-400 hover:text-black dark:hover:text-white'
                       }`}
                     >
                       {bps / 100}%
@@ -453,17 +453,17 @@ export const SwapCard: React.FC<SwapCardProps> = ({
 
             <form onSubmit={handleGenerateQuote} className="space-y-3.5">
               {/* TOP CARD: You Pay */}
-              <div className="bg-gray-50/80 dark:bg-slate-950/60 border border-gray-200/90 dark:border-slate-800/80 rounded-2xl p-3.5 sm:p-5 hover:border-gray-300 dark:hover:border-slate-700 transition">
-                <div className="flex items-center justify-between text-xs text-gray-500 dark:text-slate-400 mb-2 gap-1 flex-wrap">
-                  <span className="font-semibold text-gray-700 dark:text-slate-300">You Pay</span>
+              <div className="bg-gray-50/80 dark:bg-black border border-gray-200/90 dark:border-white/10 rounded-2xl p-3.5 sm:p-5 hover:border-gray-300 dark:hover:border-white/20 transition">
+                <div className="flex items-center justify-between text-xs text-gray-500 dark:text-zinc-400 mb-2 gap-1 flex-wrap">
+                  <span className="font-semibold text-gray-700 dark:text-zinc-300">You Pay</span>
                   {direction === 'outbound' ? (
                     <div className="flex items-center gap-1 sm:gap-1.5 font-mono text-[11px] flex-wrap justify-end">
-                      <span className="text-gray-500 dark:text-slate-400 hidden xs:inline">Shielded:</span>
+                      <span className="text-gray-500 dark:text-zinc-400 hidden xs:inline">Shielded:</span>
                       <span className="font-bold text-slate-900 dark:text-amber-400">{balanceZec.toFixed(3)} ZEC</span>
                       <button
                         type="button"
                         onClick={() => setOriginAmount(balanceZec > 0.0001 ? (balanceZec - 0.0001).toFixed(4) : '0')}
-                        className="px-1.5 sm:px-2 py-0.5 rounded bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 text-black dark:text-white font-bold text-[10px] border border-gray-200 dark:border-slate-700 transition cursor-pointer"
+                        className="px-1.5 sm:px-2 py-0.5 rounded bg-gray-100 dark:bg-zinc-900 hover:bg-gray-200 dark:hover:bg-zinc-800 text-black dark:text-white font-bold text-[10px] border border-gray-200 dark:border-white/10 transition cursor-pointer"
                         title="Use maximum shielded balance"
                       >
                         MAX
@@ -480,7 +480,7 @@ export const SwapCard: React.FC<SwapCardProps> = ({
                       )}
                     </div>
                   ) : (
-                    <div className="flex items-center gap-1.5 text-[11px] font-semibold text-gray-600 dark:text-slate-300">
+                    <div className="flex items-center gap-1.5 text-[11px] font-semibold text-gray-600 dark:text-zinc-300">
                       <span>Source: {selectedDest.chainName}</span>
                     </div>
                   )}
@@ -494,18 +494,18 @@ export const SwapCard: React.FC<SwapCardProps> = ({
                     value={originAmount}
                     onChange={(e) => setOriginAmount(e.target.value)}
                     placeholder="0.0"
-                    className="w-full bg-transparent text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 dark:text-white placeholder-gray-300 dark:placeholder-slate-600 focus:outline-none tracking-tight min-w-0"
+                    className="w-full bg-transparent text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 dark:text-white placeholder-gray-300 dark:placeholder-zinc-600 focus:outline-none tracking-tight min-w-0"
                     required
                   />
 
                   {direction === 'outbound' ? (
-                    <div className="flex items-center gap-2 sm:gap-2.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl sm:rounded-2xl shadow-xs shrink-0">
-                      <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-gray-100 dark:bg-slate-700 flex items-center justify-center border border-gray-200 dark:border-slate-600">
+                    <div className="flex items-center gap-2 sm:gap-2.5 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-white/10 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl sm:rounded-2xl shadow-xs shrink-0">
+                      <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-gray-100 dark:bg-black flex items-center justify-center border border-gray-200 dark:border-white/10">
                         <TokenIcon symbol="ZEC" className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       </div>
                       <div className="text-left">
                         <div className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white leading-none">ZEC</div>
-                        <div className="text-[9px] sm:text-[10px] text-gray-500 dark:text-slate-400 font-medium">Shielded</div>
+                        <div className="text-[9px] sm:text-[10px] text-gray-500 dark:text-zinc-400 font-medium">Shielded</div>
                       </div>
                     </div>
                   ) : (
@@ -513,24 +513,24 @@ export const SwapCard: React.FC<SwapCardProps> = ({
                     <button
                       type="button"
                       onClick={() => setShowTokenSelector(!showTokenSelector)}
-                      className="flex items-center gap-2 bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 border border-gray-200 dark:border-slate-700 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl sm:rounded-2xl shadow-xs shrink-0 transition cursor-pointer"
+                      className="flex items-center gap-2 bg-white dark:bg-zinc-900 hover:bg-gray-100 dark:hover:bg-zinc-800 border border-gray-200 dark:border-white/10 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl sm:rounded-2xl shadow-xs shrink-0 transition cursor-pointer"
                     >
-                      <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-gray-50 dark:bg-slate-700 flex items-center justify-center border border-gray-200 dark:border-slate-600">
+                      <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-gray-50 dark:bg-black flex items-center justify-center border border-gray-200 dark:border-white/10">
                         <TokenIcon symbol={selectedDest.symbol} chain={selectedDest.chain} className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       </div>
                       <div className="text-left">
                         <div className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white leading-none flex items-center gap-1">
                           {selectedDest.symbol}
-                          <ChevronDown className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gray-400 dark:text-slate-400" />
+                          <ChevronDown className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gray-400 dark:text-zinc-400" />
                         </div>
-                        <div className="text-[9px] sm:text-[10px] text-gray-500 dark:text-slate-400 font-medium">{selectedDest.chainName}</div>
+                        <div className="text-[9px] sm:text-[10px] text-gray-500 dark:text-zinc-400 font-medium">{selectedDest.chainName}</div>
                       </div>
                     </button>
                   )}
                 </div>
 
-                <div className="flex flex-col xs:flex-row xs:items-center justify-between mt-2.5 pt-2.5 border-t border-gray-200/60 dark:border-slate-800/80 text-xs gap-2">
-                  <span className="text-gray-500 dark:text-slate-400 font-medium text-[11px] sm:text-xs">
+                <div className="flex flex-col xs:flex-row xs:items-center justify-between mt-2.5 pt-2.5 border-t border-gray-200/60 dark:border-white/10 text-xs gap-2">
+                  <span className="text-gray-500 dark:text-zinc-400 font-medium text-[11px] sm:text-xs">
                     ≈ ${estimatedUsd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD
                   </span>
 
@@ -551,7 +551,7 @@ export const SwapCard: React.FC<SwapCardProps> = ({
                         className={`px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg font-medium text-[11px] sm:text-xs transition cursor-pointer ${
                           originAmount === amt
                             ? 'bg-black dark:bg-amber-500 text-white dark:text-black font-semibold shadow-xs'
-                            : 'bg-white dark:bg-slate-800 text-gray-600 dark:text-slate-300 hover:text-black dark:hover:text-white border border-gray-200 dark:border-slate-700 hover:bg-gray-100 dark:hover:bg-slate-700'
+                            : 'bg-white dark:bg-zinc-900 text-gray-600 dark:text-zinc-300 hover:text-black dark:hover:text-white border border-gray-200 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-zinc-800'
                         }`}
                       >
                         {amt}
@@ -566,7 +566,7 @@ export const SwapCard: React.FC<SwapCardProps> = ({
                 <button
                   type="button"
                   onClick={toggleDirection}
-                  className="p-2 sm:p-2.5 rounded-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 hover:text-black dark:hover:text-white hover:border-black dark:hover:border-amber-400 hover:scale-110 active:scale-95 transition-all shadow-md cursor-pointer group"
+                  className="p-2 sm:p-2.5 rounded-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-white/10 text-slate-800 dark:text-zinc-200 hover:text-black dark:hover:text-white hover:border-black dark:hover:border-amber-400 hover:scale-110 active:scale-95 transition-all shadow-md cursor-pointer group"
                   title={`Switch direction: ${direction === 'outbound' ? 'Shielded ZEC → Cross-Chain' : 'Cross-Chain → Shielded ZEC'}`}
                 >
                   <ArrowDownUp className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-300 ${direction === 'inbound' ? 'rotate-180 text-amber-500' : 'group-hover:rotate-180'}`} />
@@ -574,10 +574,10 @@ export const SwapCard: React.FC<SwapCardProps> = ({
               </div>
 
               {/* BOTTOM CARD: You Receive */}
-              <div className="bg-gray-50/80 dark:bg-slate-950/60 border border-gray-200/90 dark:border-slate-800/80 rounded-2xl p-3.5 sm:p-5 hover:border-gray-300 dark:hover:border-slate-700 transition relative">
-                <div className="flex items-center justify-between text-xs text-gray-500 dark:text-slate-400 mb-2">
-                  <span className="font-semibold text-gray-700 dark:text-slate-300">You Receive</span>
-                  <span className="text-xs text-gray-500 dark:text-slate-400 font-medium">
+              <div className="bg-gray-50/80 dark:bg-black border border-gray-200/90 dark:border-white/10 rounded-2xl p-3.5 sm:p-5 hover:border-gray-300 dark:hover:border-white/20 transition relative">
+                <div className="flex items-center justify-between text-xs text-gray-500 dark:text-zinc-400 mb-2">
+                  <span className="font-semibold text-gray-700 dark:text-zinc-300">You Receive</span>
+                  <span className="text-xs text-gray-500 dark:text-zinc-400 font-medium">
                     {direction === 'outbound' ? 'Destination' : 'Zcash Orchard'}
                   </span>
                 </div>
@@ -592,21 +592,21 @@ export const SwapCard: React.FC<SwapCardProps> = ({
                     <button
                       type="button"
                       onClick={() => setShowTokenSelector(!showTokenSelector)}
-                      className="flex items-center gap-2 bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 border border-gray-200 dark:border-slate-700 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl sm:rounded-2xl shadow-xs shrink-0 transition cursor-pointer"
+                      className="flex items-center gap-2 bg-white dark:bg-zinc-900 hover:bg-gray-100 dark:hover:bg-zinc-800 border border-gray-200 dark:border-white/10 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl sm:rounded-2xl shadow-xs shrink-0 transition cursor-pointer"
                     >
-                      <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-gray-50 dark:bg-slate-700 flex items-center justify-center border border-gray-200 dark:border-slate-600">
+                      <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-gray-50 dark:bg-black flex items-center justify-center border border-gray-200 dark:border-white/10">
                         <TokenIcon symbol={selectedDest.symbol} chain={selectedDest.chain} className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       </div>
                       <div className="text-left">
                         <div className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white leading-none flex items-center gap-1">
                           {selectedDest.symbol}
-                          <ChevronDown className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gray-400 dark:text-slate-400" />
+                          <ChevronDown className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gray-400 dark:text-zinc-400" />
                         </div>
-                        <div className="text-[9px] sm:text-[10px] text-gray-500 dark:text-slate-400 font-medium">{selectedDest.chainName}</div>
+                        <div className="text-[9px] sm:text-[10px] text-gray-500 dark:text-zinc-400 font-medium">{selectedDest.chainName}</div>
                       </div>
                     </button>
                   ) : (
-                    <div className="flex items-center gap-2 sm:gap-2.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl sm:rounded-2xl shadow-xs shrink-0">
+                    <div className="flex items-center gap-2 sm:gap-2.5 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-white/10 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl sm:rounded-2xl shadow-xs shrink-0">
                       <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-amber-50 dark:bg-amber-950/40 flex items-center justify-center border border-amber-200 dark:border-amber-800/80">
                         <TokenIcon symbol="ZEC" className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       </div>
@@ -620,8 +620,8 @@ export const SwapCard: React.FC<SwapCardProps> = ({
 
                 {/* Token Selector Dropdown */}
                 {showTokenSelector && (
-                  <div className="absolute right-4 top-20 z-30 w-72 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl shadow-2xl p-2 animate-in fade-in zoom-in-95">
-                    <div className="text-xs font-semibold text-gray-500 dark:text-slate-400 px-3 py-2 border-b border-gray-100 dark:border-slate-800 mb-1">
+                  <div className="absolute right-4 top-20 z-30 w-72 bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-2xl shadow-2xl p-2 animate-in fade-in zoom-in-95">
+                    <div className="text-xs font-semibold text-gray-500 dark:text-zinc-400 px-3 py-2 border-b border-gray-100 dark:border-white/10 mb-1">
                       Select Settlement Asset
                     </div>
                     <div className="space-y-1 max-h-60 overflow-y-auto">
@@ -636,19 +636,19 @@ export const SwapCard: React.FC<SwapCardProps> = ({
                           className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl transition text-left cursor-pointer ${
                             selectedDest.chain === d.chain && selectedDest.symbol === d.symbol
                               ? 'bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-300 border border-amber-200 dark:border-amber-800 font-semibold'
-                              : 'hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-slate-300 hover:text-black dark:hover:text-white'
+                              : 'hover:bg-gray-50 dark:hover:bg-zinc-900 text-gray-700 dark:text-zinc-300 hover:text-black dark:hover:text-white'
                           }`}
                         >
                           <div className="flex items-center gap-2.5">
-                            <div className="w-7 h-7 rounded-full bg-gray-50 dark:bg-slate-800 flex items-center justify-center border border-gray-200 dark:border-slate-700">
+                            <div className="w-7 h-7 rounded-full bg-gray-50 dark:bg-black flex items-center justify-center border border-gray-200 dark:border-white/10">
                               <TokenIcon symbol={d.symbol} chain={d.chain} className="w-4 h-4" />
                             </div>
                             <div>
                               <div className="text-sm font-bold leading-none text-slate-900 dark:text-white">{d.symbol}</div>
-                              <div className="text-[11px] text-gray-500 dark:text-slate-400 mt-0.5">{d.chainName}</div>
+                              <div className="text-[11px] text-gray-500 dark:text-zinc-400 mt-0.5">{d.chainName}</div>
                             </div>
                           </div>
-                          <span className="text-[10px] font-mono uppercase text-gray-500 dark:text-slate-400 px-2 py-0.5 rounded bg-gray-100 dark:bg-slate-800 border border-transparent dark:border-slate-700">
+                          <span className="text-[10px] font-mono uppercase text-gray-500 dark:text-zinc-400 px-2 py-0.5 rounded bg-gray-100 dark:bg-zinc-900 border border-transparent dark:border-white/10">
                             {d.chain}
                           </span>
                         </button>
@@ -658,12 +658,12 @@ export const SwapCard: React.FC<SwapCardProps> = ({
                 )}
 
                 {/* Rate Strip: Clean responsive layout */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between mt-2.5 pt-2.5 border-t border-gray-200/60 dark:border-slate-800/80 text-[11px] sm:text-xs text-gray-500 dark:text-slate-400 gap-1 sm:gap-2">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between mt-2.5 pt-2.5 border-t border-gray-200/60 dark:border-white/10 text-[11px] sm:text-xs text-gray-500 dark:text-zinc-400 gap-1 sm:gap-2">
                   <span className="truncate">
-                    Rate: <span className="font-mono text-slate-800 dark:text-slate-200 font-medium">{direction === 'outbound' ? `1 ZEC ≈ ${unitRate}` : unitRate}</span>
+                    Rate: <span className="font-mono text-slate-800 dark:text-zinc-200 font-medium">{direction === 'outbound' ? `1 ZEC ≈ ${unitRate}` : unitRate}</span>
                   </span>
                   <span className="truncate">
-                    Min. Received: <span className="font-mono text-slate-800 dark:text-slate-200 font-medium">{minOutput} {direction === 'outbound' ? selectedDest.symbol : 'ZEC'}</span>
+                    Min. Received: <span className="font-mono text-slate-800 dark:text-zinc-200 font-medium">{minOutput} {direction === 'outbound' ? selectedDest.symbol : 'ZEC'}</span>
                   </span>
                 </div>
               </div>
@@ -671,7 +671,7 @@ export const SwapCard: React.FC<SwapCardProps> = ({
               {/* DESTINATION RECIPIENT ADDRESS */}
               <div className="space-y-1.5">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2 text-xs">
-                  <label className="font-semibold text-slate-700 dark:text-slate-300">
+                  <label className="font-semibold text-slate-700 dark:text-zinc-300">
                     {direction === 'outbound' ? (
                       <>Destination Recipient Address ({selectedDest.chainName})</>
                     ) : (
@@ -688,10 +688,10 @@ export const SwapCard: React.FC<SwapCardProps> = ({
                     <button
                       type="button"
                       onClick={() => setShowAddressBook(true)}
-                      className="px-2.5 py-1 rounded-full bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-[11px] font-semibold transition cursor-pointer flex items-center gap-1 border border-gray-200 dark:border-slate-700 shadow-2xs"
+                      className="px-2.5 py-1 rounded-full bg-gray-100 dark:bg-zinc-900 hover:bg-gray-200 dark:hover:bg-zinc-800 text-slate-800 dark:text-zinc-200 text-[11px] font-semibold transition cursor-pointer flex items-center gap-1 border border-gray-200 dark:border-white/10 shadow-2xs"
                       title="Open Address Book"
                     >
-                      <BookOpen className="w-3 h-3 text-slate-700 dark:text-slate-300" />
+                      <BookOpen className="w-3 h-3 text-slate-700 dark:text-zinc-300" />
                       <span>Contacts</span>
                     </button>
                     {direction === 'outbound' ? (
@@ -719,10 +719,10 @@ export const SwapCard: React.FC<SwapCardProps> = ({
                   value={recipient}
                   onChange={(e) => setRecipient(e.target.value)}
                   placeholder={getRecipientPlaceholder()}
-                  className={`w-full px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl bg-gray-50/80 dark:bg-slate-950/70 border text-xs sm:text-sm font-mono text-slate-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-600 focus:outline-none focus:bg-white dark:focus:bg-slate-900 transition ${
+                  className={`w-full px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl bg-gray-50/80 dark:bg-black border text-xs sm:text-sm font-mono text-slate-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 focus:outline-none focus:bg-white dark:focus:bg-black transition ${
                     isRecipientValid()
                       ? 'border-emerald-500/50 dark:border-emerald-500/60 focus:border-emerald-600'
-                      : 'border-gray-200 dark:border-slate-800 focus:border-gray-400 dark:focus:border-slate-600'
+                      : 'border-gray-200 dark:border-white/10 focus:border-gray-400 dark:focus:border-white/20'
                   }`}
                   required
                 />
@@ -741,48 +741,48 @@ export const SwapCard: React.FC<SwapCardProps> = ({
               </div>
 
               {/* TRANSPARENT ROUTE & FEE INSPECTOR */}
-              <div className="rounded-2xl border border-gray-200 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-950/50 overflow-hidden text-xs transition">
+              <div className="rounded-2xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-black overflow-hidden text-xs transition">
                 <button
                   type="button"
                   onClick={() => setShowFeeInspector(!showFeeInspector)}
-                  className="w-full px-3.5 sm:px-4 py-2.5 flex items-center justify-between font-semibold text-slate-700 dark:text-slate-300 hover:text-black dark:hover:text-white transition cursor-pointer"
+                  className="w-full px-3.5 sm:px-4 py-2.5 flex items-center justify-between font-semibold text-slate-700 dark:text-zinc-300 hover:text-black dark:hover:text-white transition cursor-pointer"
                 >
                   <span className="flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 shrink-0" />
+                    <Clock className="w-3.5 h-3.5 text-slate-500 dark:text-zinc-400 shrink-0" />
                     <span>Route &amp; Settlement Guarantees</span>
                   </span>
                   <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
                     <span className="text-[10px] sm:text-[11px] font-mono text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800">
                       Est. &lt; 42s
                     </span>
-                    {showFeeInspector ? <ChevronUp className="w-3.5 h-3.5 text-gray-400 dark:text-slate-500" /> : <ChevronDown className="w-3.5 h-3.5 text-gray-400 dark:text-slate-500" />}
+                    {showFeeInspector ? <ChevronUp className="w-3.5 h-3.5 text-gray-400 dark:text-zinc-500" /> : <ChevronDown className="w-3.5 h-3.5 text-gray-400 dark:text-zinc-500" />}
                   </div>
                 </button>
 
                 {showFeeInspector && (
-                  <div className="px-3.5 sm:px-4 pb-3 pt-1 border-t border-gray-200/60 dark:border-slate-800 space-y-1.5 text-gray-600 dark:text-slate-400">
+                  <div className="px-3.5 sm:px-4 pb-3 pt-1 border-t border-gray-200/60 dark:border-white/10 space-y-1.5 text-gray-600 dark:text-zinc-400">
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center text-[11px] gap-0.5 sm:gap-2">
-                      <span className="text-gray-500 dark:text-slate-400">Fulfillment Route:</span>
-                      <span className="font-mono text-slate-900 dark:text-slate-200 font-semibold sm:text-right">
+                      <span className="text-gray-500 dark:text-zinc-400">Fulfillment Route:</span>
+                      <span className="font-mono text-slate-900 dark:text-zinc-200 font-semibold sm:text-right">
                         {direction === 'outbound' 
                           ? `Zcash Orchard → NEAR Intents → ${selectedDest.chainName}` 
                           : `${selectedDest.chainName} → NEAR Intents → Zcash Orchard`}
                       </span>
                     </div>
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center text-[11px] gap-0.5 sm:gap-2">
-                      <span className="text-gray-500 dark:text-slate-400">Solver Atomic Execution Fee:</span>
-                      <span className="font-mono text-slate-900 dark:text-slate-200 sm:text-right">0.15% (Included in rate)</span>
+                      <span className="text-gray-500 dark:text-zinc-400">Solver Atomic Execution Fee:</span>
+                      <span className="font-mono text-slate-900 dark:text-zinc-200 sm:text-right">0.15% (Included in rate)</span>
                     </div>
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center text-[11px] gap-0.5 sm:gap-2">
-                      <span className="text-gray-500 dark:text-slate-400">Network Gas / Mining Fee:</span>
-                      <span className="font-mono text-slate-900 dark:text-slate-200 sm:text-right">0.0001 ZEC ($0.14)</span>
+                      <span className="text-gray-500 dark:text-zinc-400">Network Gas / Mining Fee:</span>
+                      <span className="font-mono text-slate-900 dark:text-zinc-200 sm:text-right">0.0001 ZEC ($0.14)</span>
                     </div>
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center text-[11px] gap-0.5 sm:gap-2">
-                      <span className="text-gray-500 dark:text-slate-400">Protocol Fee:</span>
+                      <span className="text-gray-500 dark:text-zinc-400">Protocol Fee:</span>
                       <span className="font-mono text-emerald-600 dark:text-emerald-400 font-bold sm:text-right">0.00% (Zero Protocol Fee)</span>
                     </div>
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center text-[11px] pt-1 border-t border-gray-200/40 dark:border-slate-800 gap-0.5 sm:gap-2">
-                      <span className="flex items-center gap-1 text-slate-900 dark:text-slate-200 font-semibold">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center text-[11px] pt-1 border-t border-gray-200/40 dark:border-white/10 gap-0.5 sm:gap-2">
+                      <span className="flex items-center gap-1 text-slate-900 dark:text-zinc-200 font-semibold">
                         <Lock className="w-3 h-3 text-amber-500 shrink-0" />
                         <span>Privacy Guarantee:</span>
                       </span>
@@ -793,12 +793,12 @@ export const SwapCard: React.FC<SwapCardProps> = ({
               </div>
 
               {/* FALLBACK REFUND UA */}
-              <div className="pt-1 border-t border-gray-100 dark:border-slate-800">
+              <div className="pt-1 border-t border-gray-100 dark:border-white/10">
                 <div className="flex justify-end">
                   <button
                     type="button"
                     onClick={() => setShowRefundInput(!showRefundInput)}
-                    className="text-[11px] text-gray-500 dark:text-slate-400 hover:text-black dark:hover:text-white flex items-center gap-1 transition py-1 cursor-pointer"
+                    className="text-[11px] text-gray-500 dark:text-zinc-400 hover:text-black dark:hover:text-white flex items-center gap-1 transition py-1 cursor-pointer"
                   >
                     <Settings2 className="w-3 h-3" />
                     <span>{showRefundInput ? 'Hide Refund' : 'Fallback Refund UA'}</span>
@@ -812,9 +812,9 @@ export const SwapCard: React.FC<SwapCardProps> = ({
                       value={refundAddress}
                       onChange={(e) => setRefundAddress(e.target.value)}
                       placeholder="u1... (Shielded Unified Address for fallback return)"
-                      className="w-full px-3.5 sm:px-4 py-2.5 rounded-xl bg-gray-50/80 dark:bg-slate-950/70 border border-gray-200 dark:border-slate-800 text-xs font-mono text-slate-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-600 focus:outline-none focus:border-black dark:focus:border-amber-400 focus:bg-white dark:focus:bg-slate-900"
+                      className="w-full px-3.5 sm:px-4 py-2.5 rounded-xl bg-gray-50/80 dark:bg-black border border-gray-200 dark:border-white/10 text-xs font-mono text-slate-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 focus:outline-none focus:border-black dark:focus:border-amber-400 focus:bg-white dark:focus:bg-black"
                     />
-                    <p className="text-[11px] text-gray-500 dark:text-slate-400">
+                    <p className="text-[11px] text-gray-500 dark:text-zinc-400">
                       Must be a shielded Unified Address (u1...). Transparent addresses are strictly rejected.
                     </p>
                   </div>

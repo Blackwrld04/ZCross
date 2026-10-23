@@ -53,18 +53,28 @@ class SwapStore {
   private db: Database.Database;
 
   constructor() {
-    const dataDir = path.join(process.cwd(), 'data');
+    let dataDir = path.join(process.cwd(), 'data');
+    if (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME) {
+      dataDir = '/tmp';
+    }
+
     if (!fs.existsSync(dataDir)) {
       try {
         fs.mkdirSync(dataDir, { recursive: true });
       } catch {
-        // Fallback to current directory if permission denied
+        // Fallback to /tmp if local directory creation fails
+        dataDir = '/tmp';
       }
     }
 
-    const dbPath = path.join(dataDir, 'swaps.db');
-    this.db = new Database(dbPath);
-    this.db.pragma('journal_mode = WAL');
+    try {
+      const dbPath = path.join(dataDir, 'swaps.db');
+      this.db = new Database(dbPath);
+      this.db.pragma('journal_mode = WAL');
+    } catch {
+      this.db = new Database(':memory:');
+    }
+
     this.initTables();
   }
 

@@ -24,7 +24,7 @@ export const ShieldedWalletBadge: React.FC = () => {
       <button
         type="button"
         onClick={() => setShowModal(true)}
-        className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-xs font-semibold bg-gray-50 hover:bg-gray-100 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-900 dark:text-white border border-gray-200 dark:border-slate-800 transition cursor-pointer shadow-2xs group shrink-0"
+        className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-xs font-semibold bg-gray-50 hover:bg-gray-100 dark:bg-black dark:hover:bg-zinc-900 text-slate-900 dark:text-white border border-gray-200 dark:border-white/10 transition cursor-pointer shadow-2xs group shrink-0"
         title="View In-Browser Shielded Orchard Zcash Account"
       >
         <div className="w-4 h-4 rounded-full bg-black/10 dark:bg-amber-400/20 flex items-center justify-center text-black dark:text-amber-400 shrink-0">

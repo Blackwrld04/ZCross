@@ -43,8 +43,18 @@ body {
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
+html.dark {
+  --bg-base: #000000;
+  --bg-surface: #000000;
+  --bg-surface-elevated: #09090b;
+  --bg-glass: rgba(0, 0, 0, 0.95);
+  --bg-glass-card: rgba(0, 0, 0, 0.9);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  background-color: #000000;
+}
+
 html.dark body {
-  background-color: #080c14;
+  background-color: #000000;
   color: #f8fafc;
 }
 

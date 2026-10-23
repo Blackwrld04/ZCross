@@ -215,13 +215,13 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
       }}
     >
       <div 
-        className="relative w-full max-w-[500px] max-h-[92vh] overflow-y-auto bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-[28px] shadow-2xl p-6 sm:p-7 text-slate-900 dark:text-white my-auto animate-in zoom-in-95 duration-150"
+        className="relative w-full max-w-[500px] max-h-[92vh] overflow-y-auto bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-[28px] shadow-2xl p-6 sm:p-7 text-slate-900 dark:text-white my-auto animate-in zoom-in-95 duration-150"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-black/5 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 flex items-center justify-center text-slate-900 dark:text-white">
+            <div className="w-9 h-9 rounded-xl bg-black/5 dark:bg-zinc-900 border border-gray-200 dark:border-white/10 flex items-center justify-center text-slate-900 dark:text-white">
               <Shield className="w-5 h-5 fill-black dark:fill-amber-400 text-black dark:text-amber-400" />
             </div>
             <div>
@@ -238,7 +238,7 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
           <button
             type="button"
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition flex items-center justify-center cursor-pointer"
+            className="w-8 h-8 rounded-full bg-gray-100 dark:bg-zinc-900 hover:bg-gray-200 dark:hover:bg-zinc-800 text-gray-500 dark:text-zinc-400 hover:text-black dark:hover:text-white transition flex items-center justify-center cursor-pointer"
             title="Close"
           >
             <X className="w-4 h-4" />
@@ -246,7 +246,7 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex items-center gap-1.5 p-1 bg-gray-100 dark:bg-slate-950/80 border border-transparent dark:border-slate-800 rounded-xl mb-4 text-xs font-semibold">
+        <div className="flex items-center gap-1.5 p-1 bg-gray-100 dark:bg-black border border-transparent dark:border-white/10 rounded-xl mb-4 text-xs font-semibold">
           <button
             type="button"
             onClick={() => setActiveTab('account')}
@@ -297,9 +297,9 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
         {activeTab === 'account' && (
           <div className="space-y-4">
             {/* Balance Card */}
-            <div className="p-5 rounded-2xl bg-gray-50 dark:bg-slate-950/60 border border-gray-200 dark:border-slate-800">
+            <div className="p-5 rounded-2xl bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10">
               <div className="flex items-center justify-between mb-1.5">
-                <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <span className="text-xs font-semibold text-gray-500 dark:text-zinc-400 uppercase tracking-wider">
                   Available Shielded Balance
                 </span>
                 {isWatchOnly ? (
@@ -307,7 +307,7 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
                     <Eye className="w-3 h-3 text-amber-600 dark:text-amber-400" /> Watch-Only Mode
                   </span>
                 ) : (
-                  <span className="text-[11px] font-semibold text-slate-900 dark:text-slate-200 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 px-2.5 py-0.5 rounded-full shadow-2xs">
+                  <span className="text-[11px] font-semibold text-slate-900 dark:text-zinc-200 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-white/10 px-2.5 py-0.5 rounded-full shadow-2xs">
                     Instant 1-Click Ready
                   </span>
                 )}
@@ -318,7 +318,7 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
                 </span>
                 <span className="text-lg font-bold text-slate-900 dark:text-white">ZEC</span>
               </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 font-medium">
+              <div className="text-xs text-gray-500 dark:text-zinc-400 mt-0.5 font-medium">
                 ≈ ${usdValue} USD
               </div>
 
@@ -332,7 +332,7 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
               )}
 
               {/* Action Buttons */}
-              <div className="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-gray-200 dark:border-slate-800">
+              <div className="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-gray-200 dark:border-white/10">
                 <button
                   type="button"
                   onClick={() => setShowFiatModal(true)}
@@ -346,7 +346,7 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
                   type="button"
                   onClick={handleFaucet}
                   disabled={faucetLoading}
-                  className="w-full py-2.5 px-2 bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 active:scale-[0.98] text-slate-800 dark:text-slate-200 rounded-xl text-xs font-bold flex items-center justify-center gap-1 transition cursor-pointer disabled:opacity-50"
+                  className="w-full py-2.5 px-2 bg-gray-100 hover:bg-gray-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 active:scale-[0.98] text-slate-800 dark:text-zinc-200 rounded-xl text-xs font-bold flex items-center justify-center gap-1 transition cursor-pointer disabled:opacity-50"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>{faucetLoading ? 'Funding...' : 'Faucet'}</span>
@@ -354,7 +354,7 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
                 <button
                   type="button"
                   onClick={() => setActiveTab('receive')}
-                  className="w-full py-2.5 px-2 bg-white hover:bg-gray-100 dark:bg-slate-800 dark:hover:bg-slate-700 border border-gray-300 dark:border-slate-700 text-slate-900 dark:text-slate-200 active:scale-[0.98] rounded-xl text-xs font-bold flex items-center justify-center gap-1 transition shadow-2xs cursor-pointer"
+                  className="w-full py-2.5 px-2 bg-white hover:bg-gray-100 dark:bg-zinc-900 dark:hover:bg-zinc-800 border border-gray-300 dark:border-white/10 text-slate-900 dark:text-zinc-200 active:scale-[0.98] rounded-xl text-xs font-bold flex items-center justify-center gap-1 transition shadow-2xs cursor-pointer"
                 >
                   <ArrowDownLeft className="w-3.5 h-3.5 text-black dark:text-white" />
                   <span>Receive</span>
@@ -363,9 +363,9 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
             </div>
 
             {/* Address Quick Card */}
-            <div className="p-3.5 rounded-2xl bg-gray-50 dark:bg-slate-950/60 border border-gray-200 dark:border-slate-800">
+            <div className="p-3.5 rounded-2xl bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10">
               <div className="flex items-center justify-between mb-1.5">
-                <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
+                <span className="text-xs font-medium text-gray-600 dark:text-zinc-400">
                   Unified Shielded Address (ZIP-316)
                 </span>
                 <button
@@ -377,7 +377,7 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
                   {copiedAddr ? 'Copied!' : 'Copy'}
                 </button>
               </div>
-              <p className="font-mono text-xs text-slate-800 dark:text-slate-200 break-all bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-gray-200 dark:border-slate-800 select-all">
+              <p className="font-mono text-xs text-slate-800 dark:text-zinc-200 break-all bg-white dark:bg-black p-2.5 rounded-xl border border-gray-200 dark:border-white/10 select-all">
                 {currentAddress}
               </p>
             </div>
@@ -388,15 +388,15 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
         {activeTab === 'receive' && (
           <div className="space-y-4 text-center">
             <div className="flex flex-col items-center gap-1.5">
-              <p className="text-xs text-gray-600 dark:text-gray-400">
+              <p className="text-xs text-gray-600 dark:text-zinc-400">
                 Scan with Orchard-compatible shielded mobile wallets to deposit ZEC:
               </p>
               <div className="flex items-center justify-center gap-2">
-                <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 shadow-2xs">
+                <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-white/10 shadow-2xs">
                   <ZashiLogo className="w-3.5 h-3.5 rounded-xs" />
                   <span className="text-[11px] font-bold text-slate-900 dark:text-white">Zashi</span>
                 </div>
-                <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 shadow-2xs">
+                <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-white/10 shadow-2xs">
                   <YWalletLogo className="w-3.5 h-3.5 rounded-xs" />
                   <span className="text-[11px] font-bold text-slate-900 dark:text-white">YWallet</span>
                 </div>
@@ -404,7 +404,7 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
             </div>
 
             <div className="flex justify-center my-2">
-              <div className="p-3 bg-white border border-gray-200 dark:border-slate-700 rounded-2xl shadow-sm inline-block">
+              <div className="p-3 bg-white border border-gray-200 dark:border-white/10 rounded-2xl shadow-sm inline-block">
                 {qrCodeUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img 
@@ -420,9 +420,9 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
               </div>
             </div>
 
-            <div className="bg-gray-50 dark:bg-slate-950/60 border border-gray-200 dark:border-slate-800 rounded-xl p-3 text-left">
+            <div className="bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl p-3 text-left">
               <div className="flex items-center justify-between mb-1">
-                <span className="text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase">Orchard Address</span>
+                <span className="text-[11px] font-bold text-gray-500 dark:text-zinc-400 uppercase">Orchard Address</span>
                 <button
                   type="button"
                   onClick={() => handleCopy(currentAddress, 'addr')}
@@ -432,7 +432,7 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
                   {copiedAddr ? 'Copied' : 'Copy Address'}
                 </button>
               </div>
-              <p className="font-mono text-xs text-slate-800 dark:text-slate-200 break-all select-all">
+              <p className="font-mono text-xs text-slate-800 dark:text-zinc-200 break-all select-all">
                 {currentAddress}
               </p>
             </div>
@@ -443,7 +443,7 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
         {activeTab === 'security' && (
           <div className="space-y-4">
             {/* WebAuthn Passkeys / Biometrics */}
-            <div className="p-4 rounded-2xl bg-gray-50 dark:bg-slate-950/60 border border-gray-200 dark:border-slate-800">
+            <div className="p-4 rounded-2xl bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
                   <div className="w-7 h-7 rounded-lg bg-black dark:bg-amber-500 text-white dark:text-black flex items-center justify-center">
@@ -453,7 +453,7 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
                     <div className="text-xs font-bold text-slate-900 dark:text-white">
                       TouchID / FaceID Passkey
                     </div>
-                    <div className="text-[10px] text-gray-500 dark:text-gray-400">
+                    <div className="text-[10px] text-gray-500 dark:text-zinc-400">
                       FIDO2 WebAuthn biometric unlock
                     </div>
                   </div>
@@ -480,7 +480,7 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
               )}
 
               {hasPasskey && isLocked && (
-                <div className="mt-3 pt-3 border-t border-gray-200 dark:border-slate-800">
+                <div className="mt-3 pt-3 border-t border-gray-200 dark:border-white/10">
                   <button
                     type="button"
                     onClick={handleBiometricUnlock}
@@ -494,19 +494,19 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
             </div>
 
             {/* Auto-Lock Inactivity Timeout */}
-            <div className="p-3.5 rounded-2xl bg-gray-50 dark:bg-slate-950/60 border border-gray-200 dark:border-slate-800 flex items-center justify-between">
+            <div className="p-3.5 rounded-2xl bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Timer className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                <Timer className="w-4 h-4 text-gray-600 dark:text-zinc-400" />
                 <div>
                   <div className="text-xs font-bold text-slate-900 dark:text-white">Auto-Lock Inactivity Timer</div>
-                  <div className="text-[10px] text-gray-500 dark:text-gray-400">Locks vault when inactive</div>
+                  <div className="text-[10px] text-gray-500 dark:text-zinc-400">Locks vault when inactive</div>
                 </div>
               </div>
 
               <select
                 value={autoLockMinutes}
                 onChange={(e) => setAutoLockMinutes(Number(e.target.value))}
-                className="px-2.5 py-1 rounded-xl bg-white dark:bg-slate-850 border border-gray-200 dark:border-slate-700 text-xs font-semibold text-slate-800 dark:text-white focus:outline-none"
+                className="px-2.5 py-1 rounded-xl bg-white dark:bg-black border border-gray-200 dark:border-white/10 text-xs font-semibold text-slate-800 dark:text-white focus:outline-none"
               >
                 <option value={5}>5 minutes</option>
                 <option value={15}>15 minutes</option>
@@ -516,7 +516,7 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
             </div>
 
             {/* Seed Phrase Backup */}
-            <div className="p-4 rounded-2xl bg-gray-50 dark:bg-slate-950/60 border border-gray-200 dark:border-slate-800">
+            <div className="p-4 rounded-2xl bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-1.5 font-bold text-xs text-slate-900 dark:text-white">
                   <KeyRound className="w-4 h-4 text-black dark:text-amber-400" />
@@ -525,7 +525,7 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
                 <button
                   type="button"
                   onClick={handleRevealSeed}
-                  className="text-xs font-semibold text-slate-700 dark:text-gray-300 hover:text-black dark:hover:text-white flex items-center gap-1 cursor-pointer"
+                  className="text-xs font-semibold text-slate-700 dark:text-zinc-300 hover:text-black dark:hover:text-white flex items-center gap-1 cursor-pointer"
                 >
                   {showSeed ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                   {showSeed ? 'Hide' : 'Reveal'}
@@ -534,11 +534,11 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
 
               {showSeed ? (
                 <div className="space-y-2.5">
-                  <div className="p-3 bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 font-mono text-xs text-slate-900 dark:text-slate-100 select-all leading-relaxed">
+                  <div className="p-3 bg-white dark:bg-zinc-950 rounded-xl border border-gray-200 dark:border-white/10 font-mono text-xs text-slate-900 dark:text-zinc-100 select-all leading-relaxed">
                     {revealedSeed || unlockedMnemonic || 'Seed phrase locked. Enter password below.'}
                   </div>
                   <div className="flex justify-between items-center text-[11px]">
-                    <span className="text-gray-500 dark:text-gray-400">Keep this offline. Never share with anyone.</span>
+                    <span className="text-gray-500 dark:text-zinc-400">Keep this offline. Never share with anyone.</span>
                     <button
                       type="button"
                       onClick={() => handleCopy(revealedSeed || unlockedMnemonic || '', 'seed')}
@@ -550,7 +550,7 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
                   </div>
                 </div>
               ) : (
-                <p className="text-xs text-gray-600 dark:text-gray-400">
+                <p className="text-xs text-gray-600 dark:text-zinc-400">
                   Your seed phrase allows restoring this shielded Orchard wallet in any BIP-39 compatible client. Click Reveal to display.
                 </p>
               )}
@@ -564,11 +564,11 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
             </div>
 
             {/* Viewing Key (FVK) & Watcher Mode */}
-            <div className="p-3.5 rounded-2xl bg-gray-50 dark:bg-slate-950/60 border border-gray-200 dark:border-slate-800 space-y-3">
+            <div className="p-3.5 rounded-2xl bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 space-y-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Full Viewing Key (FVK)</span>
-                  <p className="text-[10px] text-gray-500 dark:text-gray-400">Read-only auditing key for Zashi / YWallet watch-only sync</p>
+                  <span className="text-xs font-bold text-slate-800 dark:text-zinc-200">Full Viewing Key (FVK)</span>
+                  <p className="text-[10px] text-gray-500 dark:text-zinc-400">Read-only auditing key for Zashi / YWallet watch-only sync</p>
                 </div>
                 <button
                   type="button"
@@ -579,17 +579,17 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
                   {copiedFvk ? 'Copied' : 'Copy FVK'}
                 </button>
               </div>
-              <p className="font-mono text-xs text-gray-700 dark:text-gray-300 break-all bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-gray-200 dark:border-slate-800 select-all">
+              <p className="font-mono text-xs text-gray-700 dark:text-zinc-300 break-all bg-white dark:bg-zinc-950 p-2.5 rounded-xl border border-gray-200 dark:border-white/10 select-all">
                 {currentFvk}
               </p>
 
               {/* Watch-Only Import CTA */}
-              <div className="pt-2 border-t border-gray-200 dark:border-slate-800 flex items-center justify-between">
-                <span className="text-[11px] text-gray-600 dark:text-gray-400">Want to connect an external mobile wallet?</span>
+              <div className="pt-2 border-t border-gray-200 dark:border-white/10 flex items-center justify-between">
+                <span className="text-[11px] text-gray-600 dark:text-zinc-400">Want to connect an external mobile wallet?</span>
                 <button
                   type="button"
                   onClick={() => setShowImportFvkModal(true)}
-                  className="px-3 py-1.5 bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 border border-gray-300 dark:border-slate-700 text-slate-900 dark:text-slate-200 rounded-full text-xs font-bold transition cursor-pointer shadow-2xs flex items-center gap-1"
+                  className="px-3 py-1.5 bg-white dark:bg-zinc-900 hover:bg-gray-100 dark:hover:bg-zinc-800 border border-gray-300 dark:border-white/10 text-slate-900 dark:text-white rounded-full text-xs font-bold transition cursor-pointer shadow-2xs flex items-center gap-1"
                 >
                   <Eye className="w-3 h-3 text-amber-600 dark:text-amber-400" />
                   <span>Import Watch-Only FVK</span>
@@ -598,7 +598,7 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
             </div>
 
             {/* Emergency Fast Purge & Reset */}
-            <div className="pt-3 border-t border-gray-200 dark:border-slate-800 flex items-center justify-between gap-3">
+            <div className="pt-3 border-t border-gray-200 dark:border-white/10 flex items-center justify-between gap-3">
               <button
                 type="button"
                 onClick={handleEmergencyPurge}
@@ -616,7 +616,7 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
                     resetWallet();
                   }
                 }}
-                className="text-xs text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white font-semibold cursor-pointer"
+                className="text-xs text-gray-500 dark:text-zinc-400 hover:text-black dark:hover:text-white font-semibold cursor-pointer"
               >
                 Reset Wallet
               </button>
@@ -628,11 +628,11 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
         {activeTab === 'history' && (
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-gray-600 dark:text-gray-400">Local Shielded Ledger</span>
+              <span className="text-xs font-bold text-gray-600 dark:text-zinc-400">Local Shielded Ledger</span>
               <button
                 type="button"
                 onClick={refreshWallet}
-                className="text-xs text-slate-700 dark:text-gray-300 hover:text-black dark:hover:text-white flex items-center gap-1 cursor-pointer"
+                className="text-xs text-slate-700 dark:text-zinc-300 hover:text-black dark:hover:text-white flex items-center gap-1 cursor-pointer"
               >
                 <RefreshCw className="w-3 h-3" />
                 Refresh
@@ -640,10 +640,10 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
             </div>
 
             {history.length === 0 ? (
-              <div className="p-8 text-center bg-gray-50 dark:bg-slate-950/60 rounded-2xl border border-dashed border-gray-200 dark:border-slate-800">
-                <Shield className="w-8 h-8 text-gray-300 dark:text-gray-600 mx-auto mb-2" />
-                <p className="text-xs font-semibold text-gray-600 dark:text-gray-400">No shielded transactions yet</p>
-                <p className="text-[11px] text-gray-400 dark:text-gray-500 mt-1">
+              <div className="p-8 text-center bg-gray-50 dark:bg-black rounded-2xl border border-dashed border-gray-200 dark:border-white/10">
+                <Shield className="w-8 h-8 text-gray-300 dark:text-zinc-600 mx-auto mb-2" />
+                <p className="text-xs font-semibold text-gray-600 dark:text-zinc-400">No shielded transactions yet</p>
+                <p className="text-[11px] text-gray-400 dark:text-zinc-500 mt-1">
                   Execute a swap or use the faucet to see shielded activity recorded here.
                 </p>
               </div>
@@ -652,16 +652,16 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
                 {history.map((tx) => (
                   <div 
                     key={tx.txid} 
-                    className="p-3 bg-gray-50 dark:bg-slate-950/60 hover:bg-gray-100/80 dark:hover:bg-slate-850 border border-gray-200 dark:border-slate-800 rounded-xl transition text-xs"
+                    className="p-3 bg-gray-50 dark:bg-black hover:bg-gray-100/80 dark:hover:bg-zinc-900 border border-gray-200 dark:border-white/10 rounded-xl transition text-xs"
                   >
                     <div className="flex items-center justify-between mb-1">
                       <div className="flex items-center gap-1.5 font-bold">
                         {tx.type === 'SWAP_OUT' ? (
-                          <div className="w-5 h-5 rounded-full bg-gray-200 dark:bg-slate-800 text-black dark:text-white flex items-center justify-center">
+                          <div className="w-5 h-5 rounded-full bg-gray-200 dark:bg-zinc-900 text-black dark:text-white flex items-center justify-center">
                             <ArrowUpRight className="w-3 h-3" />
                           </div>
                         ) : (
-                          <div className="w-5 h-5 rounded-full bg-gray-100 dark:bg-slate-800 text-black dark:text-white flex items-center justify-center border border-gray-200 dark:border-slate-700">
+                          <div className="w-5 h-5 rounded-full bg-gray-100 dark:bg-zinc-900 text-black dark:text-white flex items-center justify-center border border-gray-200 dark:border-white/10">
                             <ArrowDownLeft className="w-3 h-3" />
                           </div>
                         )}
@@ -674,10 +674,10 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
                       </span>
                     </div>
 
-                    <div className="flex items-center justify-between text-[10px] text-gray-500 dark:text-gray-400 font-mono">
+                    <div className="flex items-center justify-between text-[10px] text-gray-500 dark:text-zinc-400 font-mono">
                       <span>{new Date(tx.timestamp).toLocaleTimeString()}</span>
                       <span className="truncate max-w-[150px]">{tx.txid.slice(0, 10)}...{tx.txid.slice(-6)}</span>
-                      <span className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-slate-800 text-slate-900 dark:text-slate-200 font-semibold border border-gray-200 dark:border-slate-700">
+                      <span className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-zinc-900 text-slate-900 dark:text-zinc-200 font-semibold border border-gray-200 dark:border-white/10">
                         {tx.status}
                       </span>
                     </div>
@@ -689,7 +689,7 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
         )}
 
         {/* Footer */}
-        <div className="mt-5 pt-3.5 border-t border-gray-100 dark:border-slate-800 flex items-center justify-between text-[11px] text-gray-400 dark:text-gray-500">
+        <div className="mt-5 pt-3.5 border-t border-gray-100 dark:border-white/10 flex items-center justify-between text-[11px] text-gray-400 dark:text-zinc-500">
           <span>ZCross Protocol v2.4</span>
         </div>
       </div>
@@ -712,12 +712,12 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
       {/* Watch-Only FVK Import Modal */}
       {showImportFvkModal && createPortal(
         <div 
-          className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in"
+          className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in"
           onClick={(e) => {
             if (e.target === e.currentTarget) setShowImportFvkModal(false);
           }}
         >
-          <div className="relative w-full max-w-lg bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-7 shadow-2xl border border-gray-200 dark:border-slate-800 text-slate-900 dark:text-white">
+          <div className="relative w-full max-w-lg bg-white dark:bg-black rounded-3xl p-6 sm:p-7 shadow-2xl border border-gray-200 dark:border-white/10 text-slate-900 dark:text-white">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-950/60 flex items-center justify-center text-amber-700 dark:text-amber-400">
@@ -725,13 +725,13 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
                 </div>
                 <div>
                   <h3 className="text-base font-bold text-slate-900 dark:text-white">Import Watch-Only Viewing Key</h3>
-                  <p className="text-[11px] text-gray-500 dark:text-gray-400">Monitor external Zashi or YWallet safely</p>
+                  <p className="text-[11px] text-gray-500 dark:text-zinc-400">Monitor external Zashi or YWallet safely</p>
                 </div>
               </div>
               <button
                 type="button"
                 onClick={() => setShowImportFvkModal(false)}
-                className="p-1.5 rounded-full bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition cursor-pointer"
+                className="p-1.5 rounded-full bg-gray-100 dark:bg-zinc-900 hover:bg-gray-200 dark:hover:bg-zinc-800 text-gray-500 dark:text-zinc-400 hover:text-black dark:hover:text-white transition cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -743,7 +743,7 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-800 dark:text-slate-200 mb-1.5">
+                <label className="block text-xs font-bold text-slate-800 dark:text-zinc-200 mb-1.5">
                   Viewing Key or Unified Address
                 </label>
                 <textarea
@@ -751,7 +751,7 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
                   onChange={(e) => setImportFvkInput(e.target.value)}
                   placeholder="Paste uview1... (Full Viewing Key) or u1... (Unified Address)"
                   rows={3}
-                  className="w-full p-3 bg-gray-50 dark:bg-slate-950 border border-gray-200 dark:border-slate-800 rounded-xl text-xs font-mono text-slate-900 dark:text-white focus:outline-none focus:border-amber-400 resize-none"
+                  className="w-full p-3 bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-white/10 rounded-xl text-xs font-mono text-slate-900 dark:text-white focus:outline-none focus:border-amber-400 resize-none"
                 />
               </div>
 
@@ -773,7 +773,7 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
                 <button
                   type="button"
                   onClick={() => setShowImportFvkModal(false)}
-                  className="flex-1 py-2.5 bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-xl text-xs font-bold transition cursor-pointer"
+                  className="flex-1 py-2.5 bg-gray-100 dark:bg-zinc-900 hover:bg-gray-200 dark:hover:bg-zinc-800 text-slate-800 dark:text-zinc-200 rounded-xl text-xs font-bold transition cursor-pointer"
                 >
                   Cancel
                 </button>

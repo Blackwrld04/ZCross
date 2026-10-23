@@ -95,22 +95,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
   };
 
   return (
-    <div className="bg-white dark:bg-[#080c14] text-slate-900 dark:text-slate-100 antialiased selection:bg-amber-500 selection:text-black font-sans min-h-screen transition-colors">
+    <div className="bg-white dark:bg-black text-slate-900 dark:text-slate-100 antialiased selection:bg-amber-500 selection:text-black font-sans min-h-screen transition-colors">
       {/* Navbar */}
-      <nav className="sticky top-0 z-50 bg-white/80 dark:bg-[#080c14]/85 backdrop-blur-md border-b border-gray-100 dark:border-slate-800 transition-colors">
+      <nav className="sticky top-0 z-50 bg-white/80 dark:bg-black/85 backdrop-blur-md border-b border-gray-100 dark:border-slate-800 transition-colors">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+          {/* Extreme Left: Brand Logo & Navigation Links */}
           <div className="flex items-center gap-6">
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer lg:hidden"
-              title="Toggle Navigation Menu"
-            >
-              {mobileMenuOpen ? <X className="w-6 h-6 text-gray-700 dark:text-gray-300" /> : <Menu className="w-6 h-6 text-gray-700 dark:text-gray-300" />}
-            </button>
-
             <div
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="flex items-center gap-2.5 font-semibold text-xl tracking-tight cursor-pointer"
+              className="flex items-center gap-2.5 font-semibold text-xl tracking-tight cursor-pointer shrink-0"
               title="ZCross - Return to Top"
             >
               <ZCrossLogo className="w-7 h-7" />
@@ -158,19 +151,33 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
             </div>
           </div>
 
-          <div className="flex items-center gap-3 sm:gap-5">
-            <div className="hidden sm:block">
+          {/* Extreme Right: Mode Switch (Desktop), Launch App Button, and Menu Button (Mobile) */}
+          <div className="flex items-center gap-3 sm:gap-4">
+            {/* Desktop Mode Switch */}
+            <div className="hidden lg:block shrink-0">
               <ThemeToggle variant="badge" />
             </div>
-            <div className="sm:hidden">
-              <ThemeToggle variant="icon" />
-            </div>
+
             <button
               onClick={onOpenWallet}
-              className="flex items-center gap-2 bg-black dark:bg-amber-500 text-white dark:text-black px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-gray-800 dark:hover:bg-amber-400 transition-colors shadow-sm cursor-pointer"
+              className="flex items-center gap-2 bg-black dark:bg-amber-500 text-white dark:text-black px-4 sm:px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-gray-800 dark:hover:bg-amber-400 transition-colors shadow-sm cursor-pointer shrink-0"
             >
               <ZCrossLogo className="w-4 h-4" variant="white" />
-              Launch App
+              <span>Launch App</span>
+            </button>
+
+            {/* Menu Button placed to the back (after) Launch App on mobile/tablet */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer lg:hidden shrink-0"
+              title="Toggle Navigation Menu"
+              aria-label="Toggle Navigation Menu"
+            >
+              {mobileMenuOpen ? (
+                <X className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+              ) : (
+                <Menu className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+              )}
             </button>
           </div>
         </div>
@@ -250,7 +257,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-20 pb-12 overflow-hidden bg-white dark:bg-[#080c14] transition-colors">
+      <section className="relative pt-20 pb-12 overflow-hidden bg-white dark:bg-black transition-colors">
         <div className="max-w-5xl mx-auto px-6 text-center z-10 relative">
 
           <h1 className="text-5xl md:text-7xl font-semibold tracking-tight leading-[1.1] mb-6 text-slate-900 dark:text-white">
@@ -288,7 +295,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
             className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden"
             aria-hidden="true"
           >
-            <span className="text-[12rem] md:text-[18rem] font-bold text-gray-100 dark:text-slate-900/60 opacity-90 tracking-tighter whitespace-nowrap">
+            <span className="text-[12rem] md:text-[18rem] font-black text-gray-200/80 dark:text-white/[0.14] tracking-tighter whitespace-nowrap select-none">
               ZCROSS
             </span>
           </div>
@@ -330,7 +337,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
       </section>
 
       {/* Stats Section */}
-      <section className="py-20 bg-white dark:bg-[#080c14] border-t border-gray-100 dark:border-slate-800 transition-colors">
+      <section className="py-20 bg-white dark:bg-black border-t border-gray-100 dark:border-slate-800 transition-colors">
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-3xl md:text-5xl font-semibold text-center tracking-tight mb-16 max-w-2xl mx-auto text-slate-900 dark:text-white">
             Engineered for pure privacy,<br />
@@ -367,7 +374,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
       </section>
 
       {/* Interactive Privacy & Cost Calculator Section */}
-      <section id="privacy-calculator" className="py-24 bg-gray-50/60 dark:bg-[#060a12]/60 border-t border-gray-100 dark:border-slate-800 transition-colors">
+      <section id="privacy-calculator" className="py-24 bg-gray-50/60 dark:bg-black/60 border-t border-gray-100 dark:border-slate-800 transition-colors">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-14">
             <h2 className="text-3xl md:text-5xl font-semibold tracking-tight text-slate-900 dark:text-white mb-4">
@@ -569,7 +576,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
       </section>
 
       {/* Zero-Leak Security Invariants & Cryptographic Audit Section */}
-      <section id="audit-invariants" className="py-24 bg-white dark:bg-[#080c14] border-t border-gray-100 dark:border-slate-800 transition-colors">
+      <section id="audit-invariants" className="py-24 bg-white dark:bg-black border-t border-gray-100 dark:border-slate-800 transition-colors">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-semibold tracking-tight mb-4 text-slate-900 dark:text-white">
@@ -690,7 +697,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
       </section>
 
       {/* Features Section */}
-      <section id="how-it-works" className="py-24 bg-white dark:bg-[#080c14] border-t border-gray-100 dark:border-slate-800 transition-colors">
+      <section id="how-it-works" className="py-24 bg-white dark:bg-black border-t border-gray-100 dark:border-slate-800 transition-colors">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
             <h2 className="text-3xl md:text-5xl font-semibold tracking-tight max-w-lg text-slate-900 dark:text-white">
@@ -769,14 +776,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
           </div>
 
           {/* Battle-Tested Standards Animated Marquee (Sliding Left to Right) */}
-          <div id="standards-marquee" className="border-t border-b border-gray-100 dark:border-slate-800 py-12 relative overflow-hidden bg-gradient-to-b from-gray-50/30 dark:from-slate-950/30 via-white dark:via-[#080c14] to-gray-50/30 dark:to-slate-950/30">
+          <div id="standards-marquee" className="border-t border-b border-gray-100 dark:border-slate-800 py-12 relative overflow-hidden bg-gradient-to-b from-gray-50/30 dark:from-slate-950/30 via-white dark:via-black to-gray-50/30 dark:to-slate-950/30">
             <p className="text-center text-sm text-gray-400 dark:text-gray-500 mb-8 font-light">
               Built on battle-tested <span className="font-semibold text-slate-900 dark:text-white">Zcash &amp; Cross-Chain standards</span>
             </p>
 
             {/* Left & Right Edge Gradient Fade Overlays */}
-            <div className="pointer-events-none absolute left-0 top-16 bottom-0 w-24 sm:w-44 bg-gradient-to-r from-white via-white/80 dark:from-[#080c14] dark:via-[#080c14]/80 to-transparent z-10" />
-            <div className="pointer-events-none absolute right-0 top-16 bottom-0 w-24 sm:w-44 bg-gradient-to-l from-white via-white/80 dark:from-[#080c14] dark:via-[#080c14]/80 to-transparent z-10" />
+            <div className="pointer-events-none absolute left-0 top-16 bottom-0 w-24 sm:w-44 bg-gradient-to-r from-white via-white/80 dark:from-black dark:via-black/80 to-transparent z-10" />
+            <div className="pointer-events-none absolute right-0 top-16 bottom-0 w-24 sm:w-44 bg-gradient-to-l from-white via-white/80 dark:from-black dark:via-black/80 to-transparent z-10" />
 
             {/* Continuous Marquee Track Sliding Left to Right */}
             <div className="flex animate-marquee-right select-none py-1">
@@ -839,7 +846,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
       </section>
 
       {/* Services / Ecosystem Section */}
-      <section id="ecosystem" className="py-24 bg-white dark:bg-[#080c14] transition-colors">
+      <section id="ecosystem" className="py-24 bg-white dark:bg-black transition-colors">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-6xl font-semibold tracking-tight mb-4 uppercase text-slate-900 dark:text-white">
@@ -1068,7 +1075,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
       </section>
 
       {/* Earn Section */}
-      <section id="corridors" className="py-24 bg-white dark:bg-[#080c14] border-t border-gray-100 dark:border-slate-800 transition-colors">
+      <section id="corridors" className="py-24 bg-white dark:bg-black border-t border-gray-100 dark:border-slate-800 transition-colors">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
             <h2 className="text-3xl md:text-5xl font-semibold tracking-tight max-w-lg text-slate-900 dark:text-white">
@@ -1188,7 +1195,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
       </section>
 
       {/* Testimonials */}
-      <section className="py-24 bg-white dark:bg-[#080c14] border-t border-gray-100 dark:border-slate-800 transition-colors">
+      <section className="py-24 bg-white dark:bg-black border-t border-gray-100 dark:border-slate-800 transition-colors">
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-3xl md:text-5xl font-semibold text-center tracking-tight mb-16 text-slate-900 dark:text-white">
             Real Stories, Real Experience<br />
@@ -1248,7 +1255,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="py-24 bg-white dark:bg-[#080c14] border-t border-gray-100 dark:border-slate-800 transition-colors">
+      <section id="faq" className="py-24 bg-white dark:bg-black border-t border-gray-100 dark:border-slate-800 transition-colors">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row gap-16">
           <div className="md:w-1/3">
             <h2 className="text-3xl md:text-5xl font-semibold tracking-tight mb-4 text-slate-900 dark:text-white">FAQ</h2>
@@ -1298,128 +1305,224 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-16 border-t border-gray-100 dark:border-slate-800 bg-white dark:bg-[#04060a] transition-colors">
+      {/* High-Impact Modern Footer matching user reference image */}
+      <footer className="border-t border-gray-200 dark:border-white/10 bg-gray-50/60 dark:bg-black transition-colors pt-12 pb-8">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-            <div className="col-span-1">
-              <div className="flex items-center gap-2 font-semibold text-lg tracking-tight mb-6">
-                <ZCrossLogo className="w-6 h-6" />
-                <span className="font-extrabold text-slate-900 dark:text-white">ZCross Protocol</span>
-              </div>
-              <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-4">
-                Zero-leak shielded cross-chain bridge and solver daemon connecting Zcash Orchard to external ecosystems.
-              </p>
-              <div className="flex gap-4">
-                <a
-                  href="https://github.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 transition"
-                >
-                  <Terminal className="w-4 h-4 text-gray-600 dark:text-gray-300" />
-                </a>
-                <a
-                  href="https://zips.z.cash"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 transition"
-                >
-                  <Layers className="w-4 h-4 text-gray-600 dark:text-gray-300" />
-                </a>
-              </div>
-            </div>
-
-            <div>
-              <h4 className="font-semibold mb-4 text-sm text-slate-900 dark:text-white">Specifications</h4>
-              <ul className="space-y-3 text-sm text-gray-500 dark:text-gray-400 font-light">
-                <li>
-                  <a href="https://zips.z.cash/zip-0316" target="_blank" rel="noreferrer" className="hover:text-black dark:hover:text-white transition">
-                    ZIP 316: Unified Addresses
-                  </a>
-                </li>
-                <li>
-                  <a href="https://zips.z.cash/zip-0321" target="_blank" rel="noreferrer" className="hover:text-black dark:hover:text-white transition">
-                    ZIP 321: Payment Requests
-                  </a>
-                </li>
-                <li>
-                  <a href="https://zips.z.cash/protocol/protocol.pdf" target="_blank" rel="noreferrer" className="hover:text-black dark:hover:text-white transition">
-                    Halo 2 Zero-Knowledge Proofs
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-semibold mb-4 text-sm text-slate-900 dark:text-white">Ecosystem</h4>
-              <ul className="space-y-3 text-sm text-gray-500 dark:text-gray-400 font-light">
-                <li>
-                  <a href="https://docs.near-intents.org" target="_blank" rel="noreferrer" className="hover:text-black dark:hover:text-white transition">
-                    NEAR Intents Documentation
-                  </a>
-                </li>
-                <li>
-                  <a href="https://chaindefuser.com" target="_blank" rel="noreferrer" className="hover:text-black dark:hover:text-white transition">
-                    Defuse Protocol (1Click)
-                  </a>
-                </li>
-                <li>
+          {/* Main Footer Body Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 border border-gray-200 dark:border-white/10 rounded-2xl overflow-hidden bg-white/70 dark:bg-black">
+            {/* Left Area (Col 1-6): Top Links + Security Badges + Giant ZCROSS Display */}
+            <div className="lg:col-span-6 p-8 sm:p-10 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-gray-200 dark:border-white/10 bg-white/40 dark:bg-black/50">
+              {/* Top Row: Links & Security Badges */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-12">
+                <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-semibold text-gray-600 dark:text-zinc-400">
                   <button
-                    onClick={() => {
-                      const el = document.getElementById('audit-invariants');
-                      el?.scrollIntoView({ behavior: 'smooth' });
-                    }}
-                    className="hover:text-black dark:hover:text-white transition text-left cursor-pointer"
+                    onClick={() => document.getElementById('audit-invariants')?.scrollIntoView({ behavior: 'smooth' })}
+                    className="hover:text-black dark:hover:text-white transition cursor-pointer"
                   >
-                    Privacy Auditor &amp; Invariants
+                    Audit
                   </button>
-                </li>
-                <li>
-                  <NextLink href="/developer" className="hover:text-black dark:hover:text-white transition text-slate-900 dark:text-white font-medium">
-                    Developer API &amp; Sandbox
+                  <button
+                    onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
+                    className="hover:text-black dark:hover:text-white transition cursor-pointer"
+                  >
+                    How It Works
+                  </button>
+                  <button
+                    onClick={() => document.getElementById('ecosystem')?.scrollIntoView({ behavior: 'smooth' })}
+                    className="hover:text-black dark:hover:text-white transition cursor-pointer"
+                  >
+                    Architecture
+                  </button>
+                  <NextLink
+                    href="/developer"
+                    className="hover:text-black dark:hover:text-white transition"
+                  >
+                    Dev API
                   </NextLink>
-                </li>
-                <li>
-                  <NextLink href="/developer?tab=widget" className="hover:text-black dark:hover:text-white transition">
-                    ZCross Pay Merchant SDK
+                  <NextLink
+                    href="/pay"
+                    className="hover:text-black dark:hover:text-white transition"
+                  >
+                    Pay SDK
                   </NextLink>
-                </li>
-                <li>
-                  <NextLink href="/developer?tab=memo" className="hover:text-black dark:hover:text-white transition">
-                    ZIP-302 Memo Studio (512B)
-                  </NextLink>
-                </li>
-              </ul>
+                </div>
+
+                {/* Compliance / Security Badges (Like GDPR & SOC2 in reference image) */}
+                <div className="flex items-center gap-3 shrink-0">
+                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-gray-200 dark:border-white/10 text-[10px] font-mono text-gray-600 dark:text-zinc-400 bg-gray-50 dark:bg-zinc-900" title="ZIP-316 Pure Shielded Unified Address Standard">
+                    <Shield className="w-3 h-3 text-emerald-500" />
+                    <span>ZIP 316</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-gray-200 dark:border-white/10 text-[10px] font-mono text-gray-600 dark:text-zinc-400 bg-gray-50 dark:bg-zinc-900" title="Zero-Knowledge Halo 2 WASM Proofs">
+                    <CheckCircle2 className="w-3 h-3 text-blue-500" />
+                    <span>HALO 2</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom Row: Giant ZCROSS Display Typography */}
+              <div className="pt-6 sm:pt-12">
+                <div className="flex items-center gap-2 mb-2 text-xs font-mono tracking-widest uppercase text-gray-400 dark:text-zinc-500 font-bold">
+                  <ZCrossLogo className="w-4 h-4" />
+                  <span>Zero-Leak Shielded Liquidity</span>
+                </div>
+                <h2 className="text-6xl sm:text-7xl md:text-8xl lg:text-[7.5rem] xl:text-[9.2rem] font-black tracking-tighter leading-none text-slate-900 dark:text-white select-none">
+                  ZCROSS
+                </h2>
+              </div>
             </div>
 
-            <div>
-              <h4 className="font-semibold mb-4 text-sm text-slate-900 dark:text-white">Products</h4>
-              <div className="space-y-3">
-                <button
-                  onClick={onOpenWallet}
-                  className="flex items-center justify-center gap-2 bg-black dark:bg-amber-500 text-white dark:text-black px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-gray-800 dark:hover:bg-amber-400 transition-all w-full cursor-pointer shadow-sm"
-                >
-                  <ZCrossLogo className="w-4 h-4" variant="white" />
-                  Launch App
-                </button>
-                <button
-                  onClick={() => {
-                    const el = document.getElementById('audit-invariants');
-                    el?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="flex items-center justify-center gap-2 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 text-black dark:text-white px-6 py-2.5 rounded-full text-sm font-medium hover:bg-gray-50 dark:hover:bg-slate-800 transition-all w-full cursor-pointer"
-                >
-                  <Shield className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                  Audit Invariants
-                </button>
+            {/* Right Area (Col 7-12): 2x2 Clean Framed Grid */}
+            <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-gray-200 dark:divide-white/10">
+              {/* Left Sub-Column */}
+              <div className="divide-y divide-gray-200 dark:divide-white/10">
+                {/* Cell 1: Corridors */}
+                <div className="p-6 sm:p-8">
+                  <h4 className="text-xs uppercase tracking-wider font-bold text-slate-900 dark:text-white mb-4">
+                    Corridors
+                  </h4>
+                  <ul className="space-y-2.5 text-xs text-gray-600 dark:text-zinc-400 font-medium">
+                    <li className="flex items-center justify-between">
+                      <span className="hover:text-black dark:hover:text-white transition">Arbitrum USDC</span>
+                      <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono">Instant</span>
+                    </li>
+                    <li className="flex items-center justify-between">
+                      <span className="hover:text-black dark:hover:text-white transition">Solana SOL</span>
+                      <span className="text-[10px] text-blue-500 font-mono">1-Click</span>
+                    </li>
+                    <li className="flex items-center justify-between">
+                      <span className="hover:text-black dark:hover:text-white transition">Bitcoin BTC</span>
+                      <span className="text-[10px] text-amber-500 font-mono">Native</span>
+                    </li>
+                    <li className="flex items-center justify-between">
+                      <span className="hover:text-black dark:hover:text-white transition">Base USDC</span>
+                      <span className="text-[10px] text-purple-500 font-mono">Low-Fee</span>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Cell 3: Developers */}
+                <div className="p-6 sm:p-8">
+                  <h4 className="text-xs uppercase tracking-wider font-bold text-slate-900 dark:text-white mb-4">
+                    Developers
+                  </h4>
+                  <ul className="space-y-2.5 text-xs text-gray-600 dark:text-zinc-400 font-medium">
+                    <li>
+                      <NextLink href="/developer" className="hover:text-black dark:hover:text-white transition flex items-center justify-between">
+                        <span>REST API Sandbox</span>
+                        <ArrowUpRight className="w-3 h-3 text-gray-400" />
+                      </NextLink>
+                    </li>
+                    <li>
+                      <NextLink href="/developer?tab=memo" className="hover:text-black dark:hover:text-white transition flex items-center justify-between">
+                        <span>512-Byte Memo Studio</span>
+                        <ArrowUpRight className="w-3 h-3 text-gray-400" />
+                      </NextLink>
+                    </li>
+                    <li>
+                      <NextLink href="/developer?tab=widget" className="hover:text-black dark:hover:text-white transition flex items-center justify-between">
+                        <span>ZCross Pay Widget SDK</span>
+                        <ArrowUpRight className="w-3 h-3 text-gray-400" />
+                      </NextLink>
+                    </li>
+                    <li>
+                      <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-black dark:hover:text-white transition flex items-center justify-between">
+                        <span>GitHub Repository</span>
+                        <ExternalLink className="w-3 h-3 text-gray-400" />
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Right Sub-Column */}
+              <div className="divide-y divide-gray-200 dark:divide-white/10">
+                {/* Cell 2: Ecosystem */}
+                <div className="p-6 sm:p-8">
+                  <h4 className="text-xs uppercase tracking-wider font-bold text-slate-900 dark:text-white mb-4">
+                    Ecosystem
+                  </h4>
+                  <ul className="space-y-2.5 text-xs text-gray-600 dark:text-zinc-400 font-medium">
+                    <li>
+                      <a href="https://zips.z.cash/protocol/protocol.pdf" target="_blank" rel="noreferrer" className="hover:text-black dark:hover:text-white transition flex items-center justify-between">
+                        <span>Zcash Orchard Halo 2</span>
+                        <ExternalLink className="w-3 h-3 text-gray-400" />
+                      </a>
+                    </li>
+                    <li>
+                      <a href="https://chaindefuser.com" target="_blank" rel="noreferrer" className="hover:text-black dark:hover:text-white transition flex items-center justify-between">
+                        <span>NEAR Intents Defuse</span>
+                        <ExternalLink className="w-3 h-3 text-gray-400" />
+                      </a>
+                    </li>
+                    <li>
+                      <a href="https://zips.z.cash/zip-0316" target="_blank" rel="noreferrer" className="hover:text-black dark:hover:text-white transition flex items-center justify-between">
+                        <span>ZIP-316 Unified Addresses</span>
+                        <ExternalLink className="w-3 h-3 text-gray-400" />
+                      </a>
+                    </li>
+                    <li>
+                      <a href="https://zips.z.cash/zip-0321" target="_blank" rel="noreferrer" className="hover:text-black dark:hover:text-white transition flex items-center justify-between">
+                        <span>ZIP-321 Payment Requests</span>
+                        <ExternalLink className="w-3 h-3 text-gray-400" />
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Cell 4: Security */}
+                <div className="p-6 sm:p-8">
+                  <h4 className="text-xs uppercase tracking-wider font-bold text-slate-900 dark:text-white mb-4">
+                    Security
+                  </h4>
+                  <ul className="space-y-2.5 text-xs text-gray-600 dark:text-zinc-400 font-medium">
+                    <li className="flex items-center justify-between">
+                      <span className="hover:text-black dark:hover:text-white transition">Zero Transparent Hops</span>
+                      <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono">Enforced</span>
+                    </li>
+                    <li className="flex items-center justify-between">
+                      <span className="hover:text-black dark:hover:text-white transition">512B Uniform Padding</span>
+                      <span className="text-[10px] text-blue-500 font-mono">Constant</span>
+                    </li>
+                    <li className="flex items-center justify-between">
+                      <span className="hover:text-black dark:hover:text-white transition">Anti-Timing Jitter</span>
+                      <span className="text-[10px] text-purple-500 font-mono">15-120s</span>
+                    </li>
+                    <li className="flex items-center justify-between">
+                      <span className="hover:text-black dark:hover:text-white transition">Watch-Only FVK Mode</span>
+                      <span className="text-[10px] text-amber-500 font-mono">Supported</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-100 dark:border-slate-800 text-xs text-gray-400 dark:text-gray-500 font-light">
+          {/* Bottom Bar: Copyright & Dual Action Buttons (Matching reference image) */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 pt-6 border-t border-gray-200 dark:border-white/10 text-xs text-gray-500 dark:text-zinc-400">
             <div>
-              <span>© {new Date().getFullYear()} ZCross. All rights reserved.</span>
+              <span>© {new Date().getFullYear()} ZCross Protocol. Pure shielded liquidity. All rights reserved.</span>
+            </div>
+
+            <div className="flex items-center gap-3 w-full sm:w-auto">
+              <button
+                onClick={() => {
+                  const el = document.getElementById('audit-invariants');
+                  el?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full border border-gray-300 dark:border-white/20 bg-white dark:bg-black text-slate-900 dark:text-white text-xs font-semibold hover:bg-gray-100 dark:hover:bg-zinc-900 transition-colors cursor-pointer shadow-2xs"
+              >
+                <Shield className="w-3.5 h-3.5 text-emerald-500" />
+                <span>Audit Invariants</span>
+              </button>
+
+              <button
+                onClick={onOpenWallet}
+                className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-black dark:bg-amber-500 text-white dark:text-black text-xs font-semibold hover:bg-gray-800 dark:hover:bg-amber-400 transition-colors cursor-pointer shadow-sm"
+              >
+                <ZCrossLogo className="w-3.5 h-3.5" variant="white" />
+                <span>Launch App</span>
+              </button>
             </div>
           </div>
         </div>

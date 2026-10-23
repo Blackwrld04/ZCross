@@ -221,15 +221,15 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#080c14] text-slate-900 dark:text-slate-100 antialiased selection:bg-black dark:selection:bg-amber-400 dark:selection:text-black font-sans transition-colors duration-200">
+    <div className="min-h-screen bg-white dark:bg-black text-slate-900 dark:text-slate-100 antialiased selection:bg-black dark:selection:bg-amber-400 dark:selection:text-black font-sans transition-colors duration-200">
       {/* Top Application Bar */}
-      <header className="sticky top-0 z-40 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-gray-100 dark:border-slate-800 transition-colors">
+      <header className="sticky top-0 z-40 bg-white/80 dark:bg-black/90 backdrop-blur-md border-b border-gray-100 dark:border-white/10 transition-colors">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
           {/* Brand & Back Button */}
           <div className="flex items-center gap-2 sm:gap-4 shrink-0">
             <button
               onClick={onBackToLanding}
-              className="inline-flex items-center justify-center gap-1.5 text-xs text-gray-600 dark:text-slate-300 hover:text-black dark:hover:text-white p-2 sm:px-3 sm:py-1.5 rounded-full bg-gray-50 dark:bg-slate-900 hover:bg-gray-100 dark:hover:bg-slate-800 border border-gray-200 dark:border-slate-800 transition font-medium cursor-pointer shrink-0"
+              className="inline-flex items-center justify-center gap-1.5 text-xs text-gray-600 dark:text-zinc-300 hover:text-black dark:hover:text-white p-2 sm:px-3 sm:py-1.5 rounded-full bg-gray-50 dark:bg-black hover:bg-gray-100 dark:hover:bg-zinc-900 border border-gray-200 dark:border-white/10 transition font-medium cursor-pointer shrink-0"
               aria-label="Back to landing"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
@@ -246,13 +246,13 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
           </div>
 
           {/* Center Tabs Navigation (Desktop) */}
-          <nav className="hidden xl:flex items-center bg-gray-100/90 dark:bg-slate-900/90 p-1 rounded-full border border-gray-200/60 dark:border-slate-800 shrink-0 mx-2">
+          <nav className="hidden xl:flex items-center bg-gray-100/90 dark:bg-black p-1 rounded-full border border-gray-200/60 dark:border-white/10 shrink-0 mx-2">
             <button
               onClick={() => setActiveTab('swap')}
               className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold transition cursor-pointer ${
                 activeTab === 'swap'
                   ? 'bg-black dark:bg-amber-500 text-white dark:text-black shadow-xs font-bold'
-                  : 'text-gray-600 dark:text-slate-400 hover:text-black dark:hover:text-white hover:bg-white/60 dark:hover:bg-slate-800'
+                  : 'text-gray-600 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-white/60 dark:hover:bg-zinc-900'
               }`}
             >
               <ArrowLeftRight className="w-3.5 h-3.5" />
@@ -267,7 +267,7 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
               className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold transition cursor-pointer ${
                 activeTab === 'history'
                   ? 'bg-black dark:bg-amber-500 text-white dark:text-black shadow-xs font-bold'
-                  : 'text-gray-600 dark:text-slate-400 hover:text-black dark:hover:text-white hover:bg-white/60 dark:hover:bg-slate-800'
+                  : 'text-gray-600 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-white/60 dark:hover:bg-zinc-900'
               }`}
             >
               <Clock className="w-3.5 h-3.5" />
@@ -279,7 +279,7 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
               className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold transition cursor-pointer ${
                 activeTab === 'vault'
                   ? 'bg-black dark:bg-amber-500 text-white dark:text-black shadow-xs font-bold'
-                  : 'text-gray-600 dark:text-slate-400 hover:text-black dark:hover:text-white hover:bg-white/60 dark:hover:bg-slate-800'
+                  : 'text-gray-600 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-white/60 dark:hover:bg-zinc-900'
               }`}
             >
               <Layers className="w-3.5 h-3.5" />
@@ -291,7 +291,7 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
           <div className="hidden sm:flex items-center gap-2 shrink-0">
             <button
               onClick={() => setShowFiatModal(true)}
-              className="inline-flex items-center gap-1.5 text-xs text-slate-800 dark:text-slate-200 hover:text-black dark:hover:text-white px-3.5 py-1.5 rounded-full bg-white dark:bg-slate-900 hover:bg-gray-100 dark:hover:bg-slate-800 border border-gray-200 dark:border-slate-800 transition font-semibold cursor-pointer shadow-2xs"
+              className="inline-flex items-center gap-1.5 text-xs text-slate-800 dark:text-zinc-200 hover:text-black dark:hover:text-white px-3.5 py-1.5 rounded-full bg-white dark:bg-black hover:bg-gray-100 dark:hover:bg-zinc-900 border border-gray-200 dark:border-white/10 transition font-semibold cursor-pointer shadow-2xs"
               title="Fund via Google Pay"
             >
               <GooglePayLogo className="w-3.5 h-3.5" />
@@ -300,10 +300,10 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
 
             <button
               onClick={() => setShowAddressBook(true)}
-              className="inline-flex items-center gap-1.5 text-xs text-slate-800 dark:text-slate-200 hover:text-black dark:hover:text-white px-3.5 py-1.5 rounded-full bg-white dark:bg-slate-900 hover:bg-gray-100 dark:hover:bg-slate-800 border border-gray-200 dark:border-slate-800 transition font-semibold cursor-pointer shadow-2xs"
+              className="inline-flex items-center gap-1.5 text-xs text-slate-800 dark:text-zinc-200 hover:text-black dark:hover:text-white px-3.5 py-1.5 rounded-full bg-white dark:bg-black hover:bg-gray-100 dark:hover:bg-zinc-900 border border-gray-200 dark:border-white/10 transition font-semibold cursor-pointer shadow-2xs"
               title="Open Address Book"
             >
-              <BookOpen className="w-3.5 h-3.5 text-slate-700 dark:text-slate-300" />
+              <BookOpen className="w-3.5 h-3.5 text-slate-700 dark:text-zinc-300" />
               <span className="hidden md:inline">Address Book</span>
             </button>
 
@@ -314,12 +314,11 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
 
           {/* Header Action Badges: Mobile */}
           <div className="sm:hidden flex items-center gap-1.5 shrink-0">
-            <ThemeToggle variant="icon" />
             <ShieldedWalletBadge />
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-900 hover:bg-gray-200 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 border border-gray-200 dark:border-slate-800 flex items-center justify-center transition cursor-pointer shrink-0"
+              className="w-8 h-8 rounded-full bg-gray-100 dark:bg-black hover:bg-gray-200 dark:hover:bg-zinc-900 text-slate-800 dark:text-zinc-200 border border-gray-200 dark:border-white/10 flex items-center justify-center transition cursor-pointer shrink-0"
               title="Toggle Menu"
             >
               {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
@@ -329,14 +328,14 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
 
         {/* Mobile Dropdown Drawer */}
         {mobileMenuOpen && (
-          <div className="sm:hidden border-t border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 py-3 space-y-2 shadow-lg animate-in slide-in-from-top-1 duration-150">
+          <div className="sm:hidden border-t border-gray-100 dark:border-white/10 bg-white dark:bg-black px-4 py-3 space-y-2 shadow-lg animate-in slide-in-from-top-1 duration-150">
             <button
               type="button"
               onClick={() => {
                 setMobileMenuOpen(false);
                 setShowFiatModal(true);
               }}
-              className="w-full flex items-center justify-between p-2.5 rounded-xl bg-gray-50 dark:bg-slate-900 hover:bg-gray-100 dark:hover:bg-slate-800 border border-gray-200 dark:border-slate-800 text-xs font-semibold text-slate-800 dark:text-slate-200 cursor-pointer"
+              className="w-full flex items-center justify-between p-2.5 rounded-xl bg-gray-50 dark:bg-black hover:bg-gray-100 dark:hover:bg-zinc-900 border border-gray-200 dark:border-white/10 text-xs font-semibold text-slate-800 dark:text-zinc-200 cursor-pointer"
             >
               <span className="flex items-center gap-2">
                 <GooglePayLogo className="w-4 h-4" />
@@ -351,10 +350,10 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
                 setMobileMenuOpen(false);
                 setShowAddressBook(true);
               }}
-              className="w-full flex items-center justify-between p-2.5 rounded-xl bg-gray-50 dark:bg-slate-900 hover:bg-gray-100 dark:hover:bg-slate-800 border border-gray-200 dark:border-slate-800 text-xs font-semibold text-slate-800 dark:text-slate-200 cursor-pointer"
+              className="w-full flex items-center justify-between p-2.5 rounded-xl bg-gray-50 dark:bg-black hover:bg-gray-100 dark:hover:bg-zinc-900 border border-gray-200 dark:border-white/10 text-xs font-semibold text-slate-800 dark:text-zinc-200 cursor-pointer"
             >
               <span className="flex items-center gap-2">
-                <BookOpen className="w-4 h-4 text-slate-800 dark:text-slate-300" />
+                <BookOpen className="w-4 h-4 text-slate-800 dark:text-zinc-300" />
                 <span>Address Book &amp; Web3 Domains</span>
               </span>
             </button>
@@ -368,12 +367,12 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
         )}
 
         {/* Sub-Header Tabs for Small / Medium Screens */}
-        <div className="xl:hidden w-full px-3 py-2 bg-gray-50/90 dark:bg-slate-950/90 backdrop-blur-md border-t border-gray-100 dark:border-slate-800 flex items-center justify-center">
-          <nav className="flex items-center bg-gray-200/80 dark:bg-slate-900/90 p-1 rounded-full w-full max-w-sm justify-between shadow-2xs border border-transparent dark:border-slate-800">
+        <div className="xl:hidden w-full px-3 py-2 bg-gray-50/90 dark:bg-black/90 backdrop-blur-md border-t border-gray-100 dark:border-white/10 flex items-center justify-center">
+          <nav className="flex items-center bg-gray-200/80 dark:bg-black p-1 rounded-full w-full max-w-sm justify-between shadow-2xs border border-transparent dark:border-white/10">
             <button
               onClick={() => setActiveTab('swap')}
               className={`flex-1 py-1.5 rounded-full text-xs font-semibold transition text-center cursor-pointer ${
-                activeTab === 'swap' ? 'bg-black dark:bg-amber-500 text-white dark:text-black shadow-xs font-bold' : 'text-gray-600 dark:text-slate-400 hover:text-black dark:hover:text-white'
+                activeTab === 'swap' ? 'bg-black dark:bg-amber-500 text-white dark:text-black shadow-xs font-bold' : 'text-gray-600 dark:text-zinc-400 hover:text-black dark:hover:text-white'
               }`}
             >
               Swap
@@ -425,13 +424,13 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
 
               <div className="flex items-center gap-2">
                 {/* Sub-Tab Navigation: Swaps vs Fiat Rails */}
-                <div className="flex items-center bg-gray-100 dark:bg-slate-900 p-1 rounded-full border border-gray-200 dark:border-slate-800 text-xs">
+                <div className="flex items-center bg-gray-100 dark:bg-black p-1 rounded-full border border-gray-200 dark:border-white/10 text-xs">
                   <button
                     onClick={() => setHistorySubTab('swaps')}
                     className={`px-3 py-1.5 rounded-full font-semibold transition cursor-pointer flex items-center gap-1.5 ${
                       historySubTab === 'swaps'
                         ? 'bg-black dark:bg-amber-500 text-white dark:text-black shadow-xs font-bold'
-                        : 'text-gray-600 dark:text-slate-400 hover:text-black dark:hover:text-white'
+                        : 'text-gray-600 dark:text-zinc-400 hover:text-black dark:hover:text-white'
                     }`}
                   >
                     <span>Cross-Chain Swaps</span>
@@ -448,7 +447,7 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
                     className={`px-3 py-1.5 rounded-full font-semibold transition cursor-pointer flex items-center gap-1.5 relative ${
                       historySubTab === 'fiat'
                         ? 'bg-black dark:bg-amber-500 text-white dark:text-black shadow-xs font-bold'
-                        : 'text-gray-600 dark:text-slate-400 hover:text-black dark:hover:text-white'
+                        : 'text-gray-600 dark:text-zinc-400 hover:text-black dark:hover:text-white'
                     }`}
                   >
                     <span>Google Pay Settlements</span>
@@ -457,7 +456,7 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
                     </span>
                     {fiatOrders.some((o) => o.status === 'PENDING') && (
                       <span 
-                        className="w-2 h-2 rounded-full bg-amber-500 animate-pulse absolute -top-0.5 -right-0.5 border border-white dark:border-slate-900" 
+                        className="w-2 h-2 rounded-full bg-amber-500 animate-pulse absolute -top-0.5 -right-0.5 border border-white dark:border-black" 
                         title="Active pending Google Pay settlement"
                       />
                     )}
@@ -470,7 +469,7 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
                     fetchFiatOrders();
                   }}
                   disabled={loadingSwaps || loadingFiatOrders}
-                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 text-gray-700 dark:text-slate-200 hover:text-black dark:hover:text-white text-xs font-semibold hover:bg-gray-50 dark:hover:bg-slate-800 transition shadow-xs cursor-pointer"
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white dark:bg-black border border-gray-200 dark:border-white/10 text-gray-700 dark:text-zinc-200 hover:text-black dark:hover:text-white text-xs font-semibold hover:bg-gray-50 dark:hover:bg-zinc-900 transition shadow-xs cursor-pointer"
                 >
                   <RefreshCw className={`w-3.5 h-3.5 ${loadingSwaps || loadingFiatOrders ? 'animate-spin' : ''}`} />
                   <span className="hidden sm:inline">Refresh</span>
@@ -480,12 +479,12 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
 
             {historySubTab === 'swaps' ? (
               swaps.length === 0 ? (
-                <div className="text-center py-20 px-4 bg-gray-50/80 dark:bg-slate-900/60 rounded-3xl border border-gray-200 dark:border-slate-800">
-                  <div className="w-12 h-12 rounded-2xl bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 flex items-center justify-center text-gray-400 dark:text-slate-400 mx-auto mb-3 shadow-xs">
+                <div className="text-center py-20 px-4 bg-gray-50/80 dark:bg-black rounded-3xl border border-gray-200 dark:border-white/10">
+                  <div className="w-12 h-12 rounded-2xl bg-white dark:bg-zinc-900 border border-gray-200 dark:border-white/10 flex items-center justify-center text-gray-400 dark:text-zinc-400 mx-auto mb-3 shadow-xs">
                     <Clock className="w-6 h-6" />
                   </div>
                   <h3 className="text-base font-bold text-slate-900 dark:text-white mb-1">No Swaps Initiated Yet</h3>
-                  <p className="text-xs text-gray-500 dark:text-slate-400 max-w-sm mx-auto mb-6">
+                  <p className="text-xs text-gray-500 dark:text-zinc-400 max-w-sm mx-auto mb-6">
                     Your settlement history will appear here once you create an intent.
                   </p>
                   <button
@@ -496,10 +495,10 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
                   </button>
                 </div>
               ) : (
-                <div className="bg-white dark:bg-slate-900/90 rounded-3xl border border-gray-200/90 dark:border-slate-800 shadow-xl overflow-hidden">
+                <div className="bg-white dark:bg-black rounded-3xl border border-gray-200/90 dark:border-white/10 shadow-xl overflow-hidden">
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-xs">
-                      <thead className="bg-gray-50/90 dark:bg-slate-950/90 border-b border-gray-200 dark:border-slate-800 text-gray-500 dark:text-slate-400 uppercase tracking-wider font-semibold text-[10px]">
+                      <thead className="bg-gray-50/90 dark:bg-black border-b border-gray-200 dark:border-white/10 text-gray-500 dark:text-zinc-400 uppercase tracking-wider font-semibold text-[10px]">
                         <tr>
                           <th className="px-6 py-4">Intent / Time</th>
                           <th className="px-6 py-4">Route</th>
@@ -509,15 +508,15 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
                           <th className="px-6 py-4 text-right">Actions</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-gray-100 dark:divide-slate-800">
+                      <tbody className="divide-y divide-gray-100 dark:divide-white/10">
                         {swaps.map((item) => (
-                          <tr key={item.id} className="hover:bg-gray-50/70 dark:hover:bg-slate-800/50 transition">
+                          <tr key={item.id} className="hover:bg-gray-50/70 dark:hover:bg-zinc-950 transition">
                             <td className="px-6 py-4">
                               <div className="font-semibold text-slate-900 dark:text-white flex items-center gap-1.5">
                                 <span>{item.id.slice(0, 8)}...</span>
                                 <button
                                   onClick={() => copyToClipboard(item.id, item.id)}
-                                  className="text-gray-400 dark:text-slate-500 hover:text-black dark:hover:text-white cursor-pointer"
+                                  className="text-gray-400 dark:text-zinc-500 hover:text-black dark:hover:text-white cursor-pointer"
                                   title="Copy Swap ID"
                                 >
                                   {copiedId === item.id ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
@@ -603,12 +602,12 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
             ) : (
               /* Google Pay Orders View */
               fiatOrders.length === 0 ? (
-                <div className="text-center py-20 px-4 bg-gray-50/80 dark:bg-slate-900/60 rounded-3xl border border-gray-200 dark:border-slate-800">
-                  <div className="w-12 h-12 rounded-2xl bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 flex items-center justify-center text-gray-400 dark:text-slate-400 mx-auto mb-3 shadow-xs">
+                <div className="text-center py-20 px-4 bg-gray-50/80 dark:bg-black rounded-3xl border border-gray-200 dark:border-white/10">
+                  <div className="w-12 h-12 rounded-2xl bg-white dark:bg-zinc-900 border border-gray-200 dark:border-white/10 flex items-center justify-center text-gray-400 dark:text-zinc-400 mx-auto mb-3 shadow-xs">
                     <GooglePayLogo className="w-6 h-6" />
                   </div>
                   <h3 className="text-base font-bold text-slate-900 dark:text-white mb-1">No Google Pay Settlements Recorded</h3>
-                  <p className="text-xs text-gray-500 dark:text-slate-400 max-w-sm mx-auto mb-6">
+                  <p className="text-xs text-gray-500 dark:text-zinc-400 max-w-sm mx-auto mb-6">
                     Use Google Pay to instantly fund your Orchard shielded ZEC vault with biometric 1-tap checkout.
                   </p>
                   <button
@@ -622,10 +621,10 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
                   </button>
                 </div>
               ) : (
-                <div className="bg-white dark:bg-slate-900/90 rounded-3xl border border-gray-200/90 dark:border-slate-800 shadow-xl overflow-hidden">
+                <div className="bg-white dark:bg-black rounded-3xl border border-gray-200/90 dark:border-white/10 shadow-xl overflow-hidden">
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-xs">
-                      <thead className="bg-gray-50/90 dark:bg-slate-950/90 border-b border-gray-200 dark:border-slate-800 text-gray-500 dark:text-slate-400 uppercase tracking-wider font-semibold text-[10px]">
+                      <thead className="bg-gray-50/90 dark:bg-black border-b border-gray-200 dark:border-white/10 text-gray-500 dark:text-zinc-400 uppercase tracking-wider font-semibold text-[10px]">
                         <tr>
                           <th className="px-6 py-4">Order / Time</th>
                           <th className="px-6 py-4">Method &amp; Provider</th>
@@ -635,12 +634,12 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
                           <th className="px-6 py-4 text-right">Actions</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-gray-100 dark:divide-slate-800">
+                      <tbody className="divide-y divide-gray-100 dark:divide-white/10">
                         {fiatOrders.map((order) => {
                           const isPending = order.status === 'PENDING';
 
                           return (
-                            <tr key={order.orderId} className={`transition ${isPending ? 'bg-amber-50/40 dark:bg-amber-950/20' : 'hover:bg-gray-50/70 dark:hover:bg-slate-800/50'}`}>
+                            <tr key={order.orderId} className={`transition ${isPending ? 'bg-amber-50/40 dark:bg-amber-950/20' : 'hover:bg-gray-50/70 dark:hover:bg-zinc-950'}`}>
                               <td className="px-6 py-4">
                                 <div className="font-semibold text-slate-900 dark:text-white flex items-center gap-1.5 font-mono">
                                   <span>{order.orderId.slice(0, 14)}...</span>
@@ -742,7 +741,7 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
             </div>
 
             {/* Featured Vault Card */}
-            <div className="bg-slate-950 dark:bg-slate-900/90 text-white rounded-2xl sm:rounded-3xl p-5 sm:p-10 shadow-2xl relative overflow-hidden border border-gray-800 dark:border-slate-800">
+            <div className="bg-slate-950 dark:bg-black text-white rounded-2xl sm:rounded-3xl p-5 sm:p-10 shadow-2xl relative overflow-hidden border border-gray-800 dark:border-white/10">
               <div className="flex items-center justify-between mb-4 sm:mb-6">
                 <div className="flex items-center gap-2.5">
                   <div className="w-8 h-8 rounded-full bg-amber-400/20 flex items-center justify-center border border-amber-400/30">
@@ -757,7 +756,7 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
               <div className="text-3xl sm:text-6xl font-bold tracking-tight mb-2">
                 {balanceZec > 0 ? `${balanceZec.toFixed(4)} ZEC` : '17.50000000 ZEC'}
               </div>
-              <div className="text-xs sm:text-sm text-gray-400 mb-6 sm:mb-8 font-light">
+              <div className="text-xs sm:text-sm text-gray-400 dark:text-zinc-400 mb-6 sm:mb-8 font-light">
                 ≈ ${((balanceZec > 0 ? balanceZec : 17.5) * zecPriceUsd).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD • Connected Orchard Vault
               </div>
 
@@ -779,17 +778,17 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
                 {destinations.map((dest) => (
                   <div
                     key={`${dest.chain}-${dest.symbol}`}
-                    className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 hover:border-gray-300 dark:hover:border-slate-700 hover:shadow-md transition flex flex-col justify-between"
+                    className="p-5 rounded-2xl bg-white dark:bg-black border border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 hover:shadow-md transition flex flex-col justify-between"
                   >
                     <div>
                       <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center gap-2.5">
-                          <div className="w-8 h-8 rounded-full bg-gray-50 dark:bg-slate-800 flex items-center justify-center border border-gray-200 dark:border-slate-700">
+                          <div className="w-8 h-8 rounded-full bg-gray-50 dark:bg-zinc-900 flex items-center justify-center border border-gray-200 dark:border-white/10">
                             <TokenIcon symbol={dest.symbol} chain={dest.chain} className="w-4 h-4" />
                           </div>
                           <div>
                             <div className="text-sm font-bold text-slate-900 dark:text-white">{dest.symbol}</div>
-                            <div className="text-xs text-gray-500 dark:text-slate-400">{dest.chainName}</div>
+                            <div className="text-xs text-gray-500 dark:text-zinc-400">{dest.chainName}</div>
                           </div>
                         </div>
                         <span className="text-[10px] font-semibold text-emerald-800 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/80 px-2 py-0.5 rounded-full">
@@ -797,12 +796,12 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
                         </span>
                       </div>
 
-                      <div className="text-xs text-gray-400 dark:text-slate-500 font-mono truncate mb-4">
+                      <div className="text-xs text-gray-400 dark:text-zinc-500 font-mono truncate mb-4">
                         {dest.assetId}
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-slate-800 text-xs">
+                    <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-white/10 text-xs">
                       <span className="text-gray-500 dark:text-slate-400 font-medium">Latency: ~45s</span>
                       <button
                         onClick={() => setActiveTab('swap')}

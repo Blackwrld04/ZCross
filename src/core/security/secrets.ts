@@ -173,3 +173,10 @@ export class SecretsManager {
 }
 
 export const secretsManager = new SecretsManager();
+
+/**
+ * Convenient standalone helper to mask sensitive strings for logs and telemetry
+ */
+export function maskSensitiveString(val?: string): string {
+  return secretsManager.maskSecret(val);
+}

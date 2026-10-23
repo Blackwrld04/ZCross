@@ -321,16 +321,16 @@ export const MarketPriceChart: React.FC<MarketPriceChartProps> = ({
   const fillGradientId = isPositive ? 'chartGradientEmerald' : 'chartGradientAmber';
 
   return (
-    <div className="bg-white dark:bg-slate-900/95 border border-gray-200/90 dark:border-slate-800 rounded-[28px] shadow-xl p-6 sm:p-7 text-slate-900 dark:text-white transition-all flex flex-col justify-between relative overflow-hidden">
+    <div className="bg-white dark:bg-black border border-gray-200/90 dark:border-white/10 rounded-[28px] shadow-xl dark:shadow-2xl dark:shadow-black p-6 sm:p-7 text-slate-900 dark:text-white transition-all flex flex-col justify-between relative overflow-hidden">
       {/* Top Header: Pair & Live Ticker */}
       <div>
         <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
           <div className="flex items-center gap-2.5">
             <div className="flex -space-x-1.5 items-center">
-              <span className="w-8 h-8 rounded-full bg-amber-400 text-black flex items-center justify-center font-bold text-xs shadow-xs ring-2 ring-white dark:ring-slate-900">
+              <span className="w-8 h-8 rounded-full bg-amber-400 text-black flex items-center justify-center font-bold text-xs shadow-xs ring-2 ring-white dark:ring-black">
                 ⓩ
               </span>
-              <span className="w-8 h-8 rounded-full bg-slate-900 dark:bg-slate-800 text-white flex items-center justify-center font-bold text-xs shadow-xs ring-2 ring-white dark:ring-slate-900">
+              <span className="w-8 h-8 rounded-full bg-slate-900 dark:bg-zinc-800 text-white flex items-center justify-center font-bold text-xs shadow-xs ring-2 ring-white dark:ring-black">
                 {selectedDest.symbol.slice(0, 3)}
               </span>
             </div>
@@ -340,14 +340,14 @@ export const MarketPriceChart: React.FC<MarketPriceChartProps> = ({
                   ZEC / {selectedDest.symbol}
                 </h3>
               </div>
-              <p className="text-[11px] text-gray-500 dark:text-gray-400">
+              <p className="text-[11px] text-gray-500 dark:text-zinc-400">
                 Orchard Shielded Liquidity • NEAR Intents 1Click Corridor
               </p>
             </div>
           </div>
 
           {/* Timeframe Controls */}
-          <div className="flex items-center gap-1 bg-gray-50 dark:bg-slate-950/80 border border-gray-200 dark:border-slate-800 p-1 rounded-full text-xs">
+          <div className="flex items-center gap-1 bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 p-1 rounded-full text-xs">
             {(['1H', '24H', '7D', '1M', '1Y'] as Timeframe[]).map((tf) => (
               <button
                 key={tf}
@@ -359,7 +359,7 @@ export const MarketPriceChart: React.FC<MarketPriceChartProps> = ({
                 className={`px-2.5 py-1 rounded-full font-semibold transition cursor-pointer text-[11px] ${
                   timeframe === tf
                     ? 'bg-black text-white dark:bg-amber-500 dark:text-black shadow-xs'
-                    : 'text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white'
+                    : 'text-gray-500 dark:text-zinc-400 hover:text-black dark:hover:text-white'
                 }`}
               >
                 {tf}
@@ -369,7 +369,7 @@ export const MarketPriceChart: React.FC<MarketPriceChartProps> = ({
               <button
                 type="button"
                 onClick={onToggleCompact}
-                className="ml-1 p-1 rounded-full hover:bg-gray-200 dark:hover:bg-slate-800 text-gray-400 hover:text-black dark:hover:text-white transition cursor-pointer"
+                className="ml-1 p-1 rounded-full hover:bg-gray-200 dark:hover:bg-zinc-800 text-gray-400 hover:text-black dark:hover:text-white transition cursor-pointer"
                 title={isCompact ? 'Expand Chart' : 'Collapse Chart'}
               >
                 {isCompact ? <Maximize2 className="w-3.5 h-3.5" /> : <Minimize2 className="w-3.5 h-3.5" />}
@@ -394,7 +394,7 @@ export const MarketPriceChart: React.FC<MarketPriceChartProps> = ({
                 <span>{formatPriceDiff(activeChangeAbs)}</span>
                 <span>({isPositive ? '+' : ''}{activeChange.toFixed(2)}%)</span>
               </span>
-              <span className="text-[11px] text-gray-500 dark:text-gray-400 font-mono">
+              <span className="text-[11px] text-gray-500 dark:text-zinc-400 font-mono">
                 {hoverIndex !== null ? `At ${activePoint.label}` : `Past ${timeframe}`}
               </span>
             </div>
@@ -402,17 +402,17 @@ export const MarketPriceChart: React.FC<MarketPriceChartProps> = ({
 
           {/* Micro Stats Pill Strip */}
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-right">
-            <div className="bg-gray-50/80 dark:bg-slate-950/60 border border-gray-100 dark:border-slate-800/80 px-3 py-1.5 rounded-xl">
-              <div className="text-[10px] text-gray-500 dark:text-gray-400 uppercase font-semibold">24h High</div>
-              <div className="text-xs font-bold font-mono text-slate-800 dark:text-slate-200">{formatPrice(high)}</div>
+            <div className="bg-gray-50/80 dark:bg-black border border-gray-100 dark:border-white/10 px-3 py-1.5 rounded-xl">
+              <div className="text-[10px] text-gray-500 dark:text-zinc-400 uppercase font-semibold">24h High</div>
+              <div className="text-xs font-bold font-mono text-slate-800 dark:text-zinc-200">{formatPrice(high)}</div>
             </div>
-            <div className="bg-gray-50/80 dark:bg-slate-950/60 border border-gray-100 dark:border-slate-800/80 px-3 py-1.5 rounded-xl">
-              <div className="text-[10px] text-gray-500 dark:text-gray-400 uppercase font-semibold">24h Low</div>
-              <div className="text-xs font-bold font-mono text-slate-800 dark:text-slate-200">{formatPrice(low)}</div>
+            <div className="bg-gray-50/80 dark:bg-black border border-gray-100 dark:border-white/10 px-3 py-1.5 rounded-xl">
+              <div className="text-[10px] text-gray-500 dark:text-zinc-400 uppercase font-semibold">24h Low</div>
+              <div className="text-xs font-bold font-mono text-slate-800 dark:text-zinc-200">{formatPrice(low)}</div>
             </div>
-            <div className="hidden sm:block bg-gray-50/80 dark:bg-slate-950/60 border border-gray-100 dark:border-slate-800/80 px-3 py-1.5 rounded-xl">
-              <div className="text-[10px] text-gray-500 dark:text-gray-400 uppercase font-semibold">24h Volume</div>
-              <div className="text-xs font-bold font-mono text-slate-800 dark:text-slate-200">
+            <div className="hidden sm:block bg-gray-50/80 dark:bg-black border border-gray-100 dark:border-white/10 px-3 py-1.5 rounded-xl">
+              <div className="text-[10px] text-gray-500 dark:text-zinc-400 uppercase font-semibold">24h Volume</div>
+              <div className="text-xs font-bold font-mono text-slate-800 dark:text-zinc-200">
                 ${(volume24h / 1000).toFixed(0)}k
               </div>
             </div>

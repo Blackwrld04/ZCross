@@ -17,14 +17,22 @@ const idempotencyStore = new Map<string, CachedIdempotentResponse>();
 const IDEMPOTENCY_TTL_MS = 10 * 60 * 1000;
 
 /**
+ * Validates whether an idempotency key string is valid (non-empty, alphanumeric with hyphens/underscores, 8-128 chars)
+ */
+export function isValidIdempotencyKey(key?: string | null): boolean {
+  if (!key) return false;
+  const clean = key.trim();
+  return /^[a-zA-Z0-9_-]{8,128}$/.test(clean);
+}
+
+/**
  * Extracts Idempotency-Key from headers
  */
 export function getIdempotencyKey(req: NextRequest): string | null {
   const key = req.headers.get('idempotency-key') || req.headers.get('x-idempotency-key');
   if (!key) return null;
   const clean = key.trim();
-  // Valid key: alphanumeric, hyphens, underscores, between 8 and 128 characters
-  if (/^[a-zA-Z0-9_-]{8,128}$/.test(clean)) {
+  if (isValidIdempotencyKey(clean)) {
     return clean;
   }
   return null;
