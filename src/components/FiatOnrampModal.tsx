@@ -83,7 +83,8 @@ export const FiatOnrampModal: React.FC<FiatOnrampModalProps> = ({
   const handleGooglePay = async () => {
     // If a live MoonPay API key is configured, launch MoonPay's Google Pay checkout popup directly
     const moonpayQuote = quotes.find(q => q.providerId === 'moonpay');
-    if (process.env.NEXT_PUBLIC_MOONPAY_API_KEY && moonpayQuote?.checkoutUrl) {
+    const moonpayKey = process.env.NEXT_PUBLIC_MOONPAY_API_KEY || 'pk_test_QuRBVUBMr6EnuDz228i91makUVHM6K5T';
+    if (moonpayKey && moonpayQuote?.checkoutUrl) {
       window.open(moonpayQuote.checkoutUrl, '_blank', 'width=520,height=750,toolbar=no,menubar=no');
       onClose();
       return;

@@ -202,7 +202,7 @@ export function generateProviderUrl(params: {
       return `${redirectOrigin}/swap?gpay_direct=1&amount=${fiatAmount}&currency=${fiatCurrency}&to=${encodeURIComponent(destinationAddress)}`;
     }
     case 'moonpay': {
-      const apiKey = process.env.NEXT_PUBLIC_MOONPAY_API_KEY || 'pk_test_sample';
+      const apiKey = process.env.NEXT_PUBLIC_MOONPAY_API_KEY || 'pk_test_QuRBVUBMr6EnuDz228i91makUVHM6K5T';
       const base = 'https://buy.moonpay.com';
       return `${base}?apiKey=${apiKey}`
         + `&currencyCode=zec`

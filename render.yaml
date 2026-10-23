@@ -15,3 +15,5 @@ services:
         value: 1
       - key: PORT
         value: 10000
+      - key: NEXT_PUBLIC_MOONPAY_API_KEY
+        value: pk_test_QuRBVUBMr6EnuDz228i91makUVHM6K5T
