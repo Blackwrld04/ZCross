@@ -19,9 +19,13 @@ export async function GET(req: NextRequest) {
     url.searchParams.set('baseCurrencyAmount', amount);
     url.searchParams.set('redirectURL', `${redirectOrigin}/swap?onramp_complete=1&provider=moonpay`);
 
-    // If secret key is configured, sign the URL with wallet address
-    if (secretKey && secretKey.startsWith('sk_') && address) {
+    // Only pass walletAddress to MoonPay if it matches ETH/EVM format (0x...) to prevent address regex rejection
+    if (address && address.startsWith('0x')) {
       url.searchParams.set('walletAddress', address);
+    }
+
+    // If secret key is configured, sign the URL with HMAC-SHA256
+    if (secretKey && secretKey.startsWith('sk_')) {
       const signature = crypto
         .createHmac('sha256', secretKey)
         .update(url.search)
@@ -30,7 +34,6 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ url: url.toString(), signed: true });
     }
 
-    // Without secret key, omitting walletAddress prevents MoonPay "Signature check failed" error
     return NextResponse.json({ url: url.toString(), signed: false });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
