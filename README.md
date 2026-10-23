@@ -335,13 +335,27 @@ ZCross is engineered for high-throughput, low-latency execution with zero client
 
 | Component | Platform / Network | URL / Reference |
 | :--- | :--- | :--- |
-| **Web Application** | Vercel / Netlify / Self-Hosted | [https://zcross.cash](https://zcross.cash) |
+| **Web Application** | Render / Vercel / Self-Hosted | [https://zcross.cash](https://zcross.cash) |
 | **Shielded Swap Terminal** | Production App Router | [https://zcross.cash/swap](https://zcross.cash/swap) |
 | **1-Click Pay Merchant Widget** | Production App Router | [https://zcross.cash/pay](https://zcross.cash/pay) |
 | **Developer Documentation** | Production App Router | [https://zcross.cash/developer](https://zcross.cash/developer) |
 | **Zcash Lightwalletd Node** | gRPC Mainnet Cluster | `https://mainnet.lightwalletd.com:9067` |
 | **NEAR Intents Defuse Protocol** | NEAR Mainnet | `intents.near` · `solver-vault.near` |
 | **Source Code Repository** | GitHub | [Blackwrld04/ZCross](https://github.com/Blackwrld04/ZCross) |
+
+### Deploying to Render (Zero-Config Blueprint)
+
+ZCross includes native [Render Blueprint](render.yaml) configuration:
+
+1. Log into your [Render Dashboard](https://dashboard.render.com).
+2. Click **New +** → **Blueprint** (or **Web Service**).
+3. Connect your repository: `Blackwrld04/ZCross`.
+4. Render automatically reads [`render.yaml`](render.yaml) and configures:
+   - **Runtime**: `Node 20`
+   - **Build Command**: `npm install && npm run build`
+   - **Start Command**: `npm start`
+   - **Health Check**: `/api/health`
+5. Set your optional environment variables (e.g. `NEXT_PUBLIC_MOONPAY_API_KEY`, `MOONPAY_WEBHOOK_SECRET`) and click **Apply** / **Deploy Web Service**.
 
 ---
 
