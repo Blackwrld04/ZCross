@@ -6,7 +6,7 @@ const contentSecurityPolicy = `
   font-src 'self' https://fonts.gstatic.com data:;
   img-src 'self' data: blob: https:;
   frame-src 'self' https://pay.google.com https://buy.moonpay.com https://global.transak.com https://app.ramp.network;
-  connect-src 'self' https://api.coingecko.com https://mainnet.lightwalletd.com:9067 https://*.lightwalletd.com:9067 https://zec.rocks https://rpc.mainnet.near.org https://*.fastnear.com https://*.upstash.io https://*.supabase.co https://*.neon.tech wss:;
+  connect-src 'self' https://zcross.onrender.com https://*.onrender.com https://api.coingecko.com https://mainnet.lightwalletd.com:9067 https://*.lightwalletd.com:9067 https://zec.rocks https://rpc.mainnet.near.org https://*.fastnear.com https://*.upstash.io https://*.supabase.co https://*.neon.tech wss:;
   object-src 'none';
   base-uri 'self';
   form-action 'self';
@@ -17,6 +17,18 @@ const nextConfig = {
   reactStrictMode: true,
   experimental: {
     serverComponentsExternalPackages: ['better-sqlite3'],
+  },
+  async rewrites() {
+    const backendUrl = process.env.RENDER_BACKEND_URL || process.env.NEXT_PUBLIC_RENDER_URL;
+    if (backendUrl) {
+      return [
+        {
+          source: '/api/:path*',
+          destination: `${backendUrl.replace(/\/$/, '')}/api/:path*`,
+        },
+      ];
+    }
+    return [];
   },
   async headers() {
     // In local development, avoid strict CSP and HSTS which block localhost HMR and force HTTPS upgrades
