@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 import { 
   X, Shield, Check, 
   Lock, RefreshCw, Zap, CheckCircle2, ChevronRight, Info,
-  RefreshCcw, ShieldCheck
+  RefreshCcw, ShieldCheck, ExternalLink
 } from 'lucide-react';
 import { useEmbeddedWallet } from '@/core/zcash/EmbeddedWalletContext';
 import { TokenIcon } from './TokenIcon';
@@ -79,17 +79,15 @@ export const FiatOnrampModal: React.FC<FiatOnrampModalProps> = ({
   const estimatedZec = activeQuote ? activeQuote.estimatedZec : 0;
   const netConfig = PAYMENT_NETWORKS.google_pay;
 
-  // Handle Google Pay 1-Tap Payment
-  const handleGooglePay = async () => {
-    // If a live MoonPay API key is configured, launch MoonPay's Google Pay checkout popup directly
+  const handleLaunchMoonPay = () => {
     const moonpayQuote = quotes.find(q => q.providerId === 'moonpay');
-    const moonpayKey = process.env.NEXT_PUBLIC_MOONPAY_API_KEY || 'pk_test_QuRBVUBMr6EnuDz228i91makUVHM6K5T';
-    if (moonpayKey && moonpayQuote?.checkoutUrl) {
+    if (moonpayQuote?.checkoutUrl) {
       window.open(moonpayQuote.checkoutUrl, '_blank', 'width=520,height=750,toolbar=no,menubar=no');
-      onClose();
-      return;
     }
+  };
 
+  // Handle Google Pay 1-Tap Payment (Direct In-App Shielded Vault Settlement)
+  const handleGooglePay = async () => {
     setIsProcessing(true);
     const authId = `gpay_auth_${Math.random().toString(36).slice(2, 10)}`;
     const txHash = `tx_orchard_gpay_${Math.random().toString(16).slice(2, 12)}`;
@@ -354,6 +352,18 @@ export const FiatOnrampModal: React.FC<FiatOnrampModalProps> = ({
                   </>
                 )}
               </button>
+
+              {/* Optional MoonPay Gateway Link with Cards & Bank options */}
+              <div className="text-center pt-1">
+                <button
+                  type="button"
+                  onClick={handleLaunchMoonPay}
+                  className="text-xs text-gray-500 dark:text-zinc-400 hover:text-black dark:hover:text-white font-medium transition cursor-pointer inline-flex items-center justify-center gap-1 mx-auto"
+                >
+                  <span>or pay via MoonPay Gateway (Cards &amp; Crypto)</span>
+                  <ExternalLink className="w-3 h-3" />
+                </button>
+              </div>
             </div>
           </div>
         )}
