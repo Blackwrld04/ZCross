@@ -858,6 +858,22 @@ export const SwapCard: React.FC<SwapCardProps> = ({
                   )}
                 </button>
 
+                {/* Autonomous Refund SLA Notice directly next to Checkout */}
+                <div className="flex items-center justify-between px-3 py-2 rounded-xl bg-gray-50/80 dark:bg-black/60 border border-gray-200/60 dark:border-white/10 text-[11px] text-gray-500 dark:text-zinc-400">
+                  <span className="flex items-center gap-1.5">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                    <span>Protected by Autonomous Refund Protocol (&lt; 30m SLA)</span>
+                  </span>
+                  <a
+                    href="/refunds"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-slate-700 dark:text-zinc-300 hover:text-black dark:hover:text-white underline font-semibold transition"
+                  >
+                    Refund Policy ↗
+                  </a>
+                </div>
+
                 <div className="text-center">
                   <button
                     type="submit"

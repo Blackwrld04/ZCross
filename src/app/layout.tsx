@@ -9,6 +9,8 @@ export const metadata: Metadata = {
 
 import { PriceProvider } from '@/core/prices/PriceContext';
 import { ThemeProvider } from '@/core/theme/ThemeContext';
+import { CookieBanner } from '@/components/CookieBanner';
+import { DataPurgeModal } from '@/components/DataPurgeModal';
 
 export default function RootLayout({
   children,
@@ -47,6 +49,8 @@ export default function RootLayout({
         <ThemeProvider>
           <PriceProvider>
             {children}
+            <CookieBanner />
+            <DataPurgeModal />
           </PriceProvider>
         </ThemeProvider>
       </body>

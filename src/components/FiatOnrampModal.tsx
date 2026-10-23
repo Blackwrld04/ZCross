@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { 
   X, Shield, Check, 
-  Lock, RefreshCw, Zap, CheckCircle2, ChevronRight, Info
+  Lock, RefreshCw, Zap, CheckCircle2, ChevronRight, Info,
+  RefreshCcw, ShieldCheck
 } from 'lucide-react';
 import { useEmbeddedWallet } from '@/core/zcash/EmbeddedWalletContext';
 import { TokenIcon } from './TokenIcon';
@@ -310,8 +311,29 @@ export const FiatOnrampModal: React.FC<FiatOnrampModalProps> = ({
               </p>
             </div>
 
+            {/* Refund Policy Guarantee Box - Prominently Displayed Directly at Checkout */}
+            <div className="p-3 bg-emerald-50/70 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800/40 rounded-xl text-xs space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-1.5">
+                  <RefreshCcw className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                  Autonomous Refund SLA Guarantee
+                </span>
+                <a
+                  href="/refunds"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[11px] text-emerald-700 dark:text-emerald-400 font-semibold underline hover:text-emerald-900 dark:hover:text-emerald-200 transition"
+                >
+                  Refund Policy ↗
+                </a>
+              </div>
+              <p className="text-[11px] text-emerald-700/90 dark:text-emerald-300/80 leading-relaxed">
+                If ZEC is not delivered to your shielded vault within 30 mins, your payment is <strong>automatically voided or 100% refunded</strong> to your original payment method. Programmatic refund guarantee.
+              </p>
+            </div>
+
             {/* Primary Google Pay Button (Official Black GPay Pill Styling) */}
-            <div className="space-y-2 pt-2">
+            <div className="space-y-2 pt-1">
               <button
                 type="button"
                 onClick={handleGooglePay}
@@ -337,8 +359,14 @@ export const FiatOnrampModal: React.FC<FiatOnrampModalProps> = ({
 
         {/* Footer */}
         <div className="mt-4 pt-3 border-t border-gray-100 dark:border-white/10 flex items-center justify-between text-[11px] text-gray-400 dark:text-zinc-500">
-          <span>Non-custodial Orchard deposit</span>
-          <span>Zero KYC for &lt; $1,000 threshold</span>
+          <div className="flex items-center gap-2">
+            <span>Non-custodial Orchard deposit</span>
+            <span>·</span>
+            <a href="/refunds" target="_blank" rel="noopener noreferrer" className="hover:text-black dark:hover:text-white underline">Refund Policy</a>
+            <span>·</span>
+            <a href="/terms" target="_blank" rel="noopener noreferrer" className="hover:text-black dark:hover:text-white underline">Terms</a>
+          </div>
+          <span>Zero KYC &lt; $1,000</span>
         </div>
       </div>
     </div>

@@ -1498,10 +1498,30 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWallet, onOpenAu
             </div>
           </div>
 
-          {/* Bottom Bar: Copyright & Dual Action Buttons (Matching reference image) */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 pt-6 border-t border-gray-200 dark:border-white/10 text-xs text-gray-500 dark:text-zinc-400">
-            <div>
-              <span>© {new Date().getFullYear()} ZCross Protocol. Pure shielded liquidity. All rights reserved.</span>
+          {/* Bottom Bar: Copyright, Legal Links, Purge Data & Dual Action Buttons */}
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-4 mt-6 pt-6 border-t border-gray-200 dark:border-white/10 text-xs text-gray-500 dark:text-zinc-400">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+              <span>© {new Date().getFullYear()} ZCross Protocol. Pure shielded liquidity.</span>
+              <NextLink href="/privacy" className="hover:text-black dark:hover:text-white underline underline-offset-2 transition">
+                Privacy Policy
+              </NextLink>
+              <NextLink href="/terms" className="hover:text-black dark:hover:text-white underline underline-offset-2 transition">
+                Terms of Service
+              </NextLink>
+              <NextLink href="/refunds" className="hover:text-black dark:hover:text-white underline underline-offset-2 transition">
+                Refund Policy
+              </NextLink>
+              <button
+                type="button"
+                onClick={() => {
+                  if (typeof window !== 'undefined') {
+                    window.dispatchEvent(new CustomEvent('zcross:open_data_purge'));
+                  }
+                }}
+                className="hover:text-red-600 dark:hover:text-red-400 underline underline-offset-2 transition cursor-pointer text-red-500/80 font-medium"
+              >
+                Purge Local Data
+              </button>
             </div>
 
             <div className="flex items-center gap-3 w-full sm:w-auto">
