@@ -79,48 +79,28 @@ export const FiatOnrampModal: React.FC<FiatOnrampModalProps> = ({
   const estimatedZec = activeQuote ? activeQuote.estimatedZec : 0;
   const netConfig = PAYMENT_NETWORKS.google_pay;
 
-  const handleLaunchMoonPay = () => {
-    const moonpayQuote = quotes.find(q => q.providerId === 'moonpay');
-    if (moonpayQuote?.checkoutUrl) {
-      window.open(moonpayQuote.checkoutUrl, '_blank', 'width=520,height=750,toolbar=no,menubar=no');
-    }
-  };
-
-  // Handle Google Pay 1-Tap Payment (Direct In-App Shielded Vault Settlement)
-  const handleGooglePay = async () => {
+  // Handle Real Checkout (Google Pay / Card via MoonPay)
+  const handleLaunchPayment = async () => {
     setIsProcessing(true);
-    const authId = `gpay_auth_${Math.random().toString(36).slice(2, 10)}`;
-    const txHash = `tx_orchard_gpay_${Math.random().toString(16).slice(2, 12)}`;
-    setGooglePayAuthId(authId);
-    setSettledTxHash(txHash);
-
-    setTimeout(async () => {
-      if (estimatedZec > 0) {
-        fundWallet(estimatedZec);
-        try {
-          await fetch('/api/onramp/orders', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              providerId: activeQuote?.providerId || 'google_pay_direct',
-              status: 'COMPLETED',
-              paymentMethod: 'google_pay',
-              fiatAmount: numFiat,
-              fiatCurrency,
-              cryptoAmount: estimatedZec,
-              destinationAddress: userAddress,
-              googlePayTransactionId: authId,
-              txHash,
-            }),
-          });
-        } catch {
-          // ignore local record error
-        }
+    try {
+      const origin = typeof window !== 'undefined' ? window.location.origin : 'https://zcross.cash';
+      const res = await fetch(`/api/onramp/moonpay-url?amount=${numFiat}&currency=${fiatCurrency}&address=${encodeURIComponent(userAddress)}&origin=${encodeURIComponent(origin)}`);
+      const data = await res.json();
+      if (data.url) {
+        window.open(data.url, '_blank', 'width=520,height=750,toolbar=no,menubar=no');
+        setIsProcessing(false);
+        onClose();
+        return;
       }
-      setIsProcessing(false);
-      setSettledSuccess(true);
-      if (onSuccess) onSuccess();
-    }, 1200);
+    } catch {
+      // Fallback
+    }
+
+    const moonpayKey = process.env.NEXT_PUBLIC_MOONPAY_API_KEY || 'pk_test_QuRBVUBMr6EnuDz228i91makUVHM6K5T';
+    const fallbackUrl = `https://buy.moonpay.com?apiKey=${moonpayKey}&currencyCode=eth&baseCurrencyAmount=${numFiat}&baseCurrencyCode=${fiatCurrency.toLowerCase()}`;
+    window.open(fallbackUrl, '_blank', 'width=520,height=750,toolbar=no,menubar=no');
+    setIsProcessing(false);
+    onClose();
   };
 
   if (!mounted || typeof document === 'undefined') return null;
@@ -335,14 +315,14 @@ export const FiatOnrampModal: React.FC<FiatOnrampModalProps> = ({
             <div className="space-y-2 pt-1">
               <button
                 type="button"
-                onClick={handleGooglePay}
+                onClick={handleLaunchPayment}
                 disabled={isProcessing || numFiat <= 0}
                 className="w-full py-4 bg-black dark:bg-amber-500 hover:bg-zinc-800 dark:hover:bg-amber-400 active:scale-[0.99] text-white dark:text-black rounded-full font-bold text-sm flex items-center justify-center gap-2.5 transition cursor-pointer shadow-xl disabled:opacity-50"
               >
                 {isProcessing ? (
                   <span className="flex items-center gap-2">
                     <RefreshCw className="w-4 h-4 animate-spin" />
-                    <span>Verifying Google Pay Biometrics...</span>
+                    <span>Opening Payment Gateway...</span>
                   </span>
                 ) : (
                   <>
@@ -357,10 +337,10 @@ export const FiatOnrampModal: React.FC<FiatOnrampModalProps> = ({
               <div className="text-center pt-1">
                 <button
                   type="button"
-                  onClick={handleLaunchMoonPay}
+                  onClick={handleLaunchPayment}
                   className="text-xs text-gray-500 dark:text-zinc-400 hover:text-black dark:hover:text-white font-medium transition cursor-pointer inline-flex items-center justify-center gap-1 mx-auto"
                 >
-                  <span>or pay via MoonPay Gateway (Cards &amp; Crypto)</span>
+                  <span>or pay with Credit Card / Apple Pay / Bank</span>
                   <ExternalLink className="w-3 h-3" />
                 </button>
               </div>
