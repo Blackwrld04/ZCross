@@ -12,6 +12,7 @@
     "test": "tsx --test src/tests/*.test.ts"
   },
   "dependencies": {
+    "@moonpay/moonpay-node": "^0.2.13",
     "better-sqlite3": "^11.5.0",
     "lucide-react": "^0.453.0",
     "next": "^14.2.15",
