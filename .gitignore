@@ -14,3 +14,9 @@ tsconfig.tsbuildinfo
 .env.*.local
 !.env.example
 
+# Video and media recordings
+videos/
+*.mp4
+*.webm
+*.mp3
+*.wav
