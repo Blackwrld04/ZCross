@@ -4,13 +4,13 @@
 
 ### Zero-Leak Shielded Cross-Chain Bridge & Intent Solver: Zcash Orchard (Halo 2), ZIP 316/321, In-Browser Embedded Wallet, Google Pay Shielded On-Ramp, and NEAR Defuse Liquidity.
 
-[![Build & Tests](https://img.shields.io/badge/tests-40_passing-10B981)](#tests-and-checks)
-[![ZK Prover: Halo 2 WASM](https://img.shields.io/badge/zk_prover-Halo_2_WASM-0284C7)](#pillar-1-in-browser-embedded-zcash-orchard-wallet-engine)
-[![Privacy: ZIP 316 + ZIP 321](https://img.shields.io/badge/privacy-ZIP_316_+_ZIP_321-7C3AED)](#zero-leak-cryptographic-invariants--privacy-pipeline)
-[![Solver: NEAR Defuse Protocol](https://img.shields.io/badge/solver-NEAR_Defuse_1Click-0E7A42)](#pillar-2-near-intents-defuse-protocol-solver-engine)
-[![Fiat Rails: Google Pay Direct](https://img.shields.io/badge/fiat_onramp-Google_Pay_+_Aggregators-F59E0B)](#pillar-3-google-pay--multi-provider-fiat-to-shielded-zec-on-ramp)
-[![Security: Audited Architecture](https://img.shields.io/badge/security-KMS_+_Sliding_Rate_Limit-E11D48)](#pillar-6-enterprise-security-rate-limiting--secrets-management)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Live Demo](https://img.shields.io/badge/live_demo-z--cross.vercel.app-F59E0B?style=for-the-badge&logo=vercel&logoColor=white)](https://z-cross.vercel.app)
+[![Build & Tests](https://img.shields.io/badge/tests-57_passing-10B981?style=for-the-badge)](#tests-and-checks)
+[![ZK Prover: Halo 2 WASM](https://img.shields.io/badge/zk_prover-Halo_2_WASM-0284C7?style=for-the-badge)](#pillar-1-in-browser-embedded-zcash-orchard-wallet-engine)
+[![Privacy: ZIP 316 + ZIP 321](https://img.shields.io/badge/privacy-ZIP_316_+_ZIP_321-7C3AED?style=for-the-badge)](#zero-leak-cryptographic-invariants--privacy-pipeline)
+[![Solver: NEAR Defuse Protocol](https://img.shields.io/badge/solver-NEAR_Defuse_1Click-0E7A42?style=for-the-badge)](#pillar-2-near-intents-defuse-protocol-solver-engine)
+[![Fiat Rails: Google Pay Direct](https://img.shields.io/badge/fiat_onramp-Google_Pay_+_MoonPay-F59E0B?style=for-the-badge)](#pillar-3-google-pay--multi-provider-fiat-to-shielded-zec-on-ramp)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge)](LICENSE)
 
 ZCross eliminates the "Zcash Island Problem" and the dangerous "Unshielding Bridge Leak". Past cross-chain bridging solutions forced users to unshield their funds to transparent addresses (`t-addr`), destroying sender privacy and exposing their entire wallet transaction graph to surveillance cartels. ZCross enables users to swap Shielded Zcash (Orchard) directly into multi-chain assets (Arbitrum USDC, Solana SOL, Bitcoin, Ethereum, NEAR) **without ever touching a transparent address, unshielding on intermediary hops, or leaking transaction metadata**.
 
@@ -21,7 +21,7 @@ ZCross eliminates the "Zcash Island Problem" and the dangerous "Unshielding Brid
 
 **Shield first. Settle cross-chain via zero-leak intents. Eliminate the transparent bridge leak.**
 
-[Live Web App](https://zcross.cash) · [Interactive Developer Docs](/developer) · [1-Click Shielded Pay](/pay) · [Explore Without a Wallet](#explore-without-a-wallet) · [Production Roadmap](#what-is-implemented)
+[🚀 Live Web App (Vercel)](https://z-cross.vercel.app) · [⚡ Shielded Swap Terminal](https://z-cross.vercel.app/swap) · [📖 Interactive Developer Docs](https://z-cross.vercel.app/developer) · [💳 1-Click Shielded Pay](https://z-cross.vercel.app/pay) · [Explore Without a Wallet](#explore-without-a-wallet) · [Production Roadmap](#what-is-implemented)
 
 **Sovereign Financial Privacy — Deterministic Intent Resolution, Zero Metadata Leakage, and Seamless Cross-Chain Liquidity.**
 
@@ -37,14 +37,14 @@ Zcash Orchard (Halo 2) · Next.js 14 · NEAR Intents (Defuse Protocol) · WebAss
 
 | Open | Look for | What it establishes |
 | :--- | :--- | :--- |
-| [Live Web App](/) | Dual-panel Glassmorphic Swap Terminal & Landing Showcase | Production web application with real-time rate calculation, slippage protection, and network toggles |
-| [Shielded Swap Terminal](/swap) | Live Swap Card, Address Book modal, and Slippage selector | Dedicated zero-leak cross-chain swap interface with instant quote fetching |
-| [1-Click Shielded Pay Widget](/pay) | Web3 Merchant Checkout with QR invoice & WebAuthn | Universal payment rail for merchants accepting shielded ZEC with automatic settlement |
-| [Interactive Developer Portal](/developer) | Complete OpenAPI interactive reference & code samples | Public developer documentation with cURL, TypeScript, and Python integration snippets |
-| [Live System Health (`/api/health`)](/api/health) | Consensus height, database connectivity, and node telemetry | Real-time health check endpoint for monitoring uptime across Lightwalletd and solver engines |
-| [Live Security Audit (`/api/security/audit`)](/api/security/audit) | Secret provider status, rate limits, and audit checklist | Cryptographic and operational security verification report |
-| [Defuse Solver Status (`/api/defuse/status`)](/api/defuse/status) | Solver account ID, vault liquidity, and supported chains | Real-time connectivity and balance telemetry for the NEAR Defuse intent network |
-| [Zcash Node Status (`/api/zcash/status`)](/api/zcash/status) | Mainnet node block height and sync status | Consensus validation checking lightwalletd gRPC cluster sync status |
+| [🚀 Live Web App](https://z-cross.vercel.app) | Dual-panel Glassmorphic Swap Terminal & Landing Showcase | Production web application with real-time rate calculation, slippage protection, and network toggles |
+| [⚡ Shielded Swap Terminal](https://z-cross.vercel.app/swap) | Live Swap Card, Address Book modal, and Slippage selector | Dedicated zero-leak cross-chain swap interface with instant quote fetching |
+| [💳 1-Click Shielded Pay Widget](https://z-cross.vercel.app/pay) | Web3 Merchant Checkout with QR invoice & WebAuthn | Universal payment rail for merchants accepting shielded ZEC with automatic settlement |
+| [📖 Interactive Developer Portal](https://z-cross.vercel.app/developer) | Complete OpenAPI interactive reference & code samples | Public developer documentation with cURL, TypeScript, and Python integration snippets |
+| [🟢 Live System Health (`/api/health`)](https://z-cross.vercel.app/api/health) | Consensus height, database connectivity, and node telemetry | Real-time health check endpoint for monitoring uptime across Lightwalletd and solver engines |
+| [🛡️ Live Security Audit (`/api/security/audit`)](https://z-cross.vercel.app/api/security/audit) | Secret provider status, rate limits, and audit checklist | Cryptographic and operational security verification report |
+| [🌐 Defuse Solver Status (`/api/defuse/status`)](https://z-cross.vercel.app/api/defuse/status) | Solver account ID, vault liquidity, and supported chains | Real-time connectivity and balance telemetry for the NEAR Defuse intent network |
+| [⛓️ Zcash Node Status (`/api/zcash/status`)](https://z-cross.vercel.app/api/zcash/status) | Mainnet node block height and sync status | Consensus validation checking lightwalletd gRPC cluster sync status |
 
 ---
 
@@ -335,13 +335,17 @@ ZCross is engineered for high-throughput, low-latency execution with zero client
 
 | Component | Platform / Network | URL / Reference |
 | :--- | :--- | :--- |
-| **Web Application** | Render / Vercel / Self-Hosted | [https://zcross.cash](https://zcross.cash) |
-| **Shielded Swap Terminal** | Production App Router | [https://zcross.cash/swap](https://zcross.cash/swap) |
-| **1-Click Pay Merchant Widget** | Production App Router | [https://zcross.cash/pay](https://zcross.cash/pay) |
-| **Developer Documentation** | Production App Router | [https://zcross.cash/developer](https://zcross.cash/developer) |
+| **Production Web Application** | Vercel (Edge CDN) | [https://z-cross.vercel.app](https://z-cross.vercel.app) |
+| **Shielded Swap Terminal** | Vercel App Router | [https://z-cross.vercel.app/swap](https://z-cross.vercel.app/swap) |
+| **1-Click Pay Merchant Widget** | Vercel App Router | [https://z-cross.vercel.app/pay](https://z-cross.vercel.app/pay) |
+| **Interactive Developer Docs** | Vercel App Router | [https://z-cross.vercel.app/developer](https://z-cross.vercel.app/developer) |
+| **Live Health Check API** | Vercel Serverless | [https://z-cross.vercel.app/api/health](https://z-cross.vercel.app/api/health) |
+| **Live Security Audit API** | Vercel Serverless | [https://z-cross.vercel.app/api/security/audit](https://z-cross.vercel.app/api/security/audit) |
+| **Defuse Solver Status API** | Vercel Serverless | [https://z-cross.vercel.app/api/defuse/status](https://z-cross.vercel.app/api/defuse/status) |
+| **Zcash Node Status API** | Vercel Serverless | [https://z-cross.vercel.app/api/zcash/status](https://z-cross.vercel.app/api/zcash/status) |
 | **Zcash Lightwalletd Node** | gRPC Mainnet Cluster | `https://mainnet.lightwalletd.com:9067` |
 | **NEAR Intents Defuse Protocol** | NEAR Mainnet | `intents.near` · `solver-vault.near` |
-| **Source Code Repository** | GitHub | [Blackwrld04/ZCross](https://github.com/Blackwrld04/ZCross) |
+| **Source Code Repository** | GitHub | [https://github.com/Blackwrld04/ZCross](https://github.com/Blackwrld04/ZCross) |
 
 ### Deploying to Render (Zero-Config Blueprint)
 
@@ -378,7 +382,7 @@ cp .env.example .env
 npm install
 ```
 
-### 3. Run Test Suite (All 40 Tests Passing)
+### 3. Run Test Suite (All 57 Tests Passing)
 ```bash
 npm test
 ```
@@ -408,7 +412,7 @@ npm start
 The test suite validates the full zero-leak cryptographic pipeline, embedded wallet lifecycle, Google Pay rails, refund automation, and security defenses:
 
 ```bash
-# Execute entire test suite (40 passing tests across 7 test suites)
+# Execute entire test suite (57 passing tests across 8 test suites)
 npm test
 
 # Run individual test suites:
@@ -432,6 +436,9 @@ npx tsx --test src/tests/production_roadmap.test.ts
 
 # 7. Security suite: Sliding-window rate limiter, SHA-256 idempotency cache, secrets sanitization
 npx tsx --test src/tests/security.test.ts
+
+# 8. Comprehensive E2E & security verification: Multi-corridor swaps, zero-transparent invariants
+npx tsx --test src/tests/zcross.test.ts
 
 # Validate Next.js production build and TypeScript compilation
 npm run build
@@ -481,7 +488,7 @@ npm run build
 | [`src/core/security`](src/core/security) | Rate limiting (`rate-limit.ts`), idempotency (`idempotency.ts`), secrets manager (`secrets.ts`), WebAuthn (`webauthn.ts`) |
 | [`src/core/notifications`](src/core/notifications) | Push notifications & Telegram settlement alert services (`alert-service.ts`) |
 | [`src/core/wallet`](src/core/wallet) | Address book contact manager (`address-book.ts`) and global wallet context (`WalletContext.tsx`) |
-| [`src/tests`](src/tests) | 7 Comprehensive test suites (40 passing tests covering all features and invariants) |
+| [`src/tests`](src/tests) | 8 Comprehensive test suites (57 passing tests covering all features and invariants) |
 | [`.github/workflows`](.github/workflows) | CI / CD pipelines for security scanning and automated test execution |
 
 ---
