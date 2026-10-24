@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
     const redirectOrigin = searchParams.get('origin') || 'https://zcross.cash';
 
     const apiKey = process.env.NEXT_PUBLIC_MOONPAY_API_KEY || 'pk_test_QuRBVUBMr6EnuDz228i91makUVHM6K5T';
-    const secretKey = process.env.MOONPAY_SECRET_KEY;
+    const secretKey = process.env.MOONPAY_SECRET_KEY || 'sk_test_3p9oytQZnZs5oIe1iJFmHSfVCJ4Bcz';
 
     // Standard MoonPay Widget URL
     const url = new URL('https://buy.moonpay.com');
