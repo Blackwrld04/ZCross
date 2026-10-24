@@ -48,7 +48,6 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
   const [customAddress, setCustomAddress] = useState<string>('');
   const [customError, setCustomError] = useState<string | null>(null);
 
-  // Mount check for React Portal
   useEffect(() => {
     setMounted(true);
     refreshWallets();
@@ -56,7 +55,6 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
     return () => clearInterval(interval);
   }, [refreshWallets]);
 
-  // Close on Escape key press
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -114,7 +112,6 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
         clearError();
       }
     }
-    // Fallback to Solana connect
     const addr = await connectSolflare();
     if (addr) {
       if (onSelectAddress) onSelectAddress(addr);

@@ -65,7 +65,6 @@ export const EmbeddedWalletProvider: React.FC<{ children: ReactNode }> = ({ chil
 
   const lastActivityRef = useRef<number>(Date.now());
 
-  // Load autolock preference
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const storedMins = localStorage.getItem(STORAGE_KEY_AUTOLOCK);
@@ -83,7 +82,6 @@ export const EmbeddedWalletProvider: React.FC<{ children: ReactNode }> = ({ chil
     }
   };
 
-  // Sync state from local browser storage on mount
   const refreshWallet = useCallback(() => {
     if (typeof window === 'undefined') return;
 
@@ -97,7 +95,6 @@ export const EmbeddedWalletProvider: React.FC<{ children: ReactNode }> = ({ chil
       setBalanceZec(EmbeddedOrchardWalletService.getShieldedBalance());
       setHistory(EmbeddedOrchardWalletService.getHistory());
     } else {
-      // Auto-initialize standard default embedded Orchard wallet for seamless instant 1-click UX
       EmbeddedOrchardWalletService.createNewWallet('zcross-session', 'mainnet')
         .then(({ account: acc }) => {
           setAccount(acc);
@@ -114,7 +111,6 @@ export const EmbeddedWalletProvider: React.FC<{ children: ReactNode }> = ({ chil
     refreshWallet();
   }, [refreshWallet]);
 
-  // Activity tracker for Auto-Lock Timeout
   useEffect(() => {
     if (autoLockMinutes <= 0 || isLocked) return;
 
@@ -187,7 +183,6 @@ export const EmbeddedWalletProvider: React.FC<{ children: ReactNode }> = ({ chil
     setUnlockedMnemonic(null);
   };
 
-  // Biometric Passkeys (TouchID / FaceID)
   const enablePasskey = async (): Promise<{ success: boolean; error?: string }> => {
     if (!account?.address) {
       return { success: false, error: 'No active Orchard account to link passkey.' };
@@ -228,7 +223,6 @@ export const EmbeddedWalletProvider: React.FC<{ children: ReactNode }> = ({ chil
     lastActivityRef.current = Date.now();
   };
 
-  // Emergency Fast Purge (Instant Wipe)
   const emergencyFastPurge = () => {
     EmbeddedOrchardWalletService.deleteWallet();
     clearPasskey();

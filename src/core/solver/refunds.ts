@@ -1,8 +1,3 @@
-/**
- * Automated Shielded Refund & Expiry Engine
- * Monitors swap intent deadlines and executes non-custodial shielded refunds
- * to the user's pure Orchard Unified Address (u1...) if settlement times out.
- */
 
 import crypto from 'crypto';
 import { swapStore, SwapRecord } from './store';
@@ -18,9 +13,6 @@ export interface RefundExecutionResult {
 }
 
 export class RefundEngine {
-  /**
-   * Scans active swaps and processes automated shielded refunds for timed-out intents.
-   */
   async checkAndExecuteRefunds(): Promise<{
     processed: number;
     refunded: number;
@@ -30,7 +22,6 @@ export class RefundEngine {
     const db = (swapStore as any).db;
     const nowIso = new Date().toISOString();
 
-    // Query non-finalized swaps where deadline has passed
     const pendingSwaps: SwapRecord[] = db.prepare(`
       SELECT * FROM swaps 
       WHERE status IN ('CREATED', 'MEMO_DETECTED', 'CONFIRMED_SHIELDED', 'SOLVER_EXECUTING')
@@ -56,15 +47,10 @@ export class RefundEngine {
     };
   }
 
-  /**
-   * Processes a single timed-out swap.
-   */
   async processSingleSwapRefund(swap: SwapRecord): Promise<RefundExecutionResult> {
-    // If user provided a shielded refund Unified Address
     if (swap.refund_ua) {
       const check = validateZcashAddress(swap.refund_ua);
       if (check.isValid && check.isShielded) {
-        // Generate cryptographic shielded refund transaction hash
         const refundTxHash = `tx_orchard_refund_${crypto.randomBytes(16).toString('hex')}`;
 
         swapStore.updateStatus(swap.id, 'REFUNDED', {
@@ -85,7 +71,6 @@ export class RefundEngine {
       }
     }
 
-    // No valid shielded refund address: mark as EXPIRED
     swapStore.updateStatus(swap.id, 'EXPIRED', {
       message: `SWAP EXPIRED: Intent deadline passed without settlement. No shielded refund address configured.`,
     });

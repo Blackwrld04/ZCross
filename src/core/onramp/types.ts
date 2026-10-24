@@ -1,7 +1,3 @@
-/**
- * ZCross Google Pay Fiat-to-Shielded-ZEC On-Ramp Engine
- * Dedicated Google Pay integration for 1-click tokenized shielded funding
- */
 
 export type PaymentNetworkId = 'google_pay';
 
@@ -92,9 +88,6 @@ export const PROVIDER_METADATA: Record<OnrampProviderId, { name: string; badge: 
   },
 };
 
-/**
- * Currency conversion multipliers relative to USD base rate
- */
 export const FIAT_RATES_TO_USD: Record<FiatCurrency, number> = {
   USD: 1.0,
   EUR: 1.085,
@@ -103,9 +96,6 @@ export const FIAT_RATES_TO_USD: Record<FiatCurrency, number> = {
   AUD: 0.655,
 };
 
-/**
- * Live ZEC Market Price in USD (dynamically updated from CoinGecko)
- */
 export let ZEC_BASE_PRICE_USD = 1378.52;
 
 export function setLiveZecPrice(price: number) {
@@ -114,9 +104,6 @@ export function setLiveZecPrice(price: number) {
   }
 }
 
-/**
- * Calculate Google Pay quotes across aggregators & direct rail
- */
 export function calculateOnrampQuotes(params: {
   fiatAmount: number;
   fiatCurrency: FiatCurrency;
@@ -141,7 +128,6 @@ export function calculateOnrampQuotes(params: {
     const fixedFee = netConfig.fixedFeeUsd;
     const totalFeeUsd = parseFloat((percentageFee + fixedFee).toFixed(2));
     
-    // Net USD purchasing power
     const netPurchasingPowerUsd = Math.max(0, amountInUsd - totalFeeUsd);
     const ratePerZec = zecPriceUsd && zecPriceUsd > 0 ? zecPriceUsd : ZEC_BASE_PRICE_USD;
     const estimatedZec = parseFloat((netPurchasingPowerUsd / ratePerZec).toFixed(4));
@@ -170,7 +156,6 @@ export function calculateOnrampQuotes(params: {
     };
   });
 
-  // Flag highest ZEC return as best rate
   if (quotes.length > 0) {
     let best = quotes[0];
     for (const q of quotes) {
@@ -184,9 +169,6 @@ export function calculateOnrampQuotes(params: {
   return quotes;
 }
 
-/**
- * Generate official gateway launcher URL for Google Pay
- */
 export function generateProviderUrl(params: {
   providerId: OnrampProviderId;
   fiatAmount: number;
@@ -237,10 +219,6 @@ export function generateProviderUrl(params: {
   }
 }
 
-/**
- * Standard Google Pay API Specification for Web
- * https://developers.google.com/pay/api/web/guides/tutorial
- */
 export const GOOGLE_PAY_BASE_REQUEST = {
   apiVersion: 2,
   apiVersionMinor: 0,

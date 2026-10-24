@@ -1,7 +1,3 @@
-/**
- * Type definitions for NEAR Intents (1Click API & Defuse Protocol)
- * Spec reference: https://docs.near-intents.org/
- */
 
 export interface NearIntentsToken {
   assetId: string;
@@ -72,10 +68,6 @@ export interface SwapExecutionStatus {
   timeRemainingMs?: number;
 }
 
-/**
- * User Session Authentication types for Confidential Intents
- * Reference: https://docs.near-intents.org/integration/distribution-channels/1click-api/authentication
- */
 export interface SignedDataPayload {
   standard: 'nep413' | 'erc191' | 'ed25519';
   payload: {

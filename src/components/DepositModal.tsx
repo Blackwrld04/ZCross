@@ -30,7 +30,6 @@ export const DepositModal: React.FC<DepositModalProps> = ({
   const [destTxHash, setDestTxHash] = useState<string | null>(null);
   const [remainingSeconds, setRemainingSeconds] = useState<number>(899); // 14:59
 
-  // Alerts & Notifications State
   const [browserNotifsEnabled, setBrowserNotifsEnabled] = useState<boolean>(false);
   const [telegramHandle, setTelegramHandle] = useState<string>('');
   const [telegramSaved, setTelegramSaved] = useState<boolean>(false);
@@ -39,7 +38,6 @@ export const DepositModal: React.FC<DepositModalProps> = ({
 
   const swapId = quoteData.swapId;
 
-  // Rate guarantee countdown timer (15 min)
   useEffect(() => {
     if (status === 'SETTLED') return;
     const interval = setInterval(() => {
@@ -64,7 +62,6 @@ export const DepositModal: React.FC<DepositModalProps> = ({
     return '#';
   };
 
-  // Generate QR Code on mount
   useEffect(() => {
     if (quoteData?.zip321Uri) {
       QRCode.toDataURL(quoteData.zip321Uri, {
@@ -85,7 +82,6 @@ export const DepositModal: React.FC<DepositModalProps> = ({
     setTelegramHandle(AlertService.getTelegramRecipient());
   }, []);
 
-  // Poll swap status every 2 seconds
   useEffect(() => {
     if (!swapId || status === 'SETTLED') return;
 
@@ -198,7 +194,6 @@ export const DepositModal: React.FC<DepositModalProps> = ({
         swapId: quoteData.swapId,
       });
 
-      // Settle
       await handleSimulate('full_flow');
     } catch (err: any) {
       alert(err.message || 'Payment failed');

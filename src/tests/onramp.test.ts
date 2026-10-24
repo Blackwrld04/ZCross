@@ -26,7 +26,6 @@ describe('Google Pay Shielded ZEC On-Ramp Engine', () => {
 
     assert.strictEqual(quotes.length, 4, 'Should return quotes for google_pay_direct, moonpay, transak, and ramp');
     
-    // Exactly one provider should hold the isBestRate badge
     const bestRateCount = quotes.filter(q => q.isBestRate).length;
     assert.strictEqual(bestRateCount, 1, 'Exactly one provider should be marked as best rate');
 
@@ -95,7 +94,6 @@ describe('Google Pay Shielded ZEC On-Ramp Engine', () => {
     assert.strictEqual(request.transactionInfo.currencyCode, 'USD');
     assert.strictEqual(request.merchantInfo.merchantId, 'TEST_MERCHANT_ID');
     
-    // Check payment method parameters
     assert.strictEqual(request.allowedPaymentMethods.length, 1);
     const cardMethod = request.allowedPaymentMethods[0];
     assert.strictEqual(cardMethod.type, 'CARD');
@@ -117,11 +115,9 @@ describe('Google Pay Shielded ZEC On-Ramp Engine', () => {
       txHash: 'tx_orchard_gpay_completed_abc123',
     });
 
-    // Generate valid HMAC-SHA256 signature
     const hmac = crypto.createHmac('sha256', testSecret);
     const validSignature = hmac.update(rawPayload).digest('hex');
 
-    // Valid signature check
     const isValid = globalOnrampStore.verifyWebhookSignature({
       providerId: 'moonpay',
       payloadRaw: rawPayload,
@@ -130,7 +126,6 @@ describe('Google Pay Shielded ZEC On-Ramp Engine', () => {
     });
     assert.strictEqual(isValid, true, 'Valid HMAC signature must be accepted');
 
-    // Malicious tampered signature check
     const isInvalid = globalOnrampStore.verifyWebhookSignature({
       providerId: 'moonpay',
       payloadRaw: rawPayload,
@@ -139,7 +134,6 @@ describe('Google Pay Shielded ZEC On-Ramp Engine', () => {
     });
     assert.strictEqual(isInvalid, false, 'Tampered signature must be strictly rejected');
 
-    // Order store lifecycle
     globalOnrampStore.saveOrder({
       orderId: 'ord_test_gpay_89201',
       providerId: 'moonpay',
@@ -181,7 +175,6 @@ describe('Google Pay Shielded ZEC On-Ramp Engine', () => {
     assert.strictEqual(beforeClear?.status, 'PENDING');
     assert.strictEqual(beforeClear?.completedAt, undefined);
 
-    // Simulate clearing
     const afterClear = globalOnrampStore.simulateOrderClearance(pendingOrderId);
     assert.strictEqual(afterClear?.status, 'COMPLETED');
     assert(afterClear?.completedAt !== undefined, 'Cleared order must have completedAt timestamp');

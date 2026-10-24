@@ -1,12 +1,3 @@
-/**
- * Security: Secrets & Key Management Provider (AWS KMS / HashiCorp Vault / ENV)
- * 
- * Provides production-grade key management for solver relayer keys and API credentials:
- * 1. AWS KMS / AWS Secrets Manager envelope encryption and key rotation
- * 2. HashiCorp Vault KV v2 client with namespace and token isolation
- * 3. Environment variable fallback with strict regex structure validation
- * 4. Zero plaintext leakage: all secrets masked in logs, diagnostics, and telemetry
- */
 
 import crypto from 'crypto';
 
@@ -39,22 +30,16 @@ export class SecretsManager {
     }
   }
 
-  /**
-   * Retrieves a secret key safely through the active KMS / Vault / ENV provider
-   */
   getSecret(key: SecretKey): string | undefined {
-    // Check local memory cache first
     if (this.cachedSecrets.has(key)) {
       return this.cachedSecrets.get(key);
     }
 
     switch (this.providerType) {
       case 'AWS_SECRETS_MANAGER':
-        // AWS KMS / Secrets Manager resolution (fallback to process.env if in test/mock)
         return process.env[key];
 
       case 'HASHICORP_VAULT':
-        // HashiCorp Vault KV v2 resolution
         return process.env[key];
 
       case 'ENV':
@@ -63,9 +48,6 @@ export class SecretsManager {
     }
   }
 
-  /**
-   * Asynchronously fetches a secret from AWS KMS or HashiCorp Vault
-   */
   async fetchSecretAsync(key: SecretKey): Promise<string | undefined> {
     if (this.providerType === 'HASHICORP_VAULT') {
       const vaultAddr = process.env.VAULT_ADDR;
@@ -90,13 +72,11 @@ export class SecretsManager {
             }
           }
         } catch {
-          // Fall back to env
         }
       }
     }
 
     if (this.providerType === 'AWS_SECRETS_MANAGER') {
-      // AWS KMS envelope decryption
       const kmsKeyId = process.env.AWS_KMS_KEY_ID;
       if (kmsKeyId && process.env[key]) {
         return process.env[key];
@@ -106,38 +86,23 @@ export class SecretsManager {
     return this.getSecret(key);
   }
 
-  /**
-   * Decrypts a ciphertext using AWS KMS envelope encryption
-   */
   async decryptEnvelopeKms(ciphertextBase64: string, kmsKeyId?: string): Promise<string> {
     const keyId = kmsKeyId || process.env.AWS_KMS_KEY_ID || 'alias/zcross-relayer-key';
-    // In production AWS SDK: await kms.decrypt({ CiphertextBlob: Buffer.from(ciphertextBase64, 'base64'), KeyId: keyId })
-    // Deterministic envelope decrypt simulation for audit tests:
     const buffer = Buffer.from(ciphertextBase64, 'base64');
     return buffer.toString('utf8');
   }
 
-  /**
-   * Checks if a secret is configured without revealing its value
-   */
   hasSecret(key: SecretKey): boolean {
     const val = this.getSecret(key);
     return Boolean(val && val.trim().length > 0);
   }
 
-  /**
-   * Safely masks sensitive secret strings for debugging / health inspection
-   * Example: 'eyJhbGciOiJIUzI1Ni...' -> 'eyJ...3fa'
-   */
   maskSecret(val?: string): string {
     if (!val || val.length === 0) return '[NOT CONFIGURED]';
     if (val.length <= 8) return '********';
     return `${val.slice(0, 4)}...${val.slice(-4)}`;
   }
 
-  /**
-   * Validates whether an API key / token has a valid expected structure
-   */
   validateSecretFormat(key: SecretKey, val?: string): boolean {
     if (!val) return false;
     const clean = val.trim();
@@ -147,9 +112,6 @@ export class SecretsManager {
     return clean.length > 0;
   }
 
-  /**
-   * Returns current health and configuration status of the Key Management System
-   */
   getStatus(): KeyManagementStatus {
     const keysToCheck: SecretKey[] = [
       'NEAR_INTENTS_API_KEY',
@@ -174,9 +136,6 @@ export class SecretsManager {
 
 export const secretsManager = new SecretsManager();
 
-/**
- * Convenient standalone helper to mask sensitive strings for logs and telemetry
- */
 export function maskSensitiveString(val?: string): string {
   return secretsManager.maskSecret(val);
 }

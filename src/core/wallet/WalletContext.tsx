@@ -1,12 +1,5 @@
 'use client';
 
-/**
- * Multi-Chain Web3 Live Wallet Provider
- * Direct live integration with real browser extensions and mobile wallet apps:
- * - Solana: Solflare (window.solflare), Phantom (window.phantom?.solana), Backpack, Coinbase Solana
- * - EVM: EIP-6963 Multi-Injected Discovery (MetaMask, Rabby, Coinbase, Rainbow) + window.ethereum
- * - Mobile: In-app Webview detection + 1-tap Universal Deeplinks
- */
 
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 
@@ -87,29 +80,24 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     isMobile: false,
   });
 
-  // Comprehensive wallet detector across window objects and injected prototypes
   const checkDetected = useCallback(() => {
     if (typeof window === 'undefined') return;
 
     const w = window as any;
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-    // 1. Solflare Detection
-    // Checks dedicated window.solflare, standard isSolflare flag, or window.solana.isSolflare
     const solflarePresent = Boolean(
       w.solflare?.isSolflare ||
       w.solflare ||
       w.solana?.isSolflare
     );
 
-    // 2. Phantom Detection
     const phantomPresent = Boolean(
       w.phantom?.solana?.isPhantom ||
       w.phantom?.solana ||
       w.solana?.isPhantom
     );
 
-    // 3. Backpack & other Solana
     const backpackPresent = Boolean(w.backpack || w.backpack?.solana);
     const solanaAnyPresent = Boolean(
       solflarePresent ||
@@ -119,7 +107,6 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       w.solana
     );
 
-    // 4. EVM Detection
     const eth = w.ethereum;
     const metamaskPresent = Boolean(
       (eth?.isMetaMask && !eth?.isRabby) ||
@@ -186,13 +173,11 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     });
   }, []);
 
-  // Monitor wallet availability and listen to async extensions & EIP-6963
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
     checkDetected();
 
-    // Restore saved sessions
     const savedEvm = localStorage.getItem('zcross_connected_evm');
     if (savedEvm && /^0x[a-fA-F0-9]{40}$/.test(savedEvm)) {
       setEvmAddress(savedEvm);
@@ -208,12 +193,10 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       setActiveWalletName(savedWallet);
     }
 
-    // Listen to asynchronous wallet injections (Solflare, Phantom, MetaMask dispatch events)
     window.addEventListener('solflare#initialized', checkDetected);
     window.addEventListener('solana#initialized', checkDetected);
     window.addEventListener('ethereum#initialized', checkDetected);
 
-    // EIP-6963 provider announcements for modern multi-wallet discovery
     const handleEip6963 = (event: any) => {
       if (event?.detail?.info) {
         setEip6963Providers((prev) => {
@@ -226,7 +209,6 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     window.addEventListener('eip6963:announceProvider', handleEip6963);
     window.dispatchEvent(new Event('eip6963:requestProvider'));
 
-    // Listen for EVM account changes
     const eth = (window as any).ethereum;
     if (eth?.on) {
       const handleAccountsChanged = (accounts: string[]) => {
@@ -241,7 +223,6 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       eth.on('accountsChanged', handleAccountsChanged);
     }
 
-    // Polling check for the first 3.5 seconds (catches extensions injecting after initial mount)
     const interval = setInterval(checkDetected, 250);
     const stopTimer = setTimeout(() => clearInterval(interval), 3500);
 
@@ -255,7 +236,6 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     };
   }, [checkDetected]);
 
-  // Connect dedicated Solflare wallet
   const connectSolflare = async (): Promise<string | null> => {
     setIsConnecting(true);
     setError(null);
@@ -281,7 +261,6 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         throw new Error('Solflare wallet extension is not detected in this browser. Please ensure the Solflare extension is installed and enabled, then try again.');
       }
 
-      // Connect to Solflare
       await provider.connect();
 
       const pubKey = provider.publicKey ? provider.publicKey.toString() : null;
@@ -291,7 +270,6 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         localStorage.setItem('zcross_connected_sol', pubKey);
         localStorage.setItem('zcross_connected_wallet_name', 'Solflare');
 
-        // Setup Solflare event listeners
         provider.on?.('accountChanged', (newKey: any) => {
           if (newKey) {
             const nextAddr = newKey.toString();
@@ -317,7 +295,6 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     }
   };
 
-  // Connect dedicated Phantom wallet
   const connectPhantom = async (): Promise<string | null> => {
     setIsConnecting(true);
     setError(null);
@@ -364,7 +341,6 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     }
   };
 
-  // Connect any available Solana provider
   const connectSolana = async (preferredType: 'solflare' | 'phantom' | 'any' = 'any'): Promise<string | null> => {
     if (preferredType === 'solflare') {
       return connectSolflare();
@@ -373,7 +349,6 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       return connectPhantom();
     }
 
-    // If preferred is any, prefer Solflare if detected, then Phantom, then generic
     const w = window as any;
     if (w.solflare) {
       return connectSolflare();
@@ -402,11 +377,9 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       return null;
     }
 
-    // Neither detected
     return connectSolflare();
   };
 
-  // Connect EVM wallet (MetaMask / EIP-6963 provider)
   const connectEVM = async (preferredProvider?: any): Promise<string | null> => {
     setIsConnecting(true);
     setError(null);
@@ -484,7 +457,6 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     }
   };
 
-  // Connect custom validated address directly
   const connectCustomAddress = (chain: string, address: string): boolean => {
     const c = chain.toLowerCase();
     const clean = address.trim();

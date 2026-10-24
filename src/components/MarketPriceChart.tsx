@@ -26,7 +26,6 @@ interface MarketPriceChartProps {
   onToggleCompact?: () => void;
 }
 
-// Generate realistic deterministic market price curves for ZEC pairs
 function generateChartData(
   destSymbol: string,
   timeframe: Timeframe,
@@ -43,7 +42,6 @@ function generateChartData(
     targetBasePrice = baseZecUsd / 3250.0; // ~0.4369 ETH
   }
 
-  // Count points and interval by timeframe
   let numPoints = 24;
   let intervalMs = 3600 * 1000;
   let volatility = 0.018;
@@ -79,7 +77,6 @@ function generateChartData(
   const now = Date.now();
   const points: PricePoint[] = [];
 
-  // Deterministic seed based on timeframe + symbol
   let seed = destSymbol.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) + timeframe.length * 17;
   function pseudoRandom() {
     seed = (seed * 9301 + 49297) % 233280;
@@ -95,7 +92,6 @@ function generateChartData(
     const timestamp = now - (numPoints - 1 - i) * intervalMs;
     const progress = i / numPoints;
     
-    // Wave motion + random walk
     const trend = Math.sin(progress * Math.PI * 2) * (volatility * 0.5);
     const noise = (pseudoRandom() - 0.48) * volatility;
     
@@ -164,7 +160,6 @@ export const MarketPriceChart: React.FC<MarketPriceChartProps> = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const svgRef = useRef<SVGSVGElement | null>(null);
 
-  // Fetch real-time market data from CoinGecko API via /api/prices
   useEffect(() => {
     let isCancelled = false;
     const fetchLivePriceData = async () => {
@@ -199,7 +194,6 @@ export const MarketPriceChart: React.FC<MarketPriceChartProps> = ({
     };
   }, [selectedDest.symbol, timeframe]);
 
-  // Active chart points: use real CoinGecko data if loaded, fallback to deterministic generator
   const activeChartData = useMemo(() => {
     if (liveData && liveData.points && liveData.points.length > 0) {
       return liveData;
@@ -212,11 +206,9 @@ export const MarketPriceChart: React.FC<MarketPriceChartProps> = ({
 
   const { points, high, low, volume24h, changePercent, source } = activeChartData;
 
-  // Active point when hovered vs last point
   const activeIndex = hoverIndex !== null ? hoverIndex : points.length - 1;
   const activePoint = points[activeIndex] || points[points.length - 1];
 
-  // Harmonize display price with shared live spot feed when not actively hovering historical points
   const liveSpotForSymbol = useMemo(() => {
     if (selectedDest.symbol === 'USDC') return zecPriceUsd;
     if (selectedDest.symbol === 'SOL' && solPriceUsd > 0) return zecPriceUsd / solPriceUsd;
@@ -236,7 +228,6 @@ export const MarketPriceChart: React.FC<MarketPriceChartProps> = ({
   const activeChangeAbs = firstPoint ? displayPrice - firstPoint.price : 0;
   const isPositive = activeChange >= 0;
 
-  // Format currency helpers
   const formatPrice = useCallback((price: number) => {
     if (selectedDest.symbol === 'BTC') return `${price.toFixed(6)} BTC`;
     if (selectedDest.symbol === 'SOL') return `${price.toFixed(3)} SOL`;
@@ -252,7 +243,6 @@ export const MarketPriceChart: React.FC<MarketPriceChartProps> = ({
     return `${sign}$${diff.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   }, [selectedDest.symbol]);
 
-  // SVG Chart Geometry
   const width = 640;
   const height = 260;
   const paddingX = 20;
@@ -264,7 +254,6 @@ export const MarketPriceChart: React.FC<MarketPriceChartProps> = ({
 
   const priceRange = high - low || 1;
 
-  // Coordinate mapping
   const coords = useMemo(() => {
     return points.map((p, index) => {
       const x = paddingX + (index / (points.length - 1)) * innerWidth;
@@ -274,7 +263,6 @@ export const MarketPriceChart: React.FC<MarketPriceChartProps> = ({
     });
   }, [points, low, priceRange, innerWidth, innerHeight, paddingX, paddingTop]);
 
-  // Construct smooth Bezier curve path
   const pathD = useMemo(() => {
     if (coords.length === 0) return '';
     let d = `M ${coords[0].x},${coords[0].y}`;
@@ -287,7 +275,6 @@ export const MarketPriceChart: React.FC<MarketPriceChartProps> = ({
     return d;
   }, [coords]);
 
-  // Area path for gradient fill
   const areaD = useMemo(() => {
     if (coords.length === 0) return '';
     const bottomY = height - paddingBottom;
@@ -296,7 +283,6 @@ export const MarketPriceChart: React.FC<MarketPriceChartProps> = ({
     return `${pathD} L ${lastX},${bottomY} L ${firstX},${bottomY} Z`;
   }, [pathD, coords, height, paddingBottom]);
 
-  // Hover scrubbing handler
   const handleMouseMove = useCallback((e: React.MouseEvent<SVGSVGElement>) => {
     if (!svgRef.current) return;
     const rect = svgRef.current.getBoundingClientRect();

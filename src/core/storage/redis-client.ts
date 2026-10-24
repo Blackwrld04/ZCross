@@ -1,11 +1,3 @@
-/**
- * Upstash Redis & Distributed Cache Client
- * 
- * Provides distributed caching and key-value primitives for serverless edge instances:
- * - Upstash Redis REST API (HTTP-based, zero TCP connection exhaustion)
- * - Standard Redis URI compatibility
- * - In-memory LRU fallback for zero-dependency local dev and testing
- */
 
 export interface RedisOptions {
   exSeconds?: number;
@@ -22,9 +14,6 @@ export class DistributedRedisClient {
     this.upstashToken = process.env.UPSTASH_REDIS_REST_TOKEN;
   }
 
-  /**
-   * Sets a key with optional expiration
-   */
   async set(key: string, value: string, options?: RedisOptions): Promise<void> {
     const expiresAt = options?.exSeconds
       ? Date.now() + options.exSeconds * 1000
@@ -32,7 +21,6 @@ export class DistributedRedisClient {
       ? Date.now() + options.pxMilliseconds
       : undefined;
 
-    // 1. Try Upstash REST if configured
     if (this.upstashUrl && this.upstashToken) {
       try {
         const cmd = ['SET', key, value];
@@ -50,19 +38,13 @@ export class DistributedRedisClient {
         });
         return;
       } catch {
-        // Fallback to local memory store
       }
     }
 
-    // 2. Memory store fallback
     this.memoryStore.set(key, { value, expiresAt });
   }
 
-  /**
-   * Gets a value by key, returning null if expired or missing
-   */
   async get(key: string): Promise<string | null> {
-    // 1. Try Upstash REST if configured
     if (this.upstashUrl && this.upstashToken) {
       try {
         const res = await fetch(`${this.upstashUrl}/get/${encodeURIComponent(key)}`, {
@@ -76,11 +58,9 @@ export class DistributedRedisClient {
           return data.result ?? null;
         }
       } catch {
-        // Fallback to local memory store
       }
     }
 
-    // 2. Memory store fallback
     const entry = this.memoryStore.get(key);
     if (!entry) return null;
 
@@ -92,11 +72,7 @@ export class DistributedRedisClient {
     return entry.value;
   }
 
-  /**
-   * Increments a counter atomically (for rate-limiting)
-   */
   async incr(key: string, exSeconds?: number): Promise<number> {
-    // 1. Try Upstash REST if configured
     if (this.upstashUrl && this.upstashToken) {
       try {
         const res = await fetch(`${this.upstashUrl}/pipeline`, {
@@ -116,20 +92,15 @@ export class DistributedRedisClient {
           return data[0]?.result || 1;
         }
       } catch {
-        // Fallback to local memory store
       }
     }
 
-    // 2. Memory store fallback
     const current = await this.get(key);
     const count = current ? parseInt(current, 10) + 1 : 1;
     await this.set(key, count.toString(), { exSeconds });
     return count;
   }
 
-  /**
-   * Deletes a key
-   */
   async del(key: string): Promise<void> {
     if (this.upstashUrl && this.upstashToken) {
       try {
@@ -142,9 +113,6 @@ export class DistributedRedisClient {
     this.memoryStore.delete(key);
   }
 
-  /**
-   * Checks connection health and active provider
-   */
   async getStatus(): Promise<{
     provider: 'upstash' | 'memory';
     connected: boolean;

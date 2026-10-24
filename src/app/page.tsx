@@ -61,7 +61,6 @@ export default function Home() {
   const [activeReceipt, setActiveReceipt] = useState<AuditReceiptData | null>(null);
   const [showAuditor, setShowAuditor] = useState<boolean>(false);
 
-  // Fetch live token metadata from API
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);

@@ -55,7 +55,6 @@ export const FiatOnrampModal: React.FC<FiatOnrampModalProps> = ({
   const userAddress = account?.address || 'u1q56a7066c5a4dd7777873a6d64ab0711036bcb9fd824eb8166d5b5aa61993425f385bb2da562ba0b1f6';
   const numFiat = parseFloat(fiatAmount) || 0;
 
-  // Re-calculate quotes whenever amount, currency, or live CoinGecko price changes
   useEffect(() => {
     if (numFiat > 0) {
       const calculated = calculateOnrampQuotes({
@@ -79,7 +78,6 @@ export const FiatOnrampModal: React.FC<FiatOnrampModalProps> = ({
   const estimatedZec = activeQuote ? activeQuote.estimatedZec : 0;
   const netConfig = PAYMENT_NETWORKS.google_pay;
 
-  // Handle Real Checkout (Google Pay / Card via MoonPay)
   const handleLaunchPayment = async () => {
     setIsProcessing(true);
     try {
@@ -93,7 +91,6 @@ export const FiatOnrampModal: React.FC<FiatOnrampModalProps> = ({
         return;
       }
     } catch {
-      // Fallback
     }
 
     const moonpayKey = process.env.NEXT_PUBLIC_MOONPAY_API_KEY || 'pk_test_QuRBVUBMr6EnuDz228i91makUVHM6K5T';
@@ -182,7 +179,6 @@ export const FiatOnrampModal: React.FC<FiatOnrampModalProps> = ({
             </button>
           </div>
         ) : (
-          /* ---------------- MAIN FORM ---------------- */
           <div className="space-y-4">
             {/* Pay Amount Input Card */}
             <div className="p-4 bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 rounded-2xl">

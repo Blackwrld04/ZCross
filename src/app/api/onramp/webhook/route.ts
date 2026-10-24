@@ -23,7 +23,6 @@ export async function POST(request: NextRequest) {
 
     const secret = process.env[`${providerParam.toUpperCase()}_WEBHOOK_SECRET`] || 'sandbox_secret';
 
-    // Verify cryptographic signature
     const isValid = globalOnrampStore.verifyWebhookSignature({
       providerId: providerParam,
       payloadRaw: rawBody,
@@ -38,7 +37,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Extract standardized order data
     const orderId = payload.data?.id || payload.orderId || payload.id || `ord_${Date.now()}`;
     const statusRaw = (payload.data?.status || payload.status || 'COMPLETED').toUpperCase();
     

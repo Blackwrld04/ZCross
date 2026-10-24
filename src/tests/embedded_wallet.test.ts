@@ -46,16 +46,13 @@ describe('Option 1: In-Browser Embedded Zcash Orchard Wallet Engine', () => {
   });
 
   test('Wallet Service initialization and 1-click payment execution', async () => {
-    // Create new wallet
     const { mnemonic, account } = await EmbeddedOrchardWalletService.createNewWallet('session-pwd', 'mainnet');
     assert.ok(account.address.startsWith('u1'));
     assert.strictEqual(account.shieldedBalanceZec, 5.0);
 
-    // Fund wallet
     const newBal = EmbeddedOrchardWalletService.fundBalance(2.5);
     assert.strictEqual(newBal, 7.5);
 
-    // Execute 1-click swap payment
     const payment = await EmbeddedOrchardWalletService.executeShieldedSwapPayment({
       originAmountZec: 1.0,
       destinationChain: 'sol',

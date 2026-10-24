@@ -5,10 +5,6 @@ interface LogoProps {
   size?: number;
 }
 
-/**
- * 1. Solflare Wallet Official Logo
- * Radiant flame mark in Solflare's signature warm orange gradient
- */
 export const SolflareLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className}>
     <defs>
@@ -34,10 +30,6 @@ export const SolflareLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => 
   </svg>
 );
 
-/**
- * 2. Phantom Wallet Official Logo
- * Signature Phantom ghost on pastel purple
- */
 export const PhantomLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className}>
     <rect width="24" height="24" rx="6" fill="#AB9FF2" />
@@ -50,10 +42,6 @@ export const PhantomLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   </svg>
 );
 
-/**
- * 3. MetaMask Official 3D Fox Logo
- * Low-poly faceted iconic geometric fox
- */
 export const MetaMaskLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   <svg viewBox="0 0 32 32" fill="none" className={className}>
     {/* Outer ears */}
@@ -81,10 +69,6 @@ export const MetaMaskLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => 
   </svg>
 );
 
-/**
- * 4. Rabby Wallet Official Logo
- * DeBank's signature turtle helmet mascot
- */
 export const RabbyLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className}>
     <rect width="24" height="24" rx="6" fill="#8697FF" />
@@ -102,10 +86,6 @@ export const RabbyLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   </svg>
 );
 
-/**
- * 5. Zerion Official Logo
- * Origami double-angled "Z" ribbon in Zerion blue
- */
 export const ZerionLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className}>
     <rect width="24" height="24" rx="6" fill="#2962FF" />
@@ -126,10 +106,6 @@ export const ZerionLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   </svg>
 );
 
-/**
- * 6. Coinbase Wallet Official Logo
- * Circular Coinbase blue badge with squircle card & cutout
- */
 export const CoinbaseLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className}>
     <circle cx="12" cy="12" r="11" fill="#0052FF" />
@@ -138,10 +114,6 @@ export const CoinbaseLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => 
   </svg>
 );
 
-/**
- * 7. Trust Wallet Official Logo
- * Shield with signature dynamic two-tone split
- */
 export const TrustLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className}>
     <rect width="24" height="24" rx="6" fill="#0500FF" />
@@ -159,10 +131,6 @@ export const TrustLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   </svg>
 );
 
-/**
- * 8. Rainbow Wallet Official Logo
- * Signature concentric multi-colored arcade arches
- */
 export const RainbowLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className}>
     <rect width="24" height="24" rx="6" fill="#0E0D14" />
@@ -173,10 +141,6 @@ export const RainbowLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   </svg>
 );
 
-/**
- * 9. Backpack Wallet Official Logo
- * Coral red squircle with signature white tech backpack emblem
- */
 export const BackpackLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className}>
     <rect width="24" height="24" rx="6" fill="#E33E38" />
@@ -189,10 +153,6 @@ export const BackpackLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => 
   </svg>
 );
 
-/**
- * 10. OKX Wallet Official Logo
- * Global OKX 5-Square Checkerboard Cross
- */
 export const OKXLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className}>
     <rect width="24" height="24" rx="6" fill="#000000" />
@@ -204,10 +164,6 @@ export const OKXLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   </svg>
 );
 
-/**
- * 11. Ctrl (formerly XDEFI) Official Logo
- * Modern dark slate squircle with cyan keyboard Ctrl brackets
- */
 export const CtrlLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className}>
     <rect width="24" height="24" rx="6" fill="#0F172A" />
@@ -219,10 +175,6 @@ export const CtrlLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   </svg>
 );
 
-/**
- * 12. Keplr Wallet Official Logo
- * Distinctive 3-color angled triangular prism / star
- */
 export const KeplrLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className}>
     <rect width="24" height="24" rx="6" fill="#0E121E" />
@@ -236,10 +188,6 @@ export const KeplrLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   </svg>
 );
 
-/**
- * 13. Zashi Official Logo
- * Electric Coin Company's official Zcash mobile wallet
- */
 export const ZashiLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className}>
     <rect width="24" height="24" rx="6" fill="#000000" />
@@ -250,10 +198,6 @@ export const ZashiLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   </svg>
 );
 
-/**
- * 14. YWallet Official Logo
- * Shield with stylized cyan Y
- */
 export const YWalletLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className}>
     <rect width="24" height="24" rx="6" fill="#081426" />
@@ -271,10 +215,6 @@ export const YWalletLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   </svg>
 );
 
-/**
- * 15. Zodl Official Logo
- * Minimalist emerald ring with Z mark
- */
 export const ZodlLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className}>
     <rect width="24" height="24" rx="6" fill="#111827" />
@@ -283,10 +223,6 @@ export const ZodlLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   </svg>
 );
 
-/**
- * 16. Zcash (ZEC) Official Cryptocurrency Logo
- * Amber disc with letter Z pierced by vertical bars
- */
 export const ZcashIcon: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className}>
     <circle cx="12" cy="12" r="11" fill="#F4B728" />
@@ -299,10 +235,6 @@ export const ZcashIcon: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   </svg>
 );
 
-/**
- * 17. Solana (SOL) Official Logo
- * Three horizontal parallel gradient bars with angled tips
- */
 export const SolanaIcon: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className}>
     <defs>
@@ -327,10 +259,6 @@ export const SolanaIcon: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   </svg>
 );
 
-/**
- * 18. USD Coin (USDC) Official Logo
- * Blue circle with interlocking crescent arcs and dollar glyph
- */
 export const UsdcIcon: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className}>
     <circle cx="12" cy="12" r="11" fill="#2775CA" />
@@ -349,10 +277,6 @@ export const UsdcIcon: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   </svg>
 );
 
-/**
- * 19. Bitcoin (BTC / WBTC) Official Logo
- * Classic orange circle with 14-degree tilted ₿
- */
 export const BitcoinIcon: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className}>
     <circle cx="12" cy="12" r="11" fill="#F7931A" />
@@ -363,10 +287,6 @@ export const BitcoinIcon: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   </svg>
 );
 
-/**
- * 20. Ethereum (ETH) Official Logo
- * Iconic geometric octahedron diamond
- */
 export const EthereumIcon: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className}>
     <circle cx="12" cy="12" r="11" fill="#627EEA" />
@@ -377,10 +297,6 @@ export const EthereumIcon: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => 
   </svg>
 );
 
-/**
- * 21. Arbitrum (ARB) Official Logo
- * Deep blue disc with signature white and navy chevron A
- */
 export const ArbitrumIcon: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className}>
     <rect width="24" height="24" rx="12" fill="#28A0F0" />
@@ -395,10 +311,6 @@ export const ArbitrumIcon: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => 
   </svg>
 );
 
-/**
- * 22. Base Official Logo
- * Vibrant Base blue disc with white rounded crescent
- */
 export const BaseIcon: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className}>
     <circle cx="12" cy="12" r="11" fill="#0052FF" />
@@ -409,10 +321,6 @@ export const BaseIcon: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   </svg>
 );
 
-/**
- * 23. NEAR Protocol Official Logo
- * Sleek black disc with white geometric N ribbon
- */
 export const NearIcon: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className}>
     <rect width="24" height="24" rx="12" fill="#000000" />
@@ -423,10 +331,6 @@ export const NearIcon: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   </svg>
 );
 
-/**
- * 24. Defuse Protocol Official Logo
- * Violet rounded square with precision delta mark
- */
 export const DefuseIcon: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className}>
     <rect width="24" height="24" rx="6" fill="#8B5CF6" />
@@ -441,10 +345,6 @@ export const DefuseIcon: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   </svg>
 );
 
-/**
- * 25. ZCross Official Logo (Concept 4: Bold Negative-Space Cross-Cut)
- * Heavyweight solid fintech Z with precision cross-cut geometry
- */
 export const ZCrossLogo: React.FC<LogoProps & { variant?: 'black' | 'white' | 'auto' }> = ({
   className = 'w-6 h-6',
   variant = 'auto',
@@ -485,10 +385,6 @@ export const ZCrossLogo: React.FC<LogoProps & { variant?: 'black' | 'white' | 'a
   );
 };
 
-/**
- * 26. Google Pay Official Mark
- * Iconic 4-color Google G with clean modern Pay typography
- */
 export const GooglePayLogo: React.FC<LogoProps> = ({ className = 'w-5 h-5' }) => (
   <svg viewBox="0 0 48 48" fill="none" className={className}>
     <path

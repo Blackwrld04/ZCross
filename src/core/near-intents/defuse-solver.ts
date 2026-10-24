@@ -1,13 +1,3 @@
-/**
- * NEAR Intents & Defuse Protocol Production Solver Engine
- * 
- * Manages the production mainnet Solver Vault integration:
- * - Direct on-chain Defuse protocol contract connection (intents.near)
- * - Multi-chain liquidity reserve depth monitoring (Arbitrum USDC, Solana SOL/USDC, Bitcoin BTC)
- * - Cryptographic intent commitment validation (NEP-413 / NEP-366)
- * - Near RPC multi-endpoint failover cluster
- * - Automated solver execution & intent settlement tracking
- */
 
 import crypto from 'crypto';
 
@@ -57,9 +47,6 @@ export class DefuseSolverManager {
     this.primaryRpcUrl = process.env.NEAR_RPC_URL || 'https://rpc.mainnet.near.org';
   }
 
-  /**
-   * Queries NEAR mainnet RPC for contract state or account status
-   */
   async queryNearRpc(method: string, params: Record<string, any>): Promise<any> {
     const endpoints = [this.primaryRpcUrl, ...NEAR_RPC_ENDPOINTS.filter(u => u !== this.primaryRpcUrl)];
 
@@ -84,18 +71,13 @@ export class DefuseSolverManager {
           }
         }
       } catch {
-        // Try next fallback RPC
       }
     }
 
     return null;
   }
 
-  /**
-   * Retrieves live solver liquidity pools across cross-chain settlement legs
-   */
   async getLiquidityReserves(): Promise<DefuseLiquidityPool[]> {
-    // Queries on-chain reserves with institutional fallback
     return [
       {
         chain: 'arb',
@@ -148,13 +130,9 @@ export class DefuseSolverManager {
     ];
   }
 
-  /**
-   * Cryptographically verifies an incoming user Intent signature (NEP-413 standard)
-   */
   verifyIntentSignature(intentPayload: any, signatureBase64: string, publicKey: string): boolean {
     if (!signatureBase64 || !publicKey) return false;
     try {
-      // In production, verifies ED25519 signature over sha256(intentPayload)
       const messageBytes = Buffer.from(JSON.stringify(intentPayload));
       const hash = crypto.createHash('sha256').update(messageBytes).digest();
       return hash.length === 32;
@@ -163,9 +141,6 @@ export class DefuseSolverManager {
     }
   }
 
-  /**
-   * Inspects overall Defuse Solver vault health, active liquidity, and on-chain status
-   */
   async getSolverStatus(): Promise<DefuseSolverStatus> {
     const startTime = Date.now();
     const pools = await this.getLiquidityReserves();

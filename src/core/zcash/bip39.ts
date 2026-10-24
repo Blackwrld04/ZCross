@@ -1,9 +1,4 @@
-/**
- * BIP-39 Mnemonic & Seed Generation for In-Browser Orchard Shielded Wallets
- * Standard 12-word mnemonic implementation using browser WebCrypto / Node crypto
- */
 
-// Top standard BIP-39 English word list (essential subset and deterministic derivation)
 export const BIP39_WORDS: string[] = [
   "abandon", "ability", "able", "about", "above", "absent", "absorb", "abstract", "absurd", "abuse",
   "access", "accident", "account", "accuse", "achieve", "acid", "acoustic", "acquire", "across", "act",
@@ -212,9 +207,6 @@ export const BIP39_WORDS: string[] = [
   "year", "yellow", "you", "young", "youth", "zebra", "zero", "zone", "zoo"
 ];
 
-/**
- * Generates a standard cryptographically random 12-word BIP-39 mnemonic phrase.
- */
 export function generateMnemonic(): string {
   const words: string[] = [];
   const randomBytes = new Uint8Array(16); // 128 bits entropy = 12 words
@@ -222,15 +214,12 @@ export function generateMnemonic(): string {
   if (typeof window !== 'undefined' && window.crypto) {
     window.crypto.getRandomValues(randomBytes);
   } else {
-    // Node environment fallback
     const { randomBytes: nodeRandomBytes } = require('crypto');
     const bytes = nodeRandomBytes(16);
     for (let i = 0; i < 16; i++) randomBytes[i] = bytes[i];
   }
 
-  // Pick 12 deterministic words from the 2048 dictionary using 11-bit indices
   for (let i = 0; i < 12; i++) {
-    // Extract 11 bits
     const bitOffset = i * 11;
     const byteOffset = Math.floor(bitOffset / 8);
     const bitRemainder = bitOffset % 8;

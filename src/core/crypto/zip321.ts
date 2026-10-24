@@ -1,7 +1,3 @@
-/**
- * ZIP 321: Payment Request URIs
- * Standard for generating scannable QR codes for mobile Zcash wallets (Zashi, Zodl, etc.)
- */
 
 export interface Zip321PaymentRequest {
   recipientAddress: string;
@@ -10,10 +6,6 @@ export interface Zip321PaymentRequest {
   message?: string;
 }
 
-/**
- * Encodes a payment request into a ZIP 321 compliant URI
- * Format: zcash:<address>?amount=<amount>&memo=<base64url>
- */
 export function encodeZip321Uri(req: Zip321PaymentRequest): string {
   const address = req.recipientAddress.trim();
   const params: string[] = [];
@@ -23,11 +15,9 @@ export function encodeZip321Uri(req: Zip321PaymentRequest): string {
     throw new Error('Invalid ZEC amount for payment request');
   }
 
-  // Format amount with up to 8 decimal places (zatoshis)
   params.push(`amount=${amountNum.toFixed(8).replace(/\.?0+$/, '')}`);
 
   if (req.memoBase64) {
-    // ZIP 321 specifies standard base64url or standard base64
     const urlSafeMemo = req.memoBase64
       .replace(/\+/g, '-')
       .replace(/\//g, '_')
@@ -42,9 +32,6 @@ export function encodeZip321Uri(req: Zip321PaymentRequest): string {
   return `zcash:${address}?${params.join('&')}`;
 }
 
-/**
- * Parses a ZIP 321 URI back to its components
- */
 export function parseZip321Uri(uri: string): Zip321PaymentRequest {
   if (!uri.startsWith('zcash:')) {
     throw new Error('URI must start with "zcash:" scheme');
@@ -71,7 +58,6 @@ export function parseZip321Uri(uri: string): Zip321PaymentRequest {
 
     const memoStr = searchParams.get('memo');
     if (memoStr) {
-      // Restore standard base64 from base64url if needed
       let base64 = memoStr.replace(/-/g, '+').replace(/_/g, '/');
       while (base64.length % 4 !== 0) {
         base64 += '=';

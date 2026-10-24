@@ -23,7 +23,6 @@ function PaymentCheckoutContent() {
   const { account, balanceZec, execute1ClickSwapPayment, isLocked } = useEmbeddedWallet();
   const { zecPriceUsd } = useLivePrices();
 
-  // Query Params & Defaults
   const recipientAddress = searchParams.get('to') 
     || 'u1q56a7066c5a4dd7777873a6d64ab0711036bcb9fd824eb8166d5b5aa61993425f385bb2da562ba0b1f6';
   const amountZec = parseFloat(searchParams.get('amount') || '0.25');
@@ -31,7 +30,6 @@ function PaymentCheckoutContent() {
   const itemDescription = searchParams.get('item') || searchParams.get('desc') || '1-Month Encrypted Dedicated Server & VPN';
   const memoText = searchParams.get('memo') || `Invoice #${Date.now().toString(36).toUpperCase()}`;
 
-  // UI State
   const [selectedMethod, setSelectedMethod] = useState<'qr' | 'browser_wallet' | 'google_pay' | 'cross_chain'>('qr');
   const [qrDataUrl, setQrDataUrl] = useState<string>('');
   const [copiedField, setCopiedField] = useState<string | null>(null);
@@ -41,7 +39,6 @@ function PaymentCheckoutContent() {
   const [showFiatModal, setShowFiatModal] = useState<boolean>(false);
   const [showLinkGenerator, setShowLinkGenerator] = useState<boolean>(false);
 
-  // Link Generator Form State
   const [genTo, setGenTo] = useState<string>(recipientAddress);
   const [genAmount, setGenAmount] = useState<string>('0.25');
   const [genMerchant, setGenMerchant] = useState<string>('My Private Store');
@@ -62,7 +59,6 @@ function PaymentCheckoutContent() {
       .catch(err => console.error('Failed to generate QR:', err));
   }, [zip321Uri]);
 
-  // Handle in-browser 1-click payment
   const handleBrowserWalletPay = async () => {
     setIsPaying(true);
     try {
@@ -85,14 +81,12 @@ function PaymentCheckoutContent() {
     }
   };
 
-  // Copy helper
   const handleCopy = (text: string, field: string) => {
     navigator.clipboard.writeText(text);
     setCopiedField(field);
     setTimeout(() => setCopiedField(null), 2000);
   };
 
-  // Generate shareable link
   const handleCreateLink = () => {
     const origin = typeof window !== 'undefined' ? window.location.origin : 'https://zcross.cash';
     const params = new URLSearchParams({
@@ -153,7 +147,6 @@ function PaymentCheckoutContent() {
       {/* Main Checkout Container */}
       <main className="max-w-2xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {isSettled ? (
-          /* Payment Settlement Confirmation Screen */
           <div className="bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-[32px] p-8 sm:p-10 shadow-xl text-center space-y-6 animate-in zoom-in-95 duration-200">
             <div className="w-20 h-20 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto shadow-sm">
               <Check className="w-10 h-10 stroke-[2.5]" />
@@ -214,7 +207,6 @@ function PaymentCheckoutContent() {
             </div>
           </div>
         ) : (
-          /* Active Payment Card */
           <div className="bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-[32px] p-6 sm:p-9 shadow-xl space-y-6 text-slate-900 dark:text-white">
             {/* Merchant & Order Header */}
             <div className="flex items-start justify-between border-b border-gray-100 pb-5">

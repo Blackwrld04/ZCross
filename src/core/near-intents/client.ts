@@ -1,8 +1,3 @@
-/**
- * NEAR Intents 1Click API Client
- * Connects directly to https://1click.chaindefuser.com/
- * Spec reference: https://docs.near-intents.org/
- */
 
 import { 
   NearIntentsToken, 
@@ -21,9 +16,6 @@ let tokensCache: NearIntentsToken[] | null = null;
 let tokensCacheExpiry = 0;
 
 export class NearIntentsClient {
-  /**
-   * Helper to construct authenticated headers
-   */
   private getHeaders(additionalHeaders: Record<string, string> = {}): Record<string, string> {
     const apiKey = secretsManager.getSecret('NEAR_INTENTS_API_KEY') || secretsManager.getSecret('NEAR_INTENTS_JWT');
     const headers: Record<string, string> = {
@@ -38,9 +30,6 @@ export class NearIntentsClient {
     return headers;
   }
 
-  /**
-   * Fetches all live supported assets from 1Click OpenAPI endpoint (/v0/tokens)
-   */
   async getTokens(ondoTokens?: boolean): Promise<NearIntentsToken[]> {
     const now = Date.now();
     if (tokensCache && tokensCacheExpiry > now) {
@@ -73,11 +62,7 @@ export class NearIntentsClient {
     }
   }
 
-  /**
-   * Requests a live guaranteed swap quote from NEAR Intents solvers (/v0/quote)
-   */
   async requestQuote(payload: QuoteRequestPayload): Promise<QuoteResponsePayload> {
-    // Ensure deadline is always set (required by 1Click API)
     const normalizedPayload: QuoteRequestPayload = {
       ...payload,
       deadline: payload.deadline || new Date(Date.now() + 30 * 60 * 1000).toISOString(),
@@ -107,10 +92,6 @@ export class NearIntentsClient {
     return data as QuoteResponsePayload;
   }
 
-  /**
-   * Exchange signed MultiPayload for a User-Session token (Confidential Intents)
-   * Reference: POST /v0/auth/authenticate
-   */
   async authenticateUser(signedData: SignedDataPayload): Promise<UserAuthResponse> {
     const res = await fetch(`${BASE_URL}/v0/auth/authenticate`, {
       method: 'POST',
@@ -128,10 +109,6 @@ export class NearIntentsClient {
     return data as UserAuthResponse;
   }
 
-  /**
-   * Refresh a User-Session access token
-   * Reference: POST /v0/auth/refresh
-   */
   async refreshToken(refreshToken: string): Promise<{ accessToken: string; expiresIn: number }> {
     const res = await fetch(`${BASE_URL}/v0/auth/refresh`, {
       method: 'POST',
@@ -149,10 +126,6 @@ export class NearIntentsClient {
     return data;
   }
 
-  /**
-   * Get private/confidential balances for an authenticated user
-   * Reference: GET /v0/account/balances
-   */
   async getUserBalances(accessToken: string): Promise<UserBalancesResponse> {
     const res = await fetch(`${BASE_URL}/v0/account/balances`, {
       headers: {
@@ -169,9 +142,6 @@ export class NearIntentsClient {
     return data as UserBalancesResponse;
   }
 
-  /**
-   * Curated popular destination tokens verified against live /v0/tokens
-   */
   async getPopularDestinations(): Promise<{
     chain: string;
     chainName: string;
@@ -224,9 +194,6 @@ export class NearIntentsClient {
     ];
   }
 
-  /**
-   * Safe fallback populated with verified asset IDs from live API
-   */
   private getFallbackPopularTokens(): NearIntentsToken[] {
     return [
       {

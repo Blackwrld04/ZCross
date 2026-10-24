@@ -30,9 +30,6 @@ describe('ZCross Comprehensive E2E & Security Verification', () => {
   const sampleSolAddress = '7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU';
   const sampleBtcAddress = 'bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq';
 
-  /* =========================================================================
-     1. WALLET CONNECTION, ENCRYPTION & ADDRESS BOOK
-     ========================================================================= */
   describe('Unit 1: Wallet Connection, Key Derivation & Address Book', () => {
     it('generates a valid 12-word BIP-39 mnemonic and derives Orchard keys', async () => {
       const mnemonic = generateMnemonic();
@@ -54,11 +51,9 @@ describe('ZCross Comprehensive E2E & Security Verification', () => {
       assert.ok(encrypted.saltHex, 'Salt must be present');
       assert.ok(encrypted.ivHex, 'IV must be present');
 
-      // Decrypt with correct password
       const decrypted = await decryptWithPassword(encrypted.ciphertextHex, encrypted.ivHex, encrypted.saltHex, password);
       assert.equal(decrypted, mnemonic, 'Decrypted mnemonic must match original');
 
-      // Decrypt with wrong password must throw error
       await assert.rejects(async () => {
         await decryptWithPassword(encrypted.ciphertextHex, encrypted.ivHex, encrypted.saltHex, 'WrongPassword999!');
       });
@@ -102,7 +97,6 @@ describe('ZCross Comprehensive E2E & Security Verification', () => {
       const found = afterAdd.find(c => c.id === newContact.id);
       assert.ok(found, 'New contact must be present in saved list');
 
-      // Delete contact
       deleteContact(newContact.id);
       const afterDelete = getSavedContacts();
       const notFound = afterDelete.find(c => c.id === newContact.id);
@@ -119,7 +113,6 @@ describe('ZCross Comprehensive E2E & Security Verification', () => {
       assert.equal(account.watchOnlyType, 'fvk');
       assert.ok(account.shieldedBalanceZec > 0);
 
-      // Attempting spending on watch-only must be strictly rejected
       await assert.rejects(async () => {
         await EmbeddedOrchardWalletService.executeShieldedSwapPayment({
           originAmountZec: 0.5,
@@ -134,9 +127,6 @@ describe('ZCross Comprehensive E2E & Security Verification', () => {
     });
   });
 
-  /* =========================================================================
-     2. BUYING PROCESS (GOOGLE PAY / FIAT ON-RAMP)
-     ========================================================================= */
   describe('Unit 2: Buying Shielded ZEC via Google Pay On-Ramp', () => {
     it('calculates on-ramp quotes across multiple fiat currencies with Google Pay Direct lowest fee', () => {
       const currencies = ['USD', 'EUR', 'GBP', 'CAD', 'AUD'] as const;
@@ -179,21 +169,16 @@ describe('ZCross Comprehensive E2E & Security Verification', () => {
       assert.equal(pendingOrder.orderId, orderId);
       assert.equal(pendingOrder.status, 'PENDING');
 
-      // Update to COMPLETED upon clearing
       const updated = globalOnrampStore.simulateOrderClearance(orderId);
       assert.equal(updated?.status, 'COMPLETED');
       assert.ok(updated?.txHash?.startsWith('tx_orchard_gpay_cleared_'));
 
-      // Retrieve from store
       const retrieved = globalOnrampStore.getOrder(orderId);
       assert.equal(retrieved?.status, 'COMPLETED');
       assert.equal(retrieved?.paymentMethod, 'google_pay');
     });
   });
 
-  /* =========================================================================
-     3. SELLING / SWAPPING PROCESS (CROSS-CHAIN INTENTS)
-     ========================================================================= */
   describe('Unit 3: Selling / Swapping Shielded ZEC across Corridors', () => {
     it('creates and settles ZEC -> Arbitrum USDC swap with guaranteed execution rate', async () => {
       const { swap, memoBase64, zip321Uri } = await solverEngine.createIntent({
@@ -210,11 +195,9 @@ describe('ZCross Comprehensive E2E & Security Verification', () => {
       assert.ok(swap.id);
       assert.ok(parseFloat(swap.dest_amount_est) > 0);
 
-      // Verify uniform memo byte length
       const memoBuffer = Buffer.from(memoBase64, 'base64');
       assert.equal(memoBuffer.length, 512, 'Encrypted memo must be exactly 512 bytes');
 
-      // Settle
       const deposited = await solverEngine.processShieldedDeposit(swap.id);
       assert.equal(deposited.status, 'CONFIRMED_SHIELDED');
 
@@ -222,7 +205,6 @@ describe('ZCross Comprehensive E2E & Security Verification', () => {
       assert.equal(settled.status, 'SETTLED');
       assert.ok(settled.dest_tx_hash?.startsWith('0x'));
 
-      // Receipt validation
       assert.equal(receipt.swapId, swap.id);
       assert.equal(receipt.privacyVerification.zeroTransparentHops, true);
     });
@@ -307,9 +289,6 @@ describe('ZCross Comprehensive E2E & Security Verification', () => {
     });
   });
 
-  /* =========================================================================
-     4. SECURITY INVARIANTS & DEFENSES
-     ========================================================================= */
   describe('Unit 4: Security Invariants, Rate Limiting & Zero-Leak Protection', () => {
     it('strictly rejects transparent t-addresses across all entry points', () => {
       const transparentAddress = 't1VpYecBW4UudbGnv4Za2hkYDm8Ep3FsKPq';
@@ -324,13 +303,11 @@ describe('ZCross Comprehensive E2E & Security Verification', () => {
       const testIp = '198.51.100.42';
       const config = { limit: 5, windowMs: 10_000, prefix: 'e2e_test' };
 
-      // Make 5 permitted calls
       for (let i = 0; i < 5; i++) {
         const res = evaluateRateLimit(testIp, config);
         assert.equal(res.allowed, true, `Call ${i + 1} must be allowed`);
       }
 
-      // 6th call must be blocked
       const blocked = evaluateRateLimit(testIp, config);
       assert.equal(blocked.allowed, false, '6th call exceeding limit must be blocked');
       assert.equal(blocked.remaining, 0);
@@ -340,7 +317,6 @@ describe('ZCross Comprehensive E2E & Security Verification', () => {
       assert.equal(isValidIdempotencyKey('idem_valid_key_12345'), true);
       assert.equal(isValidIdempotencyKey('a'.repeat(32)), true);
 
-      // Malformed / injection keys must be rejected
       assert.equal(isValidIdempotencyKey(''), false);
       assert.equal(isValidIdempotencyKey('short'), false);
       assert.equal(isValidIdempotencyKey('invalid <script>'), false);

@@ -27,12 +27,10 @@ export function CookieBanner() {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (!stored) {
-        // Small delay to allow initial page render without jarring layout shift
         const timer = setTimeout(() => setIsOpen(true), 800);
         return () => clearTimeout(timer);
       }
     } catch {
-      // Ignore local storage error
     }
   }, []);
 
@@ -45,7 +43,6 @@ export function CookieBanner() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
       window.dispatchEvent(new CustomEvent('zcross:cookie_consent', { detail: payload }));
     } catch {
-      // Ignore storage error
     }
     setIsOpen(false);
   };

@@ -40,27 +40,22 @@ export function DataPurgeModal({ isOpen: propIsOpen, onClose: propOnClose }: Dat
     try {
       let count = 0;
 
-      // 1. Clear serverless on-ramp session records
       try {
         await fetch('/api/onramp/clear', { method: 'POST' });
         count += 1;
       } catch {
-        // Continue even if backend call fails
       }
 
-      // 2. Clear browser LocalStorage
       if (typeof window !== 'undefined' && window.localStorage) {
         count += window.localStorage.length;
         window.localStorage.clear();
       }
 
-      // 3. Clear browser SessionStorage
       if (typeof window !== 'undefined' && window.sessionStorage) {
         count += window.sessionStorage.length;
         window.sessionStorage.clear();
       }
 
-      // 4. Clear IndexedDB databases if supported
       if (typeof window !== 'undefined' && window.indexedDB && window.indexedDB.databases) {
         try {
           const dbs = await window.indexedDB.databases();
@@ -71,11 +66,9 @@ export function DataPurgeModal({ isOpen: propIsOpen, onClose: propOnClose }: Dat
             }
           });
         } catch {
-          // IndexedDB purge fallback
         }
       }
 
-      // 5. Expire standard cookies
       if (typeof document !== 'undefined') {
         document.cookie.split(';').forEach((c) => {
           document.cookie = c
@@ -88,7 +81,6 @@ export function DataPurgeModal({ isOpen: propIsOpen, onClose: propOnClose }: Dat
       setPurgeSuccess(true);
       setIsPurging(false);
 
-      // Re-initialize default clean state after brief feedback delay
       setTimeout(() => {
         window.location.href = '/';
       }, 1800);

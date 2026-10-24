@@ -33,7 +33,6 @@ export const AddressBookModal: React.FC<AddressBookModalProps> = ({
   const [isAdding, setIsAdding] = useState<boolean>(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
-  // New Contact Form State
   const [newName, setNewName] = useState<string>('');
   const [newAddress, setNewAddress] = useState<string>('');
   const [newChain, setNewChain] = useState<'arb' | 'sol' | 'btc' | 'eth' | 'base' | 'zec'>(
@@ -83,7 +82,6 @@ export const AddressBookModal: React.FC<AddressBookModalProps> = ({
       return;
     }
 
-    // Auto-resolve domain if entered in address field
     if (cleanAddress.endsWith('.eth') || cleanAddress.endsWith('.sol') || cleanAddress.endsWith('.zec')) {
       const resolved = resolveWeb3Domain(cleanAddress);
       if (resolved) {
@@ -285,7 +283,6 @@ export const AddressBookModal: React.FC<AddressBookModalProps> = ({
             </button>
           </form>
         ) : (
-          /* CONTACT LIST */
           <div className="max-h-[320px] overflow-y-auto space-y-2 pr-1 custom-scrollbar">
             {filteredContacts.length === 0 ? (
               <div className="p-8 text-center bg-gray-50 dark:bg-black rounded-2xl border border-dashed border-gray-200 dark:border-white/10">

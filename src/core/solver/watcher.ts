@@ -1,8 +1,3 @@
-/**
- * Standalone Background Solver Daemon
- * Scans for incoming Orchard intents and executes cross-chain settlements.
- * Can be run independently in terminal: npm run solver
- */
 
 import { swapStore } from './store';
 import { solverEngine } from './engine';
@@ -31,8 +26,6 @@ async function runDaemon() {
   while (true) {
     try {
       blockHeight++;
-      // Check for pending swaps in store
-      // In SQLite, let's query swaps that are CREATED or CONFIRMED_SHIELDED
       const db = (swapStore as any).db;
       const pendingDeposits = db.prepare("SELECT * FROM swaps WHERE status = 'CREATED'").all();
       const pendingFills = db.prepare("SELECT * FROM swaps WHERE status = 'CONFIRMED_SHIELDED'").all();
@@ -44,7 +37,6 @@ async function runDaemon() {
           console.log(`  Amount: ${swap.origin_amount} ZEC`);
           console.log(`  Vault UA: ${swap.deposit_ua.slice(0, 32)}...`);
 
-          // Decrypt memo via Solver IVK
           try {
             const memo = deserializeIntentMemo(swap.memo_base64);
             console.log('\x1b[32m%s\x1b[0m', `  ✓ Memo Decrypted via Solver IVK: Destination = ${memo.destinationChain.toUpperCase()} (${memo.destinationToken})`);
@@ -53,7 +45,6 @@ async function runDaemon() {
             console.error('  ✗ Failed to decrypt memo:', e.message);
           }
 
-          // Transition to CONFIRMED_SHIELDED
           await solverEngine.processShieldedDeposit(swap.id);
           console.log('\x1b[32m%s\x1b[0m', `  ✓ 1 Confirmation Verified in Orchard Pool. Note Nullifier Registered.\n`);
         }
@@ -70,7 +61,6 @@ async function runDaemon() {
         }
       }
 
-      // Check for timed-out intents requiring automated shielded refunds
       await refundEngine.checkAndExecuteRefunds();
     } catch (err: any) {
       console.error('[Watcher Error]:', err.message);

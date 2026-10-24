@@ -1,8 +1,3 @@
-/**
- * Zero-Leak Cryptographic Audit Receipt Generator
- * Generates exportable, verifiable proof of payment and settlement
- * without disclosing sender spending keys or full balance history.
- */
 
 import crypto from 'crypto';
 

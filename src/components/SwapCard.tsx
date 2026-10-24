@@ -36,7 +36,6 @@ export const SwapCard: React.FC<SwapCardProps> = ({
   destinations,
   onQuoteGenerated,
 }) => {
-  // Direction: 'outbound' = Shielded ZEC -> External Chain; 'inbound' = External Chain -> Shielded ZEC Orchard
   const [direction, setDirection] = useState<'outbound' | 'inbound'>('outbound');
   const [originAmount, setOriginAmount] = useState<string>('1.0');
   const [selectedDest, setSelectedDest] = useState<DestinationToken>(
@@ -62,19 +61,15 @@ export const SwapCard: React.FC<SwapCardProps> = ({
   const [oneClickExecuting, setOneClickExecuting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Advanced Privacy & Anti-Timing Chaff State
   const [chaffEnabled, setChaffEnabled] = useState<boolean>(true);
   const [jitterDelaySeconds, setJitterDelaySeconds] = useState<number>(45);
   const [showPrivacySettings, setShowPrivacySettings] = useState<boolean>(false);
   
-  // Dynamic Live Rates from CoinGecko Provider
   const { zecPriceUsd, solPriceUsd, btcPriceUsd, ethPriceUsd } = useLivePrices();
 
-  // Real-time Web3 domain resolution (.eth, .sol, .zec)
   const resolvedDomain = resolveWeb3Domain(recipient);
   const effectiveRecipient = resolvedDomain ? resolvedDomain.resolvedAddress : recipient.trim();
 
-  // Sync recipient with active wallet when destination chain or direction changes
   useEffect(() => {
     if (typeof window !== 'undefined') {
       if (window.innerWidth >= 1024) {
@@ -107,7 +102,6 @@ export const SwapCard: React.FC<SwapCardProps> = ({
         }
       }
     } else {
-      // Inbound direction: default to in-browser Orchard Unified Address
       if (account?.address && (!recipient || recipient.startsWith('0x') || recipient.length < 50)) {
         setRecipient(account.address);
       }
@@ -136,7 +130,6 @@ export const SwapCard: React.FC<SwapCardProps> = ({
       unitRate = (zecPriceUsd / ethPriceUsd).toFixed(4) + ' ETH';
     }
   } else {
-    // Inbound: User pays External token, receives Shielded ZEC
     if (selectedDest.symbol === 'USDC') {
       estimatedUsd = originAmountNum;
       calculatedOutput = (originAmountNum / zecPriceUsd).toFixed(4);
@@ -162,7 +155,6 @@ export const SwapCard: React.FC<SwapCardProps> = ({
 
   const minOutput = (parseFloat(calculatedOutput) * (1 - slippageBps / 10000)).toFixed(outputDecimals);
 
-  // Toggle Direction handler
   const toggleDirection = () => {
     setError(null);
     if (direction === 'outbound') {
@@ -183,13 +175,11 @@ export const SwapCard: React.FC<SwapCardProps> = ({
     }
   };
 
-  // Address validation helper
   const isRecipientValid = () => {
     if (!effectiveRecipient) return false;
     const clean = effectiveRecipient;
 
     if (direction === 'inbound') {
-      // Inbound recipient must be a valid Zcash Orchard Shielded Unified Address (u1...)
       const check = validateZcashAddress(clean, network);
       return check.isValid && check.isShielded;
     }
@@ -331,7 +321,6 @@ export const SwapCard: React.FC<SwapCardProps> = ({
       }
 
       if (direction === 'outbound') {
-        // Outbound: Sign and broadcast 1-Click Shielded Note Payment using client-side Orchard engine
         const paymentResult = await execute1ClickSwapPayment({
           originAmountZec: originAmountNum,
           destinationChain: selectedDest.chain,
@@ -353,7 +342,6 @@ export const SwapCard: React.FC<SwapCardProps> = ({
           }),
         });
       } else {
-        // Inbound: Cross-chain deposit into Shielded Zcash Orchard
         await fetch('/api/swap/simulate', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -364,7 +352,6 @@ export const SwapCard: React.FC<SwapCardProps> = ({
           }),
         });
 
-        // If the recipient was the user's in-browser Orchard vault, credit the balance
         const targetClean = effectiveRecipient;
         const myUa = (account?.address || '').trim();
         if (myUa && targetClean.startsWith(myUa.slice(0, 20))) {
@@ -509,7 +496,6 @@ export const SwapCard: React.FC<SwapCardProps> = ({
                       </div>
                     </div>
                   ) : (
-                    /* Inbound: Token Selector on Pay Card */
                     <button
                       type="button"
                       onClick={() => setShowTokenSelector(!showTokenSelector)}
@@ -588,7 +574,6 @@ export const SwapCard: React.FC<SwapCardProps> = ({
                   </div>
 
                   {direction === 'outbound' ? (
-                    /* Outbound: Token Selector on Receive Card */
                     <button
                       type="button"
                       onClick={() => setShowTokenSelector(!showTokenSelector)}

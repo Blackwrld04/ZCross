@@ -30,7 +30,6 @@ export async function GET(
           try {
             controller.close();
           } catch {
-            // Controller might already be closed
           }
         }
       };
@@ -40,7 +39,6 @@ export async function GET(
       let lastStatus = '';
 
       const interval = setInterval(() => {
-        // Enforce maximum stream duration
         if (Date.now() - startTime > MAX_STREAM_DURATION_MS) {
           cleanup();
           return;

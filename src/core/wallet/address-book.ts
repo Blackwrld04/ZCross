@@ -1,11 +1,3 @@
-/**
- * Address Book & Web3 Domain Resolver
- * 
- * Provides:
- * 1. Persistent address book storage for frequently used cross-chain & shielded recipients.
- * 2. Real-time Web3 domain resolution (.eth, .sol, .zec).
- * 3. Default verified addresses for institutional and foundation corridors.
- */
 
 export interface AddressBookContact {
   id: string;
@@ -75,9 +67,6 @@ function setStorageItem(key: string, value: string): void {
   }
 }
 
-/**
- * Retrieves all stored contacts merged with default verified contacts.
- */
 export function getSavedContacts(): AddressBookContact[] {
   try {
     const raw = getStorageItem(STORAGE_KEY_ADDRESS_BOOK);
@@ -93,9 +82,6 @@ export function getSavedContacts(): AddressBookContact[] {
   }
 }
 
-/**
- * Saves a new contact to the user's address book.
- */
 export function saveContact(contact: Omit<AddressBookContact, 'id' | 'createdAt'>): AddressBookContact {
   const contacts = getSavedContacts();
   const newContact: AddressBookContact = {
@@ -109,18 +95,12 @@ export function saveContact(contact: Omit<AddressBookContact, 'id' | 'createdAt'
   return newContact;
 }
 
-/**
- * Removes a contact by ID.
- */
 export function deleteContact(id: string): void {
   const contacts = getSavedContacts();
   const filtered = contacts.filter(c => c.id !== id);
   setStorageItem(STORAGE_KEY_ADDRESS_BOOK, JSON.stringify(filtered));
 }
 
-/**
- * Real-Time Web3 Domain Resolver (.eth, .sol, .zec).
- */
 export interface ResolvedDomain {
   domain: string;
   resolvedAddress: string;
@@ -146,7 +126,6 @@ const KNOWN_SNS: Record<string, string> = {
 export function resolveWeb3Domain(input: string, currentChain?: string): ResolvedDomain | null {
   const clean = input.trim().toLowerCase();
 
-  // 1. ENS (.eth)
   if (clean.endsWith('.eth')) {
     if (KNOWN_ENS[clean]) {
       return {
@@ -157,7 +136,6 @@ export function resolveWeb3Domain(input: string, currentChain?: string): Resolve
       };
     }
 
-    // Deterministic resolution for arbitrary .eth domain
     let hash = 0;
     for (let i = 0; i < clean.length; i++) {
       hash = (hash << 5) - hash + clean.charCodeAt(i);
@@ -172,7 +150,6 @@ export function resolveWeb3Domain(input: string, currentChain?: string): Resolve
     };
   }
 
-  // 2. Solana SNS (.sol)
   if (clean.endsWith('.sol')) {
     if (KNOWN_SNS[clean]) {
       return {
@@ -183,7 +160,6 @@ export function resolveWeb3Domain(input: string, currentChain?: string): Resolve
       };
     }
 
-    // Deterministic base58-like resolution
     const chars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
     let base58 = '';
     for (let i = 0; i < 44; i++) {
@@ -198,7 +174,6 @@ export function resolveWeb3Domain(input: string, currentChain?: string): Resolve
     };
   }
 
-  // 3. Zcash Unified Name (.zec)
   if (clean.endsWith('.zec')) {
     return {
       domain: clean,

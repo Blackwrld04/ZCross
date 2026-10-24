@@ -1,12 +1,3 @@
-/**
- * Automated Cryptographic & Side-Channel Security Audit Suite
- * 
- * Conducts automated cryptographic verification across:
- * 1. Halo 2 / Orchard in-band memo uniform 512-byte padding (zero length side-channel).
- * 2. Constant-time comparison validation (mitigating timing attacks on webhooks and signatures).
- * 3. ZIP-316 Unified Address compliance (shielded Orchard receiver validation).
- * 4. Key Management & Server Relayer key security (AWS KMS / HashiCorp Vault).
- */
 
 import crypto from 'crypto';
 import { serializeIntentMemo, deserializeIntentMemo } from '../crypto/memo';
@@ -31,25 +22,18 @@ export interface SecurityAuditReport {
 }
 
 export class SecurityAuditor {
-  /**
-   * Conducts the complete cryptographic security audit
-   */
   async runFullAudit(): Promise<SecurityAuditReport> {
     const findings: AuditFinding[] = [];
 
-    // Pillar 1: Uniform 512-byte Memo Padding (Eliminates Packet Size & Length Side-Channels)
     const memoFinding = this.auditMemoPadding();
     findings.push(memoFinding);
 
-    // Pillar 2: Constant-Time Timing Analysis (Timing-Attack Resistance)
     const timingFinding = this.auditTimingSafeComparisons();
     findings.push(timingFinding);
 
-    // Pillar 3: ZIP-316 Zero-Leak Unified Address Enforcement
     const zip316Finding = this.auditZip316ShieldedInvariants();
     findings.push(zip316Finding);
 
-    // Pillar 4: KMS & Vault Key Management Protection
     const keyMgmtFinding = this.auditKeyManagement();
     findings.push(keyMgmtFinding);
 
@@ -68,9 +52,6 @@ export class SecurityAuditor {
     };
   }
 
-  /**
-   * Validates that all memos with varying payloads serialize to exactly 512 bytes
-   */
   private auditMemoPadding(): AuditFinding {
     const testCases = [
       { swapId: 's1', recipient: '0x1234', chain: 'arb', token: 'USDC' },
@@ -96,7 +77,6 @@ export class SecurityAuditor {
         break;
       }
 
-      // Verify round-trip deserialization
       const decoded = deserializeIntentMemo(res.buffer);
       if (decoded.swapId !== tc.swapId || decoded.destinationChain !== tc.chain) {
         allExact512 = false;
@@ -115,9 +95,6 @@ export class SecurityAuditor {
     };
   }
 
-  /**
-   * Verifies that constant-time equality comparisons are used for tokens and signatures
-   */
   private auditTimingSafeComparisons(): AuditFinding {
     let timingSafeWorks = false;
     try {
@@ -144,9 +121,6 @@ export class SecurityAuditor {
     };
   }
 
-  /**
-   * Validates ZIP-316 Unified Address rules
-   */
   private auditZip316ShieldedInvariants(): AuditFinding {
     const validUa = 'u1q4k70w5x8r8m2q30a4j7qg8q9y2v6p0x8r8m2q30a4j7qg8q9y2v6p0x8r8m2q30a4j7qg8q9y2v6p0x8r8m2q30a4j7qg8q9y2v6p0x8r8m2q30a4j7qg8q9y2v6p0x8r8m2q30a4j7qg8q9y2v6p0';
     const transparentAddr = 't1VpNsVktGaRxRYvXcBQgUm9StWvTNoA9pn';
@@ -167,9 +141,6 @@ export class SecurityAuditor {
     };
   }
 
-  /**
-   * Validates KMS and Vault key management provider status
-   */
   private auditKeyManagement(): AuditFinding {
     const status = secretsManager.getStatus();
     const passed = status.activeProviderHealthy;

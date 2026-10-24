@@ -68,7 +68,6 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
     );
   }
 
-  // Default 'badge' pill style
   return (
     <button
       type="button"

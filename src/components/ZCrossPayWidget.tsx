@@ -147,7 +147,6 @@ export function CheckoutPage() {
 
       {activeTab === 'checkout' ? (
         isSettled ? (
-          /* Payment Settled Receipt */
           <div className="py-6 text-center space-y-4 animate-in fade-in">
             <div className="w-16 h-16 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto shadow-sm">
               <CheckCircle2 className="w-8 h-8" />
@@ -172,7 +171,6 @@ export function CheckoutPage() {
             </button>
           </div>
         ) : (
-          /* Checkout View */
           <div className="space-y-5">
             {/* Merchant Details */}
             <div className="p-4 bg-gray-50 dark:bg-neutral-950 border border-gray-200 dark:border-white/10 rounded-2xl flex items-center justify-between">
@@ -244,7 +242,6 @@ export function CheckoutPage() {
           </div>
         )
       ) : (
-        /* Code Snippet Embed Generator */
         <div className="space-y-5">
           <div>
             <div className="flex items-center justify-between mb-1.5">

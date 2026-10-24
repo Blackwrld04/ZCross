@@ -1,7 +1,3 @@
-/**
- * Persistent Swap State Machine Database
- * Uses better-sqlite3 with file persistence and in-memory fallback
- */
 
 import Database from 'better-sqlite3';
 import path from 'path';
@@ -62,7 +58,6 @@ class SwapStore {
       try {
         fs.mkdirSync(dataDir, { recursive: true });
       } catch {
-        // Fallback to /tmp if local directory creation fails
         dataDir = '/tmp';
       }
     }
@@ -227,5 +222,4 @@ class SwapStore {
   }
 }
 
-// Singleton instance
 export const swapStore = new SwapStore();

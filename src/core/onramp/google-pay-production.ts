@@ -1,12 +1,3 @@
-/**
- * Production Google Pay Integration & Gateway Tokenization
- * 
- * Supports production Google Pay configurations:
- * - Production Google Pay Merchant ID validation (Google Pay & Wallet Business Console)
- * - Multi-gateway tokenization: Stripe, Braintree, and MoonPay Direct
- * - Cryptographic HMAC-SHA256 signature verification for settlement callbacks
- * - Strict constant-time webhook authentication
- */
 
 import crypto from 'crypto';
 
@@ -37,9 +28,6 @@ export class GooglePayService {
     this.environment = envSetting;
   }
 
-  /**
-   * Retrieves current Google Pay configuration for client-side PaymentsClient initialization
-   */
   getConfig(): GooglePayProductionConfig {
     const gatewayParameters = this.getGatewayParameters(this.gateway);
     const hasValidMerchantId = this.merchantId && !this.merchantId.includes('EXAMPLE') && this.merchantId.length >= 8;
@@ -54,9 +42,6 @@ export class GooglePayService {
     };
   }
 
-  /**
-   * Builds production gateway tokenization parameters according to Google Pay specification
-   */
   getGatewayParameters(gateway: SupportedPaymentGateway): Record<string, string> {
     switch (gateway) {
       case 'stripe':
@@ -82,9 +67,6 @@ export class GooglePayService {
     }
   }
 
-  /**
-   * Generates a complete Google Pay PaymentDataRequest matching Google Pay Web API v2.0
-   */
   buildPaymentDataRequest(params: {
     fiatAmount: string;
     fiatCurrency: string;
@@ -125,9 +107,6 @@ export class GooglePayService {
     };
   }
 
-  /**
-   * Verifies an incoming webhook payload using constant-time HMAC-SHA256 signature verification
-   */
   verifyWebhookSignature(payloadRaw: string, signatureHeader: string, secretKey?: string): boolean {
     const secret = secretKey || process.env.GOOGLE_PAY_WEBHOOK_SECRET || process.env.PAYMENT_GATEWAY_WEBHOOK_SECRET || 'gpay_webhook_secret_default';
     if (!signatureHeader || !payloadRaw) return false;

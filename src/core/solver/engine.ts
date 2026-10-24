@@ -1,7 +1,3 @@
-/**
- * Solver Core Engine
- * Coordinates Orchard note detection, IVK memo decryption, and cross-chain execution
- */
 
 import crypto from 'crypto';
 import { swapStore, SwapRecord, SwapStatus } from './store';
@@ -26,9 +22,6 @@ export interface CreateSwapInput {
 }
 
 export class SolverEngine {
-  /**
-   * Generates a new shielded cross-chain intent
-   */
   async createIntent(input: CreateSwapInput): Promise<{
     swap: SwapRecord;
     memoBase64: string;
@@ -40,14 +33,12 @@ export class SolverEngine {
       throw new Error('Origin amount must be between 0.0001 and 100,000 ZEC');
     }
 
-    // Supported cross-chain destinations
     const supportedChains = ['arb', 'sol', 'btc', 'eth', 'base'];
     const destChain = (input.destinationChain || 'arb').toLowerCase();
     if (!supportedChains.includes(destChain)) {
       throw new Error(`Unsupported destination chain: ${destChain}. Supported: ${supportedChains.join(', ')}`);
     }
 
-    // Strict regex validation on destination recipient address
     const cleanRecipient = (input.recipientAddress || '').trim();
     if (!cleanRecipient) {
       throw new Error('Recipient address cannot be empty');
@@ -67,7 +58,6 @@ export class SolverEngine {
       }
     }
 
-    // Strict zero-leak enforcement on refund address if provided
     if (input.refundShieldedAddress) {
       const addrCheck = validateZcashAddress(input.refundShieldedAddress, network);
       if (!addrCheck.isValid || !addrCheck.isShielded) {
@@ -79,10 +69,8 @@ export class SolverEngine {
     const nonce = crypto.randomBytes(8).toString('hex');
     const depositVaultUA = getSolverVaultAddress(network);
 
-    // Convert ZEC to Zatoshis (1 ZEC = 100,000,000 zatoshis)
     const amountZatoshis = Math.round(amountNum * 1e8).toString();
 
-    // Query live NEAR Intents quote
     let estimatedOutput = '0';
     let minimumOutput = '0';
     try {
@@ -105,14 +93,12 @@ export class SolverEngine {
       minimumOutput = quoteRes.quote.minAmountOut || '0';
     } catch (err: any) {
       console.warn('[SolverEngine] Live quote fetch warning:', err.message);
-      // Fallback calculation using live market estimate if quote rate limit hit
       const zecPriceUsd = ZEC_BASE_PRICE_USD;
       const estUsd = amountNum * zecPriceUsd;
       estimatedOutput = estUsd.toFixed(2);
       minimumOutput = (estUsd * 0.99).toFixed(2);
     }
 
-    // Construct 512-byte constant-padded intent memo
     const { base64: memoBase64 } = serializeIntentMemo({
       swapId,
       destinationChain: input.destinationChain,
@@ -124,7 +110,6 @@ export class SolverEngine {
       timestamp: Date.now(),
     });
 
-    // Construct ZIP 321 Payment URI for mobile wallets
     const zip321Uri = encodeZip321Uri({
       recipientAddress: depositVaultUA,
       amountZec: input.originAmountZec,
@@ -165,9 +150,6 @@ export class SolverEngine {
     return { swap, memoBase64, zip321Uri };
   }
 
-  /**
-   * Simulates/processes a shielded note arrival in the Orchard pool
-   */
   async processShieldedDeposit(swapId: string, zcashTxHash?: string): Promise<SwapRecord> {
     const swap = swapStore.getSwap(swapId);
     if (!swap) throw new Error(`Swap ${swapId} not found`);
@@ -178,13 +160,11 @@ export class SolverEngine {
 
     const txHash = zcashTxHash || `tx_orchard_${crypto.randomBytes(16).toString('hex')}`;
 
-    // Step 1: Memo detection
     swapStore.updateStatus(swapId, 'MEMO_DETECTED', {
       zcash_tx_hash: txHash,
       message: 'Shielded note detected in Orchard compact block stream. Decrypting 512-byte memo...',
     });
 
-    // Step 2: Validate memo
     const memo = deserializeIntentMemo(swap.memo_base64);
     if (memo.swapId !== swapId.slice(0, 16)) {
       throw new Error('Encrypted memo ID mismatch');
@@ -198,16 +178,12 @@ export class SolverEngine {
       );
     }
 
-    // Step 3: Orchard pool confirmation
     return swapStore.updateStatus(swapId, 'CONFIRMED_SHIELDED', {
       zcash_tx_hash: txHash,
       message: 'Note verified with 1 confirmation in Orchard Merkle Tree. Zero-knowledge proof validated.',
     });
   }
 
-  /**
-   * Executes settlement of the foreign leg
-   */
   async fulfillSwap(swapId: string): Promise<{ swap: SwapRecord; receipt: AuditReceiptData }> {
     const swap = swapStore.getSwap(swapId);
     if (!swap) throw new Error(`Swap ${swapId} not found`);
@@ -217,15 +193,12 @@ export class SolverEngine {
       return { swap, receipt };
     }
 
-    // Mark as executing
     swapStore.updateStatus(swapId, 'SOLVER_EXECUTING', {
       message: `Solver acquiring liquidity on ${swap.dest_chain} and broadcasting execution intent...`,
     });
 
-    // Generate destination transaction hash
     const destTxHash = `0x${crypto.randomBytes(32).toString('hex')}`;
 
-    // Mark as settled
     const updated = swapStore.updateStatus(swapId, 'SETTLED', {
       dest_tx_hash: destTxHash,
       message: `Funds delivered to ${swap.dest_recipient} on ${swap.dest_chain}. Swap 100% complete!`,
@@ -235,9 +208,6 @@ export class SolverEngine {
     return { swap: updated, receipt };
   }
 
-  /**
-   * Builds an exportable zero-knowledge audit receipt
-   */
   buildReceipt(swap: SwapRecord): AuditReceiptData {
     let explorerBase = 'https://arbiscan.io/tx/';
     if (swap.dest_chain === 'sol') explorerBase = 'https://solscan.io/tx/';
@@ -268,9 +238,6 @@ export class SolverEngine {
     });
   }
 
-  /**
-   * Retrieves audit events for a given swap
-   */
   getSwapEvents(swapId: string) {
     return swapStore.getEvents(swapId);
   }

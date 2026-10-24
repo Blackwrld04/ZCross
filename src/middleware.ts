@@ -6,16 +6,13 @@ export function middleware(request: NextRequest) {
   const proto = request.headers.get('x-forwarded-proto');
   const host = request.headers.get('host') || '';
 
-  // 1. Enforce HTTPS in production environments
   if (process.env.NODE_ENV === 'production' && proto === 'http' && !host.includes('localhost') && !host.includes('127.0.0.1')) {
     const httpsUrl = new URL(request.url);
     httpsUrl.protocol = 'https:';
     return NextResponse.redirect(httpsUrl, 301);
   }
 
-  // 2. Handle CORS for API routes
   if (pathname.startsWith('/api')) {
-    // Handle preflight OPTIONS requests
     if (request.method === 'OPTIONS') {
       const response = new NextResponse(null, { status: 204 });
       response.headers.set('Access-Control-Allow-Origin', '*');
@@ -28,7 +25,6 @@ export function middleware(request: NextRequest) {
 
   const response = NextResponse.next();
 
-  // Attach standard defensive security headers
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set('X-Frame-Options', 'DENY');
   response.headers.set('X-XSS-Protection', '1; mode=block');

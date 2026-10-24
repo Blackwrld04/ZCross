@@ -58,7 +58,6 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // In dev or sandbox: return simulated verified alert
     return NextResponse.json({
       success: true,
       recipient: cleanRecipient,

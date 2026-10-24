@@ -56,14 +56,12 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
   const [showFiatModal, setShowFiatModal] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<'account' | 'receive' | 'security' | 'history'>('account');
 
-  // Watch-Only FVK Import State
   const [showImportFvkModal, setShowImportFvkModal] = useState<boolean>(false);
   const [importFvkInput, setImportFvkInput] = useState<string>('');
   const [importFvkError, setImportFvkError] = useState<string | null>(null);
   const [importFvkSuccess, setImportFvkSuccess] = useState<boolean>(false);
   const [importingFvk, setImportingFvk] = useState<boolean>(false);
 
-  // Mount check for Portal
   useEffect(() => {
     setMounted(true);
     if (typeof window !== 'undefined' && window.location.search.includes('tab=security')) {
@@ -71,7 +69,6 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
     }
   }, []);
 
-  // Close on Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -80,7 +77,6 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
 
-  // Generate QR Code for Orchard Unified Address
   useEffect(() => {
     if (account?.address) {
       QRCode.toDataURL(account.address, {
@@ -96,7 +92,6 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
     }
   }, [account?.address]);
 
-  // Copy helper
   const handleCopy = (text: string, type: 'addr' | 'fvk' | 'seed') => {
     navigator.clipboard.writeText(text);
     if (type === 'addr') {

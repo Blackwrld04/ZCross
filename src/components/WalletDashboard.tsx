@@ -67,7 +67,6 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
   const [showFiatModal, setShowFiatModal] = useState<boolean>(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
-  // Fetch real swap history
   const fetchSwaps = async () => {
     setLoadingSwaps(true);
     try {
@@ -85,7 +84,6 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
     }
   };
 
-  // Fetch fiat on-ramp and off-ramp orders
   const fetchFiatOrders = async () => {
     setLoadingFiatOrders(true);
     try {
@@ -103,7 +101,6 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
     }
   };
 
-  // Simulate clearance for pending Google Pay settlement order
   const handleClearGooglePayOrder = async (orderId: string, cryptoAmount: number) => {
     setClearingOrderId(orderId);
     try {
@@ -600,7 +597,6 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
                 </div>
               )
             ) : (
-              /* Google Pay Orders View */
               fiatOrders.length === 0 ? (
                 <div className="text-center py-20 px-4 bg-gray-50/80 dark:bg-black rounded-3xl border border-gray-200 dark:border-white/10">
                   <div className="w-12 h-12 rounded-2xl bg-white dark:bg-zinc-900 border border-gray-200 dark:border-white/10 flex items-center justify-center text-gray-400 dark:text-zinc-400 mx-auto mb-3 shadow-xs">
@@ -822,7 +818,6 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
       {showAddressBook && (
         <AddressBookModal
           onSelectAddress={(addr) => {
-            // When opened from header, close modal
             setShowAddressBook(false);
           }}
           onClose={() => setShowAddressBook(false)}

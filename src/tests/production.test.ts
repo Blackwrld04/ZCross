@@ -9,7 +9,6 @@ test('Production: Refund engine marks expired swap with shielded refund address 
   const expiredSwapId = crypto.randomUUID();
   const validShieldedRefund = 'u1q4k70w5x8r8m2q30a4j7qg8q9y2v6p0x8r8m2q30a4j7qg8q9y2v6p0x8r8m2q30a4j7qg8q9y2v6p0x8r8m2q30a4j7qg8q9y2v6p0x8r8m2q30a4j7qg8q9y2v6p0x8r8m2q30a4j7qg8q9y2v6p0';
   
-  // Create a swap with an already-passed deadline (10 minutes ago)
   const pastDeadline = new Date(Date.now() - 10 * 60 * 1000).toISOString();
   
   const swap = swapStore.createSwap({
@@ -35,7 +34,6 @@ test('Production: Refund engine marks expired swap with shielded refund address 
   assert.ok(outcome.refundTxHash?.startsWith('tx_orchard_refund_'));
   assert.strictEqual(outcome.amountZec, '3.5');
 
-  // Verify in database
   const updatedInDb = swapStore.getSwap(expiredSwapId);
   assert.strictEqual(updatedInDb?.status, 'REFUNDED');
   assert.strictEqual(updatedInDb?.zcash_tx_hash, outcome.refundTxHash);
@@ -65,7 +63,6 @@ test('Production: Refund engine marks expired swap without refund address as EXP
   const outcome = await refundEngine.processSingleSwapRefund(swap);
   assert.strictEqual(outcome.action, 'EXPIRED');
 
-  // Verify in database
   const updatedInDb = swapStore.getSwap(expiredSwapId);
   assert.strictEqual(updatedInDb?.status, 'EXPIRED');
 });

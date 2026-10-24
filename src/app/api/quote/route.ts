@@ -15,7 +15,6 @@ import {
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
-  // 1. Rate Limiting Check (20 requests / minute per client IP)
   const clientIp = getClientIp(req);
   const rateLimitResult = evaluateRateLimit(clientIp, {
     limit: 20,
@@ -27,7 +26,6 @@ export async function POST(req: NextRequest) {
     return createRateLimitResponse(rateLimitResult);
   }
 
-  // 2. Idempotency Check (Prevents duplicate quotes/intents on network retries)
   const idempotencyKey = getIdempotencyKey(req);
   if (idempotencyKey) {
     const cached = getCachedIdempotentResponse(idempotencyKey);

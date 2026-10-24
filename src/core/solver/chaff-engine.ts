@@ -1,7 +1,3 @@
-/**
- * Chaff Engine & Anti-Timing Jitter Protection
- * Defends cross-chain swaps against correlation attacks and timing analysis.
- */
 import crypto from 'node:crypto';
 
 export interface ChaffDecoyNote {
@@ -11,17 +7,11 @@ export interface ChaffDecoyNote {
   memoDummy: string;
 }
 
-/**
- * Calculates randomized execution jitter delay in seconds
- */
 export function calculateJitterDelay(enabled: boolean, minSeconds = 15, maxSeconds = 120): number {
   if (!enabled) return 0;
   return Math.floor(Math.random() * (maxSeconds - minSeconds + 1)) + minSeconds;
 }
 
-/**
- * Generates dummy/chaff decoy note splits to mask real transaction amounts in Orchard pool
- */
 export function generateChaffDecoySplits(
   originAmountZec: number,
   shieldedRecipient: string,

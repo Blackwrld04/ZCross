@@ -1,7 +1,3 @@
-/**
- * In-Band Encrypted Memo Protocol for Zcash Orchard
- * Max length: Exactly 512 bytes (padded with 0x00 to prevent size-leakage metadata analysis)
- */
 
 export interface CrossChainIntentMemo {
   protocol: 'z-intent';
@@ -19,10 +15,6 @@ export interface CrossChainIntentMemo {
 export const MEMO_MAX_BYTES = 512;
 const MAGIC_HEADER = "ZINT1";
 
-/**
- * Serializes an Intent into a strictly 512-byte padded memo buffer.
- * Guarantees zero byte-length leakage.
- */
 export function serializeIntentMemo(intent: Omit<CrossChainIntentMemo, 'protocol' | 'version'>): {
   buffer: Buffer;
   base64: string;
@@ -48,7 +40,6 @@ export function serializeIntentMemo(intent: Omit<CrossChainIntentMemo, 'protocol
     throw new Error(`Memo payload exceeds 512-byte limit (${jsonBuf.length} bytes)`);
   }
 
-  // Allocate exactly 512 bytes and fill with constant zeros for uniform cipher size
   const paddedBuffer = Buffer.alloc(MEMO_MAX_BYTES, 0);
   jsonBuf.copy(paddedBuffer, 0);
 
@@ -59,9 +50,6 @@ export function serializeIntentMemo(intent: Omit<CrossChainIntentMemo, 'protocol
   };
 }
 
-/**
- * Deserializes and validates a 512-byte memo buffer (as decrypted by Solver IVK).
- */
 export function deserializeIntentMemo(memoBufferOrHex: Buffer | string): CrossChainIntentMemo {
   let buf: Buffer;
   if (typeof memoBufferOrHex === 'string') {
@@ -76,7 +64,6 @@ export function deserializeIntentMemo(memoBufferOrHex: Buffer | string): CrossCh
     buf = memoBufferOrHex;
   }
 
-  // Strip trailing null bytes (padding)
   let lastNonZero = buf.length;
   while (lastNonZero > 0 && buf[lastNonZero - 1] === 0) {
     lastNonZero--;
@@ -99,9 +86,6 @@ export function deserializeIntentMemo(memoBufferOrHex: Buffer | string): CrossCh
   }
 }
 
-/**
- * Convenience aliases for memo serialization and deserialization
- */
 export function serializeMemo(intent: Omit<CrossChainIntentMemo, 'protocol' | 'version'>): Buffer {
   return serializeIntentMemo(intent).buffer;
 }

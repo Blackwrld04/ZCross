@@ -1,7 +1,3 @@
-/**
- * Real-Time Web Push & Telegram Alert Service
- * Pings users across browser notification API and Telegram when cross-chain legs settle.
- */
 
 const STORAGE_KEY_TELEGRAM = 'zcross_alert_telegram_handle';
 const STORAGE_KEY_NOTIF_PREF = 'zcross_alert_browser_enabled';
@@ -17,9 +13,6 @@ export interface SettlementAlertPayload {
 }
 
 export class AlertService {
-  /**
-   * Checks if browser push notifications are supported and permitted
-   */
   static isNotificationSupported(): boolean {
     return typeof window !== 'undefined' && 'Notification' in window;
   }
@@ -40,9 +33,6 @@ export class AlertService {
     }
   }
 
-  /**
-   * Prompts the user for browser push notification permissions
-   */
   static async requestNotificationPermission(): Promise<boolean> {
     if (!this.isNotificationSupported()) return false;
     try {
@@ -56,9 +46,6 @@ export class AlertService {
     }
   }
 
-  /**
-   * Sends a native OS browser push notification
-   */
   static sendBrowserPushNotification(title: string, options?: NotificationOptions): boolean {
     if (!this.isNotificationSupported() || Notification.permission !== 'granted') {
       return false;
@@ -78,9 +65,6 @@ export class AlertService {
 
   private static memoryStore = new Map<string, string>();
 
-  /**
-   * Telegram Alert preferences
-   */
   static getTelegramRecipient(): string {
     if (typeof localStorage !== 'undefined') {
       return localStorage.getItem(STORAGE_KEY_TELEGRAM) || '';
@@ -105,9 +89,6 @@ export class AlertService {
     }
   }
 
-  /**
-   * Dispatches settlement notification to browser push and Telegram API
-   */
   static async notifySettlement(payload: SettlementAlertPayload): Promise<{
     browserNotified: boolean;
     telegramDispatched: boolean;
@@ -117,7 +98,6 @@ export class AlertService {
     const title = `🛡️ ZCross Settlement Complete: ${payload.destAmountEst} ${payload.destToken}`;
     const body = `${payload.originAmountZec} ZEC successfully settled to your ${chainName} address (${payload.recipientAddress.slice(0, 8)}...). Zero unshielded traces.`;
 
-    // 1. Browser Notification
     let browserNotified = false;
     if (this.isBrowserAlertEnabled()) {
       browserNotified = this.sendBrowserPushNotification(title, {
@@ -126,7 +106,6 @@ export class AlertService {
       });
     }
 
-    // 2. Telegram Alert
     const telegramRecipient = this.getTelegramRecipient();
     let telegramDispatched = false;
     let telegramMessage: string | undefined;

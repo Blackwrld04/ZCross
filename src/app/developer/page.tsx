@@ -143,7 +143,6 @@ function DeveloperPortalContent() {
   const [activeTab, setActiveTab] = useState<'sandbox' | 'memo' | 'widget' | 'docs'>('sandbox');
   const [selectedEndpoint, setSelectedEndpoint] = useState<ApiEndpoint>(API_ENDPOINTS[0]);
   
-  // Sandbox State
   const [requestPayload, setRequestPayload] = useState<string>('');
   const [responseStatus, setResponseStatus] = useState<number | null>(null);
   const [responseData, setResponseData] = useState<any | null>(null);
@@ -151,7 +150,6 @@ function DeveloperPortalContent() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [copiedCurl, setCopiedCurl] = useState<boolean>(false);
 
-  // Memo Playground State
   const [memoSwapId, setMemoSwapId] = useState<string>('swp_' + Math.random().toString(36).substring(2, 8));
   const [memoChain, setMemoChain] = useState<string>('arb');
   const [memoToken, setMemoToken] = useState<string>('USDC');
@@ -165,14 +163,12 @@ function DeveloperPortalContent() {
   const [customMemoInput, setCustomMemoInput] = useState<string>('');
   const [copiedMemoHex, setCopiedMemoHex] = useState<boolean>(false);
 
-  // Merchant Widget State
   const [merchantName, setMerchantName] = useState<string>('Nordic VPN Shield');
   const [itemTitle, setItemTitle] = useState<string>('Annual Shielded WireGuard Access');
   const [priceZec, setPriceZec] = useState<number>(0.08);
   const [payoutChain, setPayoutChain] = useState<'arb' | 'sol' | 'zec'>('arb');
   const [payoutAddress, setPayoutAddress] = useState<string>('0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045');
 
-  // URL Query handling for direct tab navigation
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const urlParams = new URLSearchParams(window.location.search);
@@ -183,7 +179,6 @@ function DeveloperPortalContent() {
     }
   }, []);
 
-  // Update sandbox payload on endpoint switch
   useEffect(() => {
     if (selectedEndpoint.defaultPayload) {
       setRequestPayload(JSON.stringify(selectedEndpoint.defaultPayload, null, 2));
@@ -195,7 +190,6 @@ function DeveloperPortalContent() {
     setResponseLatency(null);
   }, [selectedEndpoint]);
 
-  // Execute Memo Serialization
   useEffect(() => {
     try {
       const serialized = serializeIntentMemo({
@@ -211,7 +205,6 @@ function DeveloperPortalContent() {
       setMemoEncodedBase64(serialized.base64);
       setMemoByteSize(serialized.buffer.length);
 
-      // Verify deserialization matches
       const parsed = deserializeIntentMemo(serialized.buffer);
       setMemoDecodedObj(parsed);
       setMemoDecodeError(null);
@@ -220,7 +213,6 @@ function DeveloperPortalContent() {
     }
   }, [memoSwapId, memoChain, memoToken, memoRecipient, memoSlippage]);
 
-  // Execute Sandbox API Call
   const handleExecuteSandbox = async () => {
     setIsLoading(true);
     const start = performance.now();

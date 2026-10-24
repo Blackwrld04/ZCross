@@ -1,11 +1,3 @@
-/**
- * WebAuthn Passkeys & Biometric Authentication Engine
- * 
- * Enables TouchID, FaceID, Windows Hello, and FIDO2 passkeys for:
- * 1. 1-click in-browser shielded vault unlocking.
- * 2. Biometric authorization for cross-chain note spends.
- * 3. Fallback support with zero key compromise.
- */
 
 const STORAGE_KEY_PASSKEY_ID = 'zcross_passkey_credential_id';
 const STORAGE_KEY_PASSKEY_ENABLED = 'zcross_passkey_enabled';
@@ -46,9 +38,6 @@ export interface PasskeyAuthResult {
   error?: string;
 }
 
-/**
- * Checks if the browser supports WebAuthn and biometric credentials.
- */
 export function isWebAuthnSupported(): boolean {
   if (typeof window === 'undefined' || typeof navigator === 'undefined') return false;
   return !!(
@@ -58,9 +47,6 @@ export function isWebAuthnSupported(): boolean {
   );
 }
 
-/**
- * Checks if a biometric passkey has been enrolled on this device.
- */
 export function hasRegisteredPasskey(): boolean {
   try {
     const enabled = getStorageItem(STORAGE_KEY_PASSKEY_ENABLED);
@@ -71,12 +57,8 @@ export function hasRegisteredPasskey(): boolean {
   }
 }
 
-/**
- * Registers a new TouchID / FaceID / FIDO2 Passkey bound to the Orchard account.
- */
 export async function registerPasskey(accountAddress: string): Promise<PasskeyRegistrationResult> {
   if (!isWebAuthnSupported()) {
-    // If running in headless or unsupported browser, provide local biometric simulation
     const mockId = `mock_passkey_${Date.now().toString(16)}`;
     setStorageItem(STORAGE_KEY_PASSKEY_ID, mockId);
     setStorageItem(STORAGE_KEY_PASSKEY_ENABLED, 'true');
@@ -128,14 +110,12 @@ export async function registerPasskey(accountAddress: string): Promise<PasskeyRe
     return { success: true, credentialId: credId };
   } catch (err: any) {
     console.warn('WebAuthn registration error:', err);
-    // Graceful fallback for non-origin/localhost or permission blocks
     if (err.name === 'NotAllowedError' || err.name === 'SecurityError') {
       return { 
         success: false, 
         error: 'Biometric registration was cancelled or denied by device settings.' 
       };
     }
-    // If platform authenticator not available, allow graceful fallback enrollment
     const fallbackId = `passkey_${Date.now().toString(16)}`;
     setStorageItem(STORAGE_KEY_PASSKEY_ID, fallbackId);
     setStorageItem(STORAGE_KEY_PASSKEY_ENABLED, 'true');
@@ -143,9 +123,6 @@ export async function registerPasskey(accountAddress: string): Promise<PasskeyRe
   }
 }
 
-/**
- * Authenticates the user with TouchID / FaceID / Windows Hello.
- */
 export async function authenticateWithPasskey(): Promise<PasskeyAuthResult> {
   const credId = getStorageItem(STORAGE_KEY_PASSKEY_ID);
   
@@ -154,7 +131,6 @@ export async function authenticateWithPasskey(): Promise<PasskeyAuthResult> {
   }
 
   if (!isWebAuthnSupported()) {
-    // In headless or mock environments, auto-verify registered passkey
     return { success: true };
   }
 
@@ -171,7 +147,6 @@ export async function authenticateWithPasskey(): Promise<PasskeyAuthResult> {
           type: 'public-key',
         }];
       } catch {
-        // use default challenge
       }
     }
 
@@ -197,14 +172,10 @@ export async function authenticateWithPasskey(): Promise<PasskeyAuthResult> {
     if (err.name === 'NotAllowedError') {
       return { success: false, error: 'Biometric authentication was cancelled.' };
     }
-    // Graceful fallback for mock or sandboxed browser sessions
     return { success: true };
   }
 }
 
-/**
- * Clears passkey enrollment from the browser.
- */
 export function clearPasskey(): void {
   removeStorageItem(STORAGE_KEY_PASSKEY_ID);
   removeStorageItem(STORAGE_KEY_PASSKEY_ENABLED);

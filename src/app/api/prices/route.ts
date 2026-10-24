@@ -8,7 +8,6 @@ interface CachedPriceData {
   data: any;
 }
 
-// In-memory cache to prevent CoinGecko rate limiting (TTL: 25s for spot, 60s for chart)
 const priceCache = new Map<string, CachedPriceData>();
 
 export async function GET(request: NextRequest) {
@@ -24,7 +23,6 @@ export async function GET(request: NextRequest) {
       'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
     };
 
-    // 1. SPOT TICKER QUERY (Used by PriceProvider to feed the entire site)
     if (type === 'spot') {
       const spotCacheKey = 'spot_rates_coingecko';
       const cached = priceCache.get(spotCacheKey);
@@ -62,7 +60,6 @@ export async function GET(request: NextRequest) {
         console.warn('CoinGecko spot ticker fetch error:', err.message);
       }
 
-      // Fallback spot data if CoinGecko is unreachable
       const fallbackPayload = {
         success: true,
         source: 'fallback',
@@ -77,7 +74,6 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(fallbackPayload);
     }
 
-    // 2. CHART TIME-SERIES QUERY (Used by MarketPriceChart)
     const cacheKey = `${symbol}_${timeframe}`;
     const cached = priceCache.get(cacheKey);
 
@@ -139,7 +135,6 @@ export async function GET(request: NextRequest) {
             }
           }
         } catch {
-          // fallback
         }
       }
 
@@ -183,7 +178,6 @@ export async function GET(request: NextRequest) {
         };
       });
 
-      // Synchronize the latest candle point with live spot ticker to ensure 100% agreement with swap cards
       if (points.length > 0 && ZEC_BASE_PRICE_USD > 0) {
         let latestSpot = ZEC_BASE_PRICE_USD;
         if (symbol === 'SOL') latestSpot = ZEC_BASE_PRICE_USD / solPriceUsd;

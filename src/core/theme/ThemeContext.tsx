@@ -24,7 +24,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [theme, setThemeState] = useState<Theme>('light');
   const [mounted, setMounted] = useState<boolean>(false);
 
-  // Initialize theme from localStorage or system preference
   useEffect(() => {
     try {
       const stored = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
@@ -38,7 +37,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         applyThemeClass(initialTheme);
       }
     } catch {
-      // fallback
     } finally {
       setMounted(true);
     }
@@ -63,7 +61,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     try {
       localStorage.setItem(THEME_STORAGE_KEY, newTheme);
     } catch {
-      // storage unavailable
     }
   }, []);
 

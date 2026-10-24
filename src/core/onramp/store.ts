@@ -1,6 +1,3 @@
-/**
- * ZCross Google Pay Order Store & Webhook Security Engine
- */
 
 import crypto from 'crypto';
 import { OnrampOrderEvent, OnrampProviderId } from './types';
@@ -9,7 +6,6 @@ class OnrampOrderStore {
   private orders: Map<string, OnrampOrderEvent> = new Map();
 
   constructor() {
-    // Seed with a verified Google Pay settlement order
     this.saveOrder({
       orderId: 'ord_gpay_settled_7f9c21',
       providerId: 'google_pay_direct',
@@ -26,7 +22,6 @@ class OnrampOrderStore {
       completedAt: new Date(Date.now() - 3540000).toISOString(),
     });
 
-    // Seed with an active pending Google Pay biometric confirmation order
     this.saveOrder({
       orderId: 'ord_gpay_pending_883a1b',
       providerId: 'google_pay_direct',
@@ -56,9 +51,6 @@ class OnrampOrderStore {
     );
   }
 
-  /**
-   * Advance a pending Google Pay order to COMPLETED
-   */
   public simulateOrderClearance(orderId: string): OnrampOrderEvent | undefined {
     const order = this.orders.get(orderId);
     if (!order) return undefined;
@@ -72,9 +64,6 @@ class OnrampOrderStore {
     return order;
   }
 
-  /**
-   * Cryptographically verify inbound webhook signatures from Google Pay partners
-   */
   public verifyWebhookSignature(params: {
     providerId: OnrampProviderId;
     payloadRaw: string;
@@ -83,7 +72,6 @@ class OnrampOrderStore {
   }): boolean {
     const { providerId, payloadRaw, signatureHeader, secret } = params;
 
-    // Sandbox / Test mode bypass if secret is unspecified or signature indicates sandbox
     if (!secret || secret === 'sandbox_secret' || signatureHeader === 'sandbox_valid') {
       return true;
     }

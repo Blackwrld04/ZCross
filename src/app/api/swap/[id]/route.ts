@@ -14,7 +14,6 @@ export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  // Rate limiting (60 requests / minute per client IP)
   const clientIp = getClientIp(req);
   const rateLimitResult = evaluateRateLimit(clientIp, {
     limit: 60,

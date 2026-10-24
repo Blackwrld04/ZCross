@@ -8,7 +8,6 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   const startTime = Date.now();
 
-  // 1. Check Database
   let dbStatus = 'healthy';
   let totalSwaps = 0;
   let activeSwaps = 0;
@@ -23,10 +22,8 @@ export async function GET() {
     dbStatus = `unhealthy: ${err.message}`;
   }
 
-  // 2. Check Zcash Consensus Client
   const zcashStatus = await zcashNodeClient.getNodeStatus();
 
-  // 3. Check NEAR Intents Service
   let nearIntentsStatus = 'operational';
   let nearLatencyMs = 0;
   try {
@@ -37,7 +34,6 @@ export async function GET() {
     nearIntentsStatus = `degraded: ${err.message}`;
   }
 
-  // 4. Memory and System Metrics
   const mem = process.memoryUsage();
 
   const isAllHealthy = dbStatus === 'healthy' && zcashStatus.connected;

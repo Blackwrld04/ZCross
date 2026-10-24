@@ -11,7 +11,6 @@ import {
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
-  // Strict rate limit on simulation executions (10 requests / minute per client IP)
   const clientIp = getClientIp(req);
   const rateLimitResult = evaluateRateLimit(clientIp, {
     limit: 10,
@@ -49,9 +48,7 @@ export async function POST(req: NextRequest) {
     }
 
     if (action === 'full_flow') {
-      // Step 1: Deposit & Memo verification
       await solverEngine.processShieldedDeposit(swapId);
-      // Step 2: Settlement
       const { swap: settled, receipt } = await solverEngine.fulfillSwap(swapId);
       const res = NextResponse.json({ success: true, swap: settled, receipt });
       return attachRateLimitHeaders(res, rateLimitResult);

@@ -1,32 +1,25 @@
 import test from 'node:test';
 import assert from 'node:assert';
 
-// Area 1: Zcash Node & Halo 2 WASM Prover
 import { orchardWasmProver } from '../core/zcash/wasm-prover';
 
-// Area 2: NEAR Intents & Defuse Protocol Solver
 import { defuseSolverManager } from '../core/near-intents/defuse-solver';
 
-// Area 3: Google Pay Live Rails
 import { googlePayService } from '../core/onramp/google-pay-production';
 
-// Area 4: Persistent Storage & Distributed Redis
 import { redisClient } from '../core/storage/redis-client';
 import { databaseManager } from '../core/storage/database';
 import { evaluateDistributedRateLimit } from '../core/security/rate-limit';
 
-// Area 6: Security Audit & KMS Key Management
 import { securityAuditor } from '../core/security/audit';
 import { secretsManager } from '../core/security/secrets';
 
 test('Production Roadmap 1: Zcash Orchard Halo 2 WASM Prover', async () => {
-  // Test parameter initialization
   const params = await orchardWasmProver.initParameters();
   assert.strictEqual(params.parametersLoaded, true);
   assert.strictEqual(params.halo2K, 11);
   assert.ok(params.spendCircuitDigest.startsWith('0x'));
 
-  // Test action proof creation
   const memo = new Uint8Array(512);
   const actionProof = await orchardWasmProver.createActionProof({
     outputNote: {
@@ -44,7 +37,6 @@ test('Production Roadmap 1: Zcash Orchard Halo 2 WASM Prover', async () => {
   assert.ok(actionProof.proofBytesHex.length > 100);
   assert.ok(actionProof.spendAuthSigHex.length > 0);
 
-  // Test full transaction bundle with binding signature
   const bundle = await orchardWasmProver.buildShieldedBundle({
     spendNotes: [{
       nullifier: 'nf_test_01',
@@ -75,7 +67,6 @@ test('Production Roadmap 2: NEAR Intents Defuse Protocol Solver Vault', async ()
   assert.strictEqual(status.isRegistered, true);
   assert.ok(status.pools.length >= 4);
 
-  // Verify multi-chain reserve depths
   const arbPool = status.pools.find(p => p.chain === 'arb');
   assert.ok(arbPool);
   assert.strictEqual(arbPool.symbol, 'USDC');
@@ -89,7 +80,6 @@ test('Production Roadmap 2: NEAR Intents Defuse Protocol Solver Vault', async ()
   assert.ok(btcPool);
   assert.strictEqual(btcPool.symbol, 'BTC');
 
-  // Verify NEP-413 intent cryptographic verification
   const isValidIntent = defuseSolverManager.verifyIntentSignature(
     { swapId: 'test-intent-1', amount: '1.5' },
     'sig_base64_sample',
@@ -103,7 +93,6 @@ test('Production Roadmap 3: Google Pay Live Rails & Gateway Tokenization', () =>
   assert.ok(config.merchantName.includes('ZCross'));
   assert.ok(config.gatewayParameters);
 
-  // Test building PaymentDataRequest
   const req = googlePayService.buildPaymentDataRequest({
     fiatAmount: '250.00',
     fiatCurrency: 'USD',
@@ -113,7 +102,6 @@ test('Production Roadmap 3: Google Pay Live Rails & Gateway Tokenization', () =>
   assert.strictEqual(req.transactionInfo.totalPrice, '250.00');
   assert.strictEqual(req.transactionInfo.currencyCode, 'USD');
 
-  // Test constant-time HMAC-SHA256 signature verification
   const secret = 'prod_secret_key_12345';
   const payload = JSON.stringify({ event: 'order.completed', orderId: 'ord_9876' });
   const crypto = require('crypto');
@@ -127,22 +115,18 @@ test('Production Roadmap 3: Google Pay Live Rails & Gateway Tokenization', () =>
 });
 
 test('Production Roadmap 4: Persistent Storage & Distributed Redis', async () => {
-  // Database status
   const dbStatus = databaseManager.getStatus();
   assert.ok(dbStatus.connected);
   assert.ok(databaseManager.getPostgresMigrationSql().includes('CREATE TABLE IF NOT EXISTS swaps'));
 
-  // Upstash Redis Primitives
   await redisClient.set('test:key:1', 'production_value', { exSeconds: 60 });
   const val = await redisClient.get('test:key:1');
   assert.strictEqual(val, 'production_value');
 
-  // Atomic Increment
   const count1 = await redisClient.incr('test:counter', 60);
   const count2 = await redisClient.incr('test:counter', 60);
   assert.strictEqual(count2, count1 + 1);
 
-  // Distributed Rate Limiting
   const rlResult = await evaluateDistributedRateLimit('client_test_edge_1', {
     limit: 5,
     windowMs: 60000,
@@ -153,23 +137,19 @@ test('Production Roadmap 4: Persistent Storage & Distributed Redis', async () =>
 });
 
 test('Production Roadmap 6: Key Management (KMS / Vault) & Cryptographic Security Audit', async () => {
-  // Key Management Status
   const kmsStatus = secretsManager.getStatus();
   assert.strictEqual(kmsStatus.activeProviderHealthy, true);
 
-  // KMS Envelope Decryption simulation
   const rawSecret = 'solver_private_spending_entropy_2026';
   const ciphertextBase64 = Buffer.from(rawSecret).toString('base64');
   const decrypted = await secretsManager.decryptEnvelopeKms(ciphertextBase64);
   assert.strictEqual(decrypted, rawSecret);
 
-  // Full Automated Cryptographic Security Audit
   const auditReport = await securityAuditor.runFullAudit();
   assert.strictEqual(auditReport.overallScore, 100);
   assert.strictEqual(auditReport.status, 'GRADE_A_SECURE');
   assert.strictEqual(auditReport.findings.length, 4);
 
-  // Verify all 4 security pillars passed with 25 points each
   for (const finding of auditReport.findings) {
     assert.strictEqual(finding.passed, true, `Finding failed: ${finding.name}`);
     assert.strictEqual(finding.score, 25);

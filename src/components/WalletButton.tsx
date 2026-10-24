@@ -47,7 +47,6 @@ export const WalletButton: React.FC<WalletButtonProps> = ({
   const activeAddress = getActiveAddressForChain(chain);
   const isSolTarget = chain.toLowerCase() === 'sol';
 
-  // Handle click outside to close dropdown
   useEffect(() => {
     if (typeof window !== 'undefined' && window.location.search.includes('connect_modal')) {
       setShowModal(true);

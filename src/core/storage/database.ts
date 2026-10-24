@@ -1,10 +1,3 @@
-/**
- * Unified Multi-Database Adapter (PostgreSQL & SQLite)
- * 
- * Seamlessly routes data between:
- * - Production PostgreSQL (Neon, Supabase, AWS RDS, Prisma/Drizzle connection string via DATABASE_URL)
- * - Local SQLite (better-sqlite3) for local development and offline environments
- */
 
 import Database from 'better-sqlite3';
 import path from 'path';
@@ -79,9 +72,6 @@ export class DatabaseManager {
     `);
   }
 
-  /**
-   * Returns current database engine status
-   */
   getStatus(): DatabaseStatus {
     return {
       type: this.dbType,
@@ -91,9 +81,6 @@ export class DatabaseManager {
     };
   }
 
-  /**
-   * Generates production PostgreSQL DDL migration script for deployment to Supabase/Neon
-   */
   getPostgresMigrationSql(): string {
     return `
 -- ZCross Production PostgreSQL Schema (Supabase / Neon / AWS RDS)

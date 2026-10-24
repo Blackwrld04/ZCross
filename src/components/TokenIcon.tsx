@@ -25,7 +25,6 @@ export const TokenIcon: React.FC<TokenIconProps> = ({
   const sym = symbol.toUpperCase().trim();
   const ch = chain.toLowerCase().trim();
 
-  // 1. Match by Symbol
   if (sym === 'ZEC') {
     return <ZcashIcon className={className} />;
   }
@@ -48,7 +47,6 @@ export const TokenIcon: React.FC<TokenIconProps> = ({
     return <NearIcon className={className} />;
   }
 
-  // 2. Match by Chain if symbol didn't match
   if (ch === 'sol') {
     return <SolanaIcon className={className} />;
   }

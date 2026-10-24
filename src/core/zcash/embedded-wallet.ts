@@ -1,13 +1,3 @@
-/**
- * Embedded In-Browser Zcash Orchard Shielded Wallet Engine
- * 
- * Provides full in-browser self-custody for Zcash Orchard:
- * 1. BIP-39 mnemonic generation & recovery (12-word seed phrase).
- * 2. Deterministic Orchard spending key (sk), viewing key (fvk), and ZIP-316 Unified Address (u1...) derivation.
- * 3. Client-side AES-256-GCM + PBKDF2 encryption (zero private keys leave the browser).
- * 4. In-browser shielded note commitment, 512-byte uniform padded memo generation, and 1-click cross-chain settlement.
- * 5. Balance synchronization & transaction ledger.
- */
 
 import { generateMnemonic } from './bip39';
 import { serializeIntentMemo } from '../crypto/memo';
@@ -75,16 +65,12 @@ function removeStorageItem(key: string): void {
   }
 }
 
-/**
- * Derives a deterministic ZIP-316 Orchard Unified Address from a mnemonic phrase.
- */
 export async function deriveOrchardKeys(mnemonic: string, network: 'mainnet' | 'testnet' = 'mainnet'): Promise<{
   address: string;
   fvk: string;
   ivk: string;
   spendingKeyHex: string;
 }> {
-  // Convert mnemonic to seed entropy via SHA-256
   const encoder = new TextEncoder();
   const seedBytes = encoder.encode(mnemonic.trim().toLowerCase());
   
@@ -100,11 +86,9 @@ export async function deriveOrchardKeys(mnemonic: string, network: 'mainnet' | '
   const hashArray = Array.from(new Uint8Array(hashBuffer));
   const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 
-  // Deterministic 32-byte Orchard raw receiver key (Fp5)
   const orchardReceiverRaw = hashHex.slice(0, 64);
   const hrp = network === 'mainnet' ? 'u1' : 'utest1';
   
-  // Format standard ZIP 316 Unified Address with Orchard receiver (length >= 140 chars)
   const address = `${hrp}q${orchardReceiverRaw}${hashHex.slice(0, 32)}${hashHex.slice(32, 64)}`;
   const fvk = `uview1${hashHex.slice(0, 48)}`;
   const ivk = `uivk1${hashHex.slice(48, 64)}`;
@@ -118,9 +102,6 @@ export async function deriveOrchardKeys(mnemonic: string, network: 'mainnet' | '
   };
 }
 
-/**
- * Encrypts a string (e.g. mnemonic) using PBKDF2 (100,000 iterations) + AES-256-GCM.
- */
 export async function encryptWithPassword(text: string, password: string): Promise<{
   ciphertextHex: string;
   ivHex: string;
@@ -177,7 +158,6 @@ export async function encryptWithPassword(text: string, password: string): Promi
 
     return { ciphertextHex, ivHex, saltHex };
   } else {
-    // Node.js fallback
     const { pbkdf2Sync, createCipheriv } = require('crypto');
     const derived = pbkdf2Sync(password, salt, 100000, 32, 'sha256');
     const cipher = createCipheriv('aes-256-gcm', derived, iv);
@@ -193,9 +173,6 @@ export async function encryptWithPassword(text: string, password: string): Promi
   }
 }
 
-/**
- * Decrypts ciphertext using PBKDF2 + AES-256-GCM.
- */
 export async function decryptWithPassword(
   ciphertextHex: string,
   ivHex: string,
@@ -252,13 +229,7 @@ export async function decryptWithPassword(
   }
 }
 
-/**
- * In-Browser Embedded Orchard Wallet State Manager
- */
 export class EmbeddedOrchardWalletService {
-  /**
-   * Generates a brand-new in-browser Orchard Shielded Wallet.
-   */
   static async createNewWallet(password: string, network: 'mainnet' | 'testnet' = 'mainnet'): Promise<{
     mnemonic: string;
     account: EmbeddedOrchardAccount;
@@ -296,9 +267,6 @@ export class EmbeddedOrchardWalletService {
     return { mnemonic, account };
   }
 
-  /**
-   * Imports an existing 12-word mnemonic.
-   */
   static async importWallet(mnemonic: string, password: string, network: 'mainnet' | 'testnet' = 'mainnet'): Promise<EmbeddedOrchardAccount> {
     const clean = mnemonic.trim().toLowerCase();
     const words = clean.split(/\s+/);
@@ -336,10 +304,6 @@ export class EmbeddedOrchardWalletService {
     };
   }
 
-  /**
-   * Imports an external Full Viewing Key (uview1...) or Unified Address (u1...) in Watch-Only mode.
-   * Private spending keys never touch the browser.
-   */
   static async importWatchOnlyFvk(
     viewKeyOrAddress: string,
     network: 'mainnet' | 'testnet' = 'mainnet'
@@ -411,16 +375,10 @@ export class EmbeddedOrchardWalletService {
     };
   }
 
-  /**
-   * Checks if an embedded wallet is already stored in the browser.
-   */
   static hasStoredWallet(): boolean {
     return Boolean(getStorageItem(STORAGE_KEY_WALLET));
   }
 
-  /**
-   * Gets public metadata of the stored wallet without requiring password decryption.
-   */
   static getStoredPublicAccount(): EmbeddedOrchardAccount | null {
     const raw = getStorageItem(STORAGE_KEY_WALLET);
     if (!raw) return null;
@@ -444,9 +402,6 @@ export class EmbeddedOrchardWalletService {
     }
   }
 
-  /**
-   * Unlocks the encrypted wallet and retrieves the underlying seed phrase.
-   */
   static async unlockAndExportMnemonic(password: string): Promise<string> {
     const raw = getStorageItem(STORAGE_KEY_WALLET);
     if (!raw) throw new Error('No embedded wallet found. Please create or import one.');
@@ -455,23 +410,16 @@ export class EmbeddedOrchardWalletService {
     return decryptWithPassword(payload.ciphertextHex, payload.ivHex, payload.saltHex, password);
   }
 
-  /**
-   * Gets live shielded balance in ZEC.
-   */
   static getShieldedBalance(): number {
     const raw = getStorageItem(STORAGE_KEY_BALANCE);
     return raw ? parseFloat(raw) : 5.0;
   }
 
-  /**
-   * Funds the in-app wallet (sandbox faucet or deposit reception).
-   */
   static fundBalance(amountZec: number): number {
     const current = this.getShieldedBalance();
     const updated = +(current + amountZec).toFixed(4);
     setStorageItem(STORAGE_KEY_BALANCE, updated.toString());
 
-    // Record history
     this.addHistoryRecord({
       txid: `tx_inbound_shield_${Date.now().toString(16)}`,
       timestamp: Date.now(),
@@ -484,9 +432,6 @@ export class EmbeddedOrchardWalletService {
     return updated;
   }
 
-  /**
-   * Withdraws shielded ZEC to external payout destination.
-   */
   static withdrawBalance(amountZec: number, destinationPayoutAccount = 'Destination Account'): number {
     const current = this.getShieldedBalance();
     if (current < amountZec) {
@@ -507,10 +452,6 @@ export class EmbeddedOrchardWalletService {
     return updated;
   }
 
-  /**
-   * Executes an in-browser 1-click shielded note payment for a cross-chain swap intent.
-   * Eliminates the need for any external phone or QR scanning.
-   */
   static async executeShieldedSwapPayment(params: {
     originAmountZec: number;
     destinationChain: string;
@@ -542,7 +483,6 @@ export class EmbeddedOrchardWalletService {
       );
     }
 
-    // 1. Generate the standardized 512-byte encrypted in-band memo
     const memoResult = serializeIntentMemo({
       swapId: (params.swapId || 'instant-orchard').slice(0, 16),
       destinationChain: params.destinationChain,
@@ -554,7 +494,6 @@ export class EmbeddedOrchardWalletService {
       timestamp: Date.now(),
     });
 
-    // 2. Synthesize real Orchard Halo 2 zero-knowledge proof bundle via WASM Prover
     const anchor = '00000000' + Date.now().toString(16).padStart(56, '0');
     const zatoshisSpent = BigInt(Math.round(totalRequired * 100_000_000));
     const zatoshisSent = BigInt(Math.round(params.originAmountZec * 100_000_000));
@@ -594,11 +533,9 @@ export class EmbeddedOrchardWalletService {
       .map(b => b.toString(16).padStart(2, '0'))
       .join('')}`;
 
-    // 3. Deduct balance from browser wallet
     const newBalanceZec = +(currentBalance - totalRequired).toFixed(4);
     setStorageItem(STORAGE_KEY_BALANCE, newBalanceZec.toString());
 
-    // 4. Record history
     this.addHistoryRecord({
       txid,
       timestamp: Date.now(),
@@ -619,9 +556,6 @@ export class EmbeddedOrchardWalletService {
     };
   }
 
-  /**
-   * Retrieves transaction history of the embedded wallet.
-   */
   static getHistory(): ShieldedTransactionRecord[] {
     const raw = getStorageItem(STORAGE_KEY_HISTORY);
     return raw ? JSON.parse(raw) : [];
@@ -633,9 +567,6 @@ export class EmbeddedOrchardWalletService {
     setStorageItem(STORAGE_KEY_HISTORY, JSON.stringify(history.slice(0, 30)));
   }
 
-  /**
-   * Clears the embedded wallet from browser storage.
-   */
   static deleteWallet(): void {
     removeStorageItem(STORAGE_KEY_WALLET);
     removeStorageItem(STORAGE_KEY_BALANCE);

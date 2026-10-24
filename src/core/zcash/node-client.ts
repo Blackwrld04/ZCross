@@ -1,13 +1,3 @@
-/**
- * Production Zcash Node & Lightwalletd Integration Service
- * 
- * Provides client interface for interacting with the live Zcash consensus layer:
- * - Scanning compact blocks
- * - Verifying Orchard note commitments against the Merkle tree
- * - Live unspent nullifier verification (double-spend protection)
- * - Broadcasting signed raw transactions
- * - Multi-endpoint failover across public lightwalletd & Zebra RPC endpoints
- */
 
 export interface ZcashNodeStatus {
   connected: boolean;
@@ -62,12 +52,8 @@ export class ZcashNodeClient {
     this.network = (process.env.ZCASH_NETWORK as any) || 'mainnet';
   }
 
-  /**
-   * Retrieves the current blockchain tip height from live lightwalletd / Zebra RPC
-   */
   async getLatestBlockHeight(): Promise<number> {
     const now = Date.now();
-    // Cache tip for 10 seconds to avoid flooding node
     if (this.lastTipFetchTime > 0 && now - this.lastTipFetchTime < 10000) {
       return this.cachedTipHeight;
     }
@@ -76,7 +62,6 @@ export class ZcashNodeClient {
 
     for (const endpoint of endpointsToTry) {
       try {
-        // Try lightwalletd HTTP / v1 / getlatestblock or JSON-RPC
         const res = await fetch(`${endpoint}/v1/getlatestblock`, {
           headers: { 'Accept': 'application/json' },
           signal: AbortSignal.timeout(1200),
@@ -92,11 +77,9 @@ export class ZcashNodeClient {
           }
         }
       } catch {
-        // Try next endpoint
       }
     }
 
-    // Try JSON-RPC getblockchaininfo if configured
     try {
       if (process.env.ZCASH_RPC_USER && process.env.ZCASH_RPC_PASSWORD) {
         const rpcRes = await fetch(this.primaryUrl, {
@@ -118,19 +101,14 @@ export class ZcashNodeClient {
         }
       }
     } catch {
-      // Pass through to deterministic mainnet anchor
     }
 
-    // High-precision mainnet anchor: block 2650150 at baseline, +1 block per ~75 seconds
     const simulatedTip = 2650150 + Math.floor((now - 1790700000000) / 75000);
     this.cachedTipHeight = simulatedTip;
     this.lastTipFetchTime = now;
     return simulatedTip;
   }
 
-  /**
-   * Scans a range of compact blocks for Orchard note commitments and actions
-   */
   async scanCompactBlocks(startHeight: number, endHeight: number): Promise<CompactBlockSummary[]> {
     const tip = await this.getLatestBlockHeight();
     const safeEnd = Math.min(endHeight, tip);
@@ -149,9 +127,6 @@ export class ZcashNodeClient {
     return summaries;
   }
 
-  /**
-   * Verifies that a specific note commitment exists within the Orchard Merkle Tree
-   */
   async verifyOrchardNoteCommitment(commitment: string): Promise<NoteCommitmentVerification> {
     const tip = await this.getLatestBlockHeight();
     return {
@@ -163,10 +138,6 @@ export class ZcashNodeClient {
     };
   }
 
-  /**
-   * Live Unspent Nullifier Verification (Double-Spend Protection)
-   * Verifies that the note nullifier has not yet been revealed on the Zcash blockchain
-   */
   async verifyNullifierUnspent(nullifier: string): Promise<NullifierStatus> {
     const isSpent = this.knownSpentNullifiers.has(nullifier);
     return {
@@ -177,23 +148,16 @@ export class ZcashNodeClient {
     };
   }
 
-  /**
-   * Marks a nullifier as spent upon confirmed settlement
-   */
   recordSpentNullifier(nullifier: string): void {
     if (nullifier) {
       this.knownSpentNullifiers.add(nullifier);
     }
   }
 
-  /**
-   * Broadcasts a signed raw shielded transaction to the Zcash peer-to-peer network
-   */
   async broadcastShieldedTransaction(rawTxHex: string): Promise<{ txid: string; broadcasted: boolean; node: string }> {
     const crypto = await import('crypto');
     const txid = crypto.createHash('sha256').update(rawTxHex).digest('hex');
 
-    // Attempt live node broadcast if RPC configured
     try {
       if (process.env.ZCASH_RPC_USER && process.env.ZCASH_RPC_PASSWORD) {
         const res = await fetch(this.primaryUrl, {
@@ -213,15 +177,11 @@ export class ZcashNodeClient {
         }
       }
     } catch {
-      // Fallback to verified broadcast receipt
     }
 
     return { txid, broadcasted: true, node: this.primaryUrl };
   }
 
-  /**
-   * Returns current node connectivity health and latency
-   */
   async getNodeStatus(): Promise<ZcashNodeStatus> {
     const startTime = Date.now();
     const height = await this.getLatestBlockHeight();
