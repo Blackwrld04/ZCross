@@ -10,9 +10,9 @@ export async function GET(req: NextRequest) {
     const redirectOrigin = searchParams.get('origin') || 'https://zcross.cash';
 
     const apiKey = process.env.NEXT_PUBLIC_MOONPAY_API_KEY || 'pk_test_QuRBVUBMr6EnuDz228i91makUVHM6K5T';
-    const secretKey = process.env.MOONPAY_SECRET_KEY;
+    const secretKey = process.env.MOONPAY_SECRET_KEY || 'sk_test_3p9oytQZnZs6oIe1iJFmHSfVCJ4Bcz';
 
-    const url = new URL('https://buy.moonpay.com');
+    const url = new URL('https://buy.moonpay.com/v2/buy');
     url.searchParams.set('apiKey', apiKey);
     url.searchParams.set('currencyCode', 'eth');
     url.searchParams.set('baseCurrencyCode', currency);
