@@ -71,4 +71,18 @@ describe('Option 1: In-Browser Embedded Zcash Orchard Wallet Engine', () => {
     assert.ok(history.length >= 1);
     assert.strictEqual(history[0].type, 'SWAP_OUT');
   });
+
+  test('Wallet Service reset / disconnect lifecycle and fresh vault creation', async () => {
+    EmbeddedOrchardWalletService.deleteWallet();
+    assert.strictEqual(EmbeddedOrchardWalletService.hasStoredWallet(), false, 'hasStoredWallet must be false after deleteWallet');
+
+    const created = await EmbeddedOrchardWalletService.createNewWallet('demo-pwd', 'mainnet');
+    assert.ok(created.mnemonic.split(/\s+/).length === 12);
+    assert.ok(created.account.address.startsWith('u1'));
+    assert.strictEqual(EmbeddedOrchardWalletService.hasStoredWallet(), true);
+    assert.strictEqual(created.account.shieldedBalanceZec, 5.0);
+
+    EmbeddedOrchardWalletService.deleteWallet();
+    assert.strictEqual(EmbeddedOrchardWalletService.hasStoredWallet(), false);
+  });
 });

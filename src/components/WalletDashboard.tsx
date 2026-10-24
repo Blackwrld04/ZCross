@@ -12,6 +12,7 @@ import { AuditReceiptData } from '@/core/crypto/receipt';
 import { TokenIcon } from './TokenIcon';
 import { WalletButton } from './WalletButton';
 import { ShieldedWalletBadge } from './ShieldedWalletBadge';
+import { ShieldedWalletModal } from './ShieldedWalletModal';
 import { AddressBookModal } from './AddressBookModal';
 import { FiatOnrampModal } from './FiatOnrampModal';
 import { ZCrossLogo, GooglePayLogo } from './BrandLogos';
@@ -52,7 +53,7 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
   onBackToLanding,
   onSelectReceipt,
 }) => {
-  const { balanceZec, fundWallet } = useEmbeddedWallet();
+  const { account, balanceZec, fundWallet } = useEmbeddedWallet();
   const { zecPriceUsd } = useLivePrices();
   const [activeTab, setActiveTab] = useState<'swap' | 'history' | 'vault'>('swap');
   const [historySubTab, setHistorySubTab] = useState<'swaps' | 'fiat'>('swaps');
@@ -65,6 +66,7 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
   const [simulatingId, setSimulatingId] = useState<string | null>(null);
   const [showAddressBook, setShowAddressBook] = useState<boolean>(false);
   const [showFiatModal, setShowFiatModal] = useState<boolean>(false);
+  const [showWalletModal, setShowWalletModal] = useState<boolean>(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   const fetchSwaps = async () => {
@@ -749,20 +751,40 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
                 </div>
               </div>
 
-              <div className="text-3xl sm:text-6xl font-bold tracking-tight mb-2">
-                {balanceZec > 0 ? `${balanceZec.toFixed(4)} ZEC` : '17.50000000 ZEC'}
+              <div className="text-3xl sm:text-6xl font-bold tracking-tight mb-2 font-mono">
+                {account ? `${balanceZec.toFixed(4)} ZEC` : '0.0000 ZEC'}
               </div>
               <div className="text-xs sm:text-sm text-gray-400 dark:text-zinc-400 mb-6 sm:mb-8 font-light">
-                ≈ ${((balanceZec > 0 ? balanceZec : 17.5) * zecPriceUsd).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD • Connected Orchard Vault
+                {account 
+                  ? `≈ $${(balanceZec * zecPriceUsd).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD • Connected Orchard Vault`
+                  : 'Vault Disconnected • Connect or Create Shielded Vault'}
               </div>
 
               <div className="flex flex-wrap items-center gap-4">
-                <button
-                  onClick={() => setActiveTab('swap')}
-                  className="px-6 py-3 rounded-full bg-white dark:bg-amber-500 text-black font-semibold text-xs hover:bg-gray-100 dark:hover:bg-amber-400 transition shadow-sm cursor-pointer"
-                >
-                  Initiate Shielded Swap →
-                </button>
+                {account ? (
+                  <>
+                    <button
+                      onClick={() => setActiveTab('swap')}
+                      className="px-6 py-3 rounded-full bg-white dark:bg-amber-500 text-black font-semibold text-xs hover:bg-gray-100 dark:hover:bg-amber-400 transition shadow-sm cursor-pointer"
+                    >
+                      Initiate Shielded Swap →
+                    </button>
+                    <button
+                      onClick={() => setShowWalletModal(true)}
+                      className="px-5 py-3 rounded-full bg-zinc-900 hover:bg-zinc-800 text-white font-semibold text-xs transition border border-white/10 cursor-pointer"
+                    >
+                      Manage Vault / QR
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    onClick={() => setShowWalletModal(true)}
+                    className="px-6 py-3 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs transition shadow-md cursor-pointer flex items-center gap-2"
+                  >
+                    <Shield className="w-4 h-4 fill-black text-black" />
+                    <span>Connect or Create Shielded Vault</span>
+                  </button>
+                )}
               </div>
             </div>
 
@@ -833,6 +855,11 @@ export const WalletDashboard: React.FC<WalletDashboardProps> = ({
             fetchFiatOrders();
           }}
         />
+      )}
+
+      {/* Shielded Wallet Modal */}
+      {showWalletModal && (
+        <ShieldedWalletModal onClose={() => setShowWalletModal(false)} />
       )}
     </div>
   );

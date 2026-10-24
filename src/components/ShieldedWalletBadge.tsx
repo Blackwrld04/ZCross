@@ -21,24 +21,36 @@ export const ShieldedWalletBadge: React.FC = () => {
 
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setShowModal(true)}
-        className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-xs font-semibold bg-gray-50 hover:bg-gray-100 dark:bg-black dark:hover:bg-zinc-900 text-slate-900 dark:text-white border border-gray-200 dark:border-white/10 transition cursor-pointer shadow-2xs group shrink-0"
-        title="View In-Browser Shielded Orchard Zcash Account"
-      >
-        <div className="w-4 h-4 rounded-full bg-black/10 dark:bg-amber-400/20 flex items-center justify-center text-black dark:text-amber-400 shrink-0">
-          <Shield className="w-2.5 h-2.5 fill-black dark:fill-amber-400 text-black dark:text-amber-400" />
-        </div>
-        <div className="flex items-center gap-1 font-mono">
-          <span className="font-bold text-slate-900 dark:text-white whitespace-nowrap">
-            {balanceZec.toFixed(balanceZec >= 100 ? 1 : 2)} <span className="hidden sm:inline">ZEC</span>
-          </span>
-          <span className="text-gray-400 dark:text-gray-500 hidden md:inline">•</span>
-          <span className="text-gray-600 dark:text-gray-400 hidden md:inline">{shortenedAddress}</span>
-        </div>
-        <ChevronDown className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gray-500 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition shrink-0" />
-      </button>
+      {!account ? (
+        <button
+          type="button"
+          onClick={() => setShowModal(true)}
+          className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-xs font-bold bg-amber-500 hover:bg-amber-400 text-black transition cursor-pointer shadow-sm hover:shadow active:scale-95 shrink-0"
+          title="Connect or Create Shielded Orchard Vault"
+        >
+          <Shield className="w-3.5 h-3.5 fill-black text-black shrink-0" />
+          <span className="font-semibold tracking-wide">Connect Vault</span>
+        </button>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setShowModal(true)}
+          className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-xs font-semibold bg-gray-50 hover:bg-gray-100 dark:bg-black dark:hover:bg-zinc-900 text-slate-900 dark:text-white border border-gray-200 dark:border-white/10 transition cursor-pointer shadow-2xs group shrink-0"
+          title="View In-Browser Shielded Orchard Zcash Account"
+        >
+          <div className="w-4 h-4 rounded-full bg-black/10 dark:bg-amber-400/20 flex items-center justify-center text-black dark:text-amber-400 shrink-0">
+            <Shield className="w-2.5 h-2.5 fill-black dark:fill-amber-400 text-black dark:text-amber-400" />
+          </div>
+          <div className="flex items-center gap-1 font-mono">
+            <span className="font-bold text-slate-900 dark:text-white whitespace-nowrap">
+              {balanceZec.toFixed(balanceZec >= 100 ? 1 : 2)} <span className="hidden sm:inline">ZEC</span>
+            </span>
+            <span className="text-gray-400 dark:text-gray-500 hidden md:inline">•</span>
+            <span className="text-gray-600 dark:text-gray-400 hidden md:inline">{shortenedAddress}</span>
+          </div>
+          <ChevronDown className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gray-500 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition shrink-0" />
+        </button>
+      )}
 
       {showModal && (
         <ShieldedWalletModal onClose={() => setShowModal(false)} />

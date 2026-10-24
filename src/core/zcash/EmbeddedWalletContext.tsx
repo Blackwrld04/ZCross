@@ -47,6 +47,7 @@ export interface EmbeddedWalletState {
   }) => Promise<{ txid: string; newBalanceZec: number; auditReceiptHash: string }>;
   refreshWallet: () => void;
   resetWallet: () => void;
+  disconnectWallet: () => void;
 }
 
 const EmbeddedWalletContext = createContext<EmbeddedWalletState | undefined>(undefined);
@@ -55,7 +56,7 @@ const STORAGE_KEY_AUTOLOCK = 'zcross_autolock_minutes';
 
 export const EmbeddedWalletProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [account, setAccount] = useState<EmbeddedOrchardAccount | null>(null);
-  const [balanceZec, setBalanceZec] = useState<number>(5.0);
+  const [balanceZec, setBalanceZec] = useState<number>(0);
   const [hasStoredWallet, setHasStoredWallet] = useState<boolean>(false);
   const [history, setHistory] = useState<ShieldedTransactionRecord[]>([]);
   const [isLocked, setIsLocked] = useState<boolean>(true);
@@ -95,15 +96,12 @@ export const EmbeddedWalletProvider: React.FC<{ children: ReactNode }> = ({ chil
       setBalanceZec(EmbeddedOrchardWalletService.getShieldedBalance());
       setHistory(EmbeddedOrchardWalletService.getHistory());
     } else {
-      EmbeddedOrchardWalletService.createNewWallet('zcross-session', 'mainnet')
-        .then(({ account: acc }) => {
-          setAccount(acc);
-          setBalanceZec(acc.shieldedBalanceZec);
-          setHasStoredWallet(true);
-          setIsLocked(false);
-          setHistory(EmbeddedOrchardWalletService.getHistory());
-        })
-        .catch(err => console.warn('Embedded wallet auto-init:', err));
+      setAccount(null);
+      setBalanceZec(0);
+      setHasStoredWallet(false);
+      setIsLocked(true);
+      setUnlockedMnemonic(null);
+      setHistory([]);
     }
   }, []);
 
@@ -258,14 +256,16 @@ export const EmbeddedWalletProvider: React.FC<{ children: ReactNode }> = ({ chil
 
   const resetWallet = () => {
     EmbeddedOrchardWalletService.deleteWallet();
+    clearPasskey();
     setAccount(null);
     setBalanceZec(0);
     setHasStoredWallet(false);
     setIsLocked(true);
     setUnlockedMnemonic(null);
     setHistory([]);
-    refreshWallet();
   };
+
+  const disconnectWallet = resetWallet;
 
   return (
     <EmbeddedWalletContext.Provider
@@ -294,6 +294,7 @@ export const EmbeddedWalletProvider: React.FC<{ children: ReactNode }> = ({ chil
         execute1ClickSwapPayment,
         refreshWallet,
         resetWallet,
+        disconnectWallet,
       }}
     >
       {children}

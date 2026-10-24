@@ -6,7 +6,7 @@ import QRCode from 'qrcode';
 import { 
   X, Shield, Copy, Check, Plus, RefreshCw, KeyRound, 
   ExternalLink, Eye, EyeOff, AlertCircle, ArrowUpRight, ArrowDownLeft,
-  Fingerprint, Lock, ShieldAlert, Timer, Sparkles, CreditCard
+  Fingerprint, Lock, ShieldAlert, Timer, Sparkles, CreditCard, LogOut
 } from 'lucide-react';
 import { useEmbeddedWallet } from '@/core/zcash/EmbeddedWalletContext';
 import { useLivePrices } from '@/core/prices/PriceContext';
@@ -35,6 +35,9 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
     emergencyFastPurge,
     history,
     resetWallet,
+    disconnectWallet,
+    createNewWallet,
+    importWallet,
     isLocked,
     isWatchOnly,
     importWatchOnlyFvk,
@@ -61,6 +64,67 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
   const [importFvkError, setImportFvkError] = useState<string | null>(null);
   const [importFvkSuccess, setImportFvkSuccess] = useState<boolean>(false);
   const [importingFvk, setImportingFvk] = useState<boolean>(false);
+
+  const [setupTab, setSetupTab] = useState<'create' | 'import' | 'fvk'>('create');
+  const [creationStep, setCreationStep] = useState<'form' | 'created'>('form');
+  const [createdMnemonic, setCreatedMnemonic] = useState<string | null>(null);
+  const [createPassword, setCreatePassword] = useState<string>('zcross-session');
+  const [isCreating, setIsCreating] = useState<boolean>(false);
+  const [createError, setCreateError] = useState<string | null>(null);
+  const [copiedNewSeed, setCopiedNewSeed] = useState<boolean>(false);
+
+  const [importMnemonicInput, setImportMnemonicInput] = useState<string>('');
+  const [importPasswordInput, setImportPasswordInput] = useState<string>('zcross-session');
+  const [importError, setImportError] = useState<string | null>(null);
+  const [isImporting, setIsImporting] = useState<boolean>(false);
+
+  const handleCreateNew = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    setIsCreating(true);
+    setCreateError(null);
+    try {
+      const res = await createNewWallet(createPassword || 'zcross-session', 'mainnet');
+      setCreatedMnemonic(res.mnemonic);
+      setCreationStep('created');
+    } catch (err: any) {
+      setCreateError(err.message || 'Failed to generate shielded vault.');
+    } finally {
+      setIsCreating(false);
+    }
+  };
+
+  const handleImportSeed = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsImporting(true);
+    setImportError(null);
+    try {
+      await importWallet(importMnemonicInput.trim(), importPasswordInput || 'zcross-session', 'mainnet');
+      setActiveTab('account');
+    } catch (err: any) {
+      setImportError(err.message || 'Failed to import recovery phrase.');
+    } finally {
+      setIsImporting(false);
+    }
+  };
+
+  const handleImportFvkFromSetup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setImportFvkError(null);
+    const clean = importFvkInput.trim();
+    if (!clean) {
+      setImportFvkError('Please paste a valid Full Viewing Key (uview1...) or Unified Address (u1...).');
+      return;
+    }
+    setImportingFvk(true);
+    try {
+      await importWatchOnlyFvk(clean);
+      setActiveTab('account');
+    } catch (err: any) {
+      setImportFvkError(err.message || 'Failed to import watch-only viewing key.');
+    } finally {
+      setImportingFvk(false);
+    }
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -222,7 +286,7 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
             <div>
               <div className="flex items-center gap-1.5">
                 <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white font-serif">
-                  Shielded Zcash Vault
+                  {account ? 'Shielded Zcash Vault' : 'Connect Shielded Vault'}
                 </h2>
                 <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-black text-white dark:bg-amber-500 dark:text-black uppercase tracking-wider">
                   Orchard
@@ -230,63 +294,349 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
               </div>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="w-8 h-8 rounded-full bg-gray-100 dark:bg-zinc-900 hover:bg-gray-200 dark:hover:bg-zinc-800 text-gray-500 dark:text-zinc-400 hover:text-black dark:hover:text-white transition flex items-center justify-center cursor-pointer"
-            title="Close"
-          >
-            <X className="w-4 h-4" />
-          </button>
+          <div className="flex items-center gap-2">
+            {account && (
+              <button
+                type="button"
+                onClick={() => disconnectWallet()}
+                className="px-2.5 py-1 text-xs font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 border border-rose-200 dark:border-rose-900/40 rounded-lg transition cursor-pointer flex items-center gap-1"
+                title="Disconnect & Reset Vault"
+              >
+                <LogOut className="w-3 h-3" />
+                <span className="hidden sm:inline">Disconnect</span>
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={onClose}
+              className="w-8 h-8 rounded-full bg-gray-100 dark:bg-zinc-900 hover:bg-gray-200 dark:hover:bg-zinc-800 text-gray-500 dark:text-zinc-400 hover:text-black dark:hover:text-white transition flex items-center justify-center cursor-pointer"
+              title="Close"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="flex items-center gap-1.5 p-1 bg-gray-100 dark:bg-black border border-transparent dark:border-white/10 rounded-xl mb-4 text-xs font-semibold">
-          <button
-            type="button"
-            onClick={() => setActiveTab('account')}
-            className={`flex-1 py-1.5 rounded-lg transition cursor-pointer text-center ${
-              activeTab === 'account' 
-                ? 'bg-black text-white dark:bg-amber-500 dark:text-black shadow-2xs font-bold' 
-                : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
-            }`}
-          >
-            Account
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab('receive')}
-            className={`flex-1 py-1.5 rounded-lg transition cursor-pointer text-center ${
-              activeTab === 'receive' 
-                ? 'bg-black text-white dark:bg-amber-500 dark:text-black shadow-2xs font-bold' 
-                : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
-            }`}
-          >
-            Receive / QR
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab('security')}
-            className={`flex-1 py-1.5 rounded-lg transition cursor-pointer text-center ${
-              activeTab === 'security' 
-                ? 'bg-black text-white dark:bg-amber-500 dark:text-black shadow-2xs font-bold' 
-                : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
-            }`}
-          >
-            Security &amp; Passkey
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab('history')}
-            className={`flex-1 py-1.5 rounded-lg transition cursor-pointer text-center ${
-              activeTab === 'history' 
-                ? 'bg-black text-white dark:bg-amber-500 dark:text-black shadow-2xs font-bold' 
-                : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
-            }`}
-          >
-            History ({history.length})
-          </button>
-        </div>
+        {!account ? (
+          <div className="space-y-4">
+            {/* Setup Navigation Tabs */}
+            <div className="flex items-center gap-1.5 p-1 bg-gray-100 dark:bg-black border border-transparent dark:border-white/10 rounded-xl mb-3 text-xs font-semibold">
+              <button
+                type="button"
+                onClick={() => { setSetupTab('create'); setCreationStep('form'); }}
+                className={`flex-1 py-1.5 rounded-lg transition cursor-pointer text-center ${
+                  setupTab === 'create'
+                    ? 'bg-black text-white dark:bg-amber-500 dark:text-black shadow-2xs font-bold'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
+                }`}
+              >
+                Create New Vault
+              </button>
+              <button
+                type="button"
+                onClick={() => setSetupTab('import')}
+                className={`flex-1 py-1.5 rounded-lg transition cursor-pointer text-center ${
+                  setupTab === 'import'
+                    ? 'bg-black text-white dark:bg-amber-500 dark:text-black shadow-2xs font-bold'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
+                }`}
+              >
+                Import Seed
+              </button>
+              <button
+                type="button"
+                onClick={() => setSetupTab('fvk')}
+                className={`flex-1 py-1.5 rounded-lg transition cursor-pointer text-center ${
+                  setupTab === 'fvk'
+                    ? 'bg-black text-white dark:bg-amber-500 dark:text-black shadow-2xs font-bold'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
+                }`}
+              >
+                Watch-Only (FVK)
+              </button>
+            </div>
+
+            {setupTab === 'create' && (
+              <div className="space-y-4">
+                {creationStep === 'form' ? (
+                  <>
+                    <div className="p-4 rounded-2xl bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 space-y-3">
+                      <div className="flex items-center gap-2 text-xs font-bold text-slate-900 dark:text-white">
+                        <Sparkles className="w-4 h-4 text-amber-500" />
+                        <span>Self-Custodial Client-Side Orchard Vault</span>
+                      </div>
+                      <p className="text-xs text-gray-600 dark:text-zinc-400 leading-relaxed">
+                        Generate a cryptographically secure 12-word recovery phrase directly inside your browser. No seed or spending keys ever leave your machine.
+                      </p>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] text-gray-500 dark:text-zinc-400">
+                        <div className="flex items-center gap-1.5">
+                          <Check className="w-3.5 h-3.5 text-emerald-500" />
+                          <span>Pure ZIP-316 Orchard Address</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <Check className="w-3.5 h-3.5 text-emerald-500" />
+                          <span>AES-256-GCM Vault Encryption</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <Check className="w-3.5 h-3.5 text-emerald-500" />
+                          <span>Client-Side BIP-39 Entropy</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <Check className="w-3.5 h-3.5 text-emerald-500" />
+                          <span>Pre-funded with 5.0 Demo ZEC</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <label className="block text-xs font-semibold text-gray-700 dark:text-zinc-300">
+                        Vault Password (optional encryption key)
+                      </label>
+                      <input
+                        type="password"
+                        value={createPassword}
+                        onChange={(e) => setCreatePassword(e.target.value)}
+                        placeholder="zcross-session"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 text-xs font-mono text-slate-900 dark:text-white focus:outline-none focus:border-amber-400"
+                      />
+                      <p className="text-[10px] text-gray-400 dark:text-zinc-500">
+                        Default: <code>zcross-session</code>. Used to encrypt your private keys in browser local storage.
+                      </p>
+                    </div>
+
+                    {createError && (
+                      <div className="text-xs text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 p-2.5 rounded-xl border border-rose-200 dark:border-rose-900/50 flex items-center gap-1.5">
+                        <AlertCircle className="w-4 h-4 shrink-0" />
+                        <span>{createError}</span>
+                      </div>
+                    )}
+
+                    <button
+                      type="button"
+                      onClick={handleCreateNew}
+                      disabled={isCreating}
+                      className="w-full py-3 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 transition cursor-pointer shadow-md disabled:opacity-50 active:scale-[0.99]"
+                    >
+                      {isCreating ? (
+                        <>
+                          <RefreshCw className="w-4 h-4 animate-spin" />
+                          <span>Deriving Orchard Keys...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Shield className="w-4 h-4 fill-black text-black" />
+                          <span>Generate 12-Word Shielded Vault</span>
+                        </>
+                      )}
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <div className="p-4 rounded-2xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60 space-y-2">
+                      <div className="flex items-center gap-1.5 text-xs font-bold text-amber-900 dark:text-amber-300">
+                        <Check className="w-4 h-4 text-emerald-500" />
+                        <span>Shielded Vault Generated Successfully</span>
+                      </div>
+                      <p className="text-[11px] text-amber-800 dark:text-amber-200/90 leading-relaxed">
+                        Here is your 12-word secret recovery phrase. Write these down in order. Never share these words with anyone.
+                      </p>
+                    </div>
+
+                    {createdMnemonic && (
+                      <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 my-2">
+                        {createdMnemonic.split(/\s+/).map((word, idx) => (
+                          <div
+                            key={idx}
+                            className="p-2 rounded-xl bg-gray-50 dark:bg-zinc-900 border border-gray-200 dark:border-white/10 flex items-center gap-1.5 text-xs"
+                          >
+                            <span className="text-gray-400 dark:text-zinc-500 font-mono text-[10px] w-4">{idx + 1}.</span>
+                            <span className="font-mono font-bold text-slate-900 dark:text-white select-all">{word}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (createdMnemonic) {
+                          navigator.clipboard.writeText(createdMnemonic);
+                          setCopiedNewSeed(true);
+                          setTimeout(() => setCopiedNewSeed(false), 2000);
+                        }
+                      }}
+                      className="w-full py-2 bg-gray-100 hover:bg-gray-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 text-slate-800 dark:text-zinc-200 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition cursor-pointer border border-gray-200 dark:border-white/10"
+                    >
+                      {copiedNewSeed ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                      <span>{copiedNewSeed ? 'Copied 12 Words to Clipboard!' : 'Copy 12-Word Phrase'}</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCreationStep('form');
+                        setActiveTab('account');
+                      }}
+                      className="w-full py-3 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 transition cursor-pointer shadow-md active:scale-[0.99]"
+                    >
+                      <Shield className="w-4 h-4 fill-black text-black" />
+                      <span>Enter Shielded Vault (5.0000 ZEC Ready) →</span>
+                    </button>
+                  </>
+                )}
+              </div>
+            )}
+
+            {setupTab === 'import' && (
+              <form onSubmit={handleImportSeed} className="space-y-3.5">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 dark:text-zinc-300 mb-1">
+                    12 or 24-Word Recovery Phrase
+                  </label>
+                  <textarea
+                    value={importMnemonicInput}
+                    onChange={(e) => setImportMnemonicInput(e.target.value)}
+                    placeholder="Enter your seed words separated by spaces..."
+                    rows={3}
+                    className="w-full p-3 bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl text-xs font-mono text-slate-900 dark:text-white focus:outline-none focus:border-amber-400 resize-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 dark:text-zinc-300 mb-1">
+                    Encrypt with Password (optional)
+                  </label>
+                  <input
+                    type="password"
+                    value={importPasswordInput}
+                    onChange={(e) => setImportPasswordInput(e.target.value)}
+                    placeholder="zcross-session"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 text-xs font-mono text-slate-900 dark:text-white focus:outline-none focus:border-amber-400"
+                  />
+                </div>
+
+                {importError && (
+                  <div className="text-xs text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 p-2.5 rounded-xl border border-rose-200 dark:border-rose-900/50 flex items-center gap-1.5">
+                    <AlertCircle className="w-4 h-4 shrink-0" />
+                    <span>{importError}</span>
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={isImporting || !importMnemonicInput.trim()}
+                  className="w-full py-3 bg-black hover:bg-gray-800 dark:bg-amber-500 dark:hover:bg-amber-400 text-white dark:text-black font-bold rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 transition cursor-pointer shadow-md disabled:opacity-50"
+                >
+                  {isImporting ? (
+                    <>
+                      <RefreshCw className="w-4 h-4 animate-spin" />
+                      <span>Restoring Shielded Vault...</span>
+                    </>
+                  ) : (
+                    <>
+                      <KeyRound className="w-4 h-4" />
+                      <span>Restore Shielded Vault</span>
+                    </>
+                  )}
+                </button>
+              </form>
+            )}
+
+            {setupTab === 'fvk' && (
+              <form onSubmit={handleImportFvkFromSetup} className="space-y-3.5">
+                <div className="p-3 bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50 rounded-2xl text-[11px] text-amber-900 dark:text-amber-200 leading-relaxed">
+                  <strong>Watch-Only (Zero Spending Risk):</strong> Monitor balance and incoming shielded notes from external Zashi or YWallet without private spending keys touching this browser.
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 dark:text-zinc-300 mb-1">
+                    Full Viewing Key or Unified Address
+                  </label>
+                  <textarea
+                    value={importFvkInput}
+                    onChange={(e) => setImportFvkInput(e.target.value)}
+                    placeholder="Paste uview1... (Full Viewing Key) or u1... (Unified Address)"
+                    rows={3}
+                    className="w-full p-3 bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl text-xs font-mono text-slate-900 dark:text-white focus:outline-none focus:border-amber-400 resize-none"
+                  />
+                </div>
+
+                {importFvkError && (
+                  <div className="text-xs text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 p-2.5 rounded-xl border border-rose-200 dark:border-rose-900/50 flex items-center gap-1.5">
+                    <AlertCircle className="w-4 h-4 shrink-0" />
+                    <span>{importFvkError}</span>
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={importingFvk || !importFvkInput.trim()}
+                  className="w-full py-3 bg-black hover:bg-gray-800 dark:bg-amber-500 dark:hover:bg-amber-400 text-white dark:text-black font-bold rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 transition cursor-pointer shadow-md disabled:opacity-50"
+                >
+                  {importingFvk ? (
+                    <>
+                      <RefreshCw className="w-4 h-4 animate-spin" />
+                      <span>Verifying Viewing Key...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Eye className="w-4 h-4" />
+                      <span>Import Watch-Only Vault</span>
+                    </>
+                  )}
+                </button>
+              </form>
+            )}
+          </div>
+        ) : (
+          <>
+            {/* Tab Navigation */}
+            <div className="flex items-center gap-1.5 p-1 bg-gray-100 dark:bg-black border border-transparent dark:border-white/10 rounded-xl mb-4 text-xs font-semibold">
+              <button
+                type="button"
+                onClick={() => setActiveTab('account')}
+                className={`flex-1 py-1.5 rounded-lg transition cursor-pointer text-center ${
+                  activeTab === 'account' 
+                    ? 'bg-black text-white dark:bg-amber-500 dark:text-black shadow-2xs font-bold' 
+                    : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
+                }`}
+              >
+                Account
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('receive')}
+                className={`flex-1 py-1.5 rounded-lg transition cursor-pointer text-center ${
+                  activeTab === 'receive' 
+                    ? 'bg-black text-white dark:bg-amber-500 dark:text-black shadow-2xs font-bold' 
+                    : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
+                }`}
+              >
+                Receive / QR
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('security')}
+                className={`flex-1 py-1.5 rounded-lg transition cursor-pointer text-center ${
+                  activeTab === 'security' 
+                    ? 'bg-black text-white dark:bg-amber-500 dark:text-black shadow-2xs font-bold' 
+                    : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
+                }`}
+              >
+                Security &amp; Passkey
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('history')}
+                className={`flex-1 py-1.5 rounded-lg transition cursor-pointer text-center ${
+                  activeTab === 'history' 
+                    ? 'bg-black text-white dark:bg-amber-500 dark:text-black shadow-2xs font-bold' 
+                    : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
+                }`}
+              >
+                History ({history.length})
+              </button>
+            </div>
 
         {/* TAB 1: ACCOUNT OVERVIEW */}
         {activeTab === 'account' && (
@@ -681,6 +1031,8 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
               </div>
             )}
           </div>
+        )}
+          </>
         )}
 
         {/* Footer */}
