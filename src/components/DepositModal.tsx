@@ -10,6 +10,7 @@ import {
 import { useEmbeddedWallet } from '@/core/zcash/EmbeddedWalletContext';
 import { AlertService } from '@/core/notifications/alert-service';
 import { ZashiLogo, YWalletLogo, ZodlLogo, ZcashIcon } from './BrandLogos';
+import { saveLocalSwapRecord } from '@/core/solver/local-history';
 
 interface DepositModalProps {
   quoteData: any;
@@ -142,18 +143,24 @@ export const DepositModal: React.FC<DepositModalProps> = ({
         }
       }
       if (action === 'full_flow' || action === 'settle') {
+        const txHash = '0x' + Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join('');
         setStatus('SETTLED');
-        setDestTxHash('0x' + Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join(''));
+        setDestTxHash(txHash);
+        saveLocalSwapRecord({ ...quoteData, status: 'SETTLED', destTxHash: txHash });
       } else if (action === 'deposit') {
         setStatus('CONFIRMED_SHIELDED');
+        saveLocalSwapRecord({ ...quoteData, status: 'CONFIRMED_SHIELDED' });
       }
     } catch (err) {
       console.warn('Simulation network notice, applying client settlement:', err);
       if (action === 'full_flow' || action === 'settle') {
+        const txHash = '0x' + Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join('');
         setStatus('SETTLED');
-        setDestTxHash('0x' + Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join(''));
+        setDestTxHash(txHash);
+        saveLocalSwapRecord({ ...quoteData, status: 'SETTLED', destTxHash: txHash });
       } else if (action === 'deposit') {
         setStatus('CONFIRMED_SHIELDED');
+        saveLocalSwapRecord({ ...quoteData, status: 'CONFIRMED_SHIELDED' });
       }
     } finally {
       setSimulating(false);

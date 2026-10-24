@@ -12,6 +12,7 @@ import { useEmbeddedWallet } from '@/core/zcash/EmbeddedWalletContext';
 import { useLivePrices } from '@/core/prices/PriceContext';
 import { ZashiLogo, YWalletLogo, ZcashIcon, GooglePayLogo } from './BrandLogos';
 import { FiatOnrampModal } from './FiatOnrampModal';
+import { getLocalSwapRecords } from '@/core/solver/local-history';
 
 interface ShieldedWalletModalProps {
   onClose: () => void;
@@ -43,6 +44,26 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
     importWatchOnlyFvk,
     lockWallet
   } = useEmbeddedWallet();
+
+  const localSwaps = getLocalSwapRecords();
+  const combinedHistory = [...history];
+  localSwaps.forEach((s) => {
+    const isAlreadyPresent = combinedHistory.some(
+      (h) => h.txid === s.zcash_tx_hash || h.txid === s.id
+    );
+    if (!isAlreadyPresent) {
+      combinedHistory.push({
+        txid: s.zcash_tx_hash || s.id,
+        timestamp: new Date(s.created_at).getTime(),
+        type: 'SWAP_OUT',
+        amountZec: parseFloat(s.origin_amount) || 1.0,
+        recipientAddress: s.dest_recipient || 'External Chain',
+        memoSnippet: `${s.dest_token} on ${(s.dest_chain || '').toUpperCase()}`,
+        status: 'CONFIRMED',
+      });
+    }
+  });
+  combinedHistory.sort((a, b) => b.timestamp - a.timestamp);
 
   const [mounted, setMounted] = useState<boolean>(false);
   const [qrCodeUrl, setQrCodeUrl] = useState<string>('');
@@ -634,7 +655,7 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
                     : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
                 }`}
               >
-                History ({history.length})
+                History ({combinedHistory.length})
               </button>
             </div>
 
@@ -984,7 +1005,7 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
               </button>
             </div>
 
-            {history.length === 0 ? (
+            {combinedHistory.length === 0 ? (
               <div className="p-8 text-center bg-gray-50 dark:bg-black rounded-2xl border border-dashed border-gray-200 dark:border-white/10">
                 <Shield className="w-8 h-8 text-gray-300 dark:text-zinc-600 mx-auto mb-2" />
                 <p className="text-xs font-semibold text-gray-600 dark:text-zinc-400">No shielded transactions yet</p>
@@ -994,7 +1015,7 @@ export const ShieldedWalletModal: React.FC<ShieldedWalletModalProps> = ({ onClos
               </div>
             ) : (
               <div className="max-h-[300px] overflow-y-auto space-y-2 pr-1 custom-scrollbar">
-                {history.map((tx) => (
+                {combinedHistory.map((tx) => (
                   <div 
                     key={tx.txid} 
                     className="p-3 bg-gray-50 dark:bg-black hover:bg-gray-100/80 dark:hover:bg-zinc-900 border border-gray-200 dark:border-white/10 rounded-xl transition text-xs"

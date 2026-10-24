@@ -16,6 +16,7 @@ import { ShieldedWalletModal } from './ShieldedWalletModal';
 import { resolveWeb3Domain } from '@/core/wallet/address-book';
 import { MarketPriceChart } from './MarketPriceChart';
 import { useLivePrices } from '@/core/prices/PriceContext';
+import { saveLocalSwapRecord } from '@/core/solver/local-history';
 
 export interface DestinationToken {
   chain: string;
@@ -387,6 +388,7 @@ export const SwapCard: React.FC<SwapCardProps> = ({
         });
       }
 
+      saveLocalSwapRecord(data);
       onQuoteGenerated(data);
     } catch (err: any) {
       console.warn('Review swap error handled:', err);
@@ -394,6 +396,7 @@ export const SwapCard: React.FC<SwapCardProps> = ({
         ...quotePayload,
         calculatedOutput,
       });
+      saveLocalSwapRecord(fallback);
       onQuoteGenerated(fallback);
     } finally {
       setLoading(false);
@@ -516,6 +519,7 @@ export const SwapCard: React.FC<SwapCardProps> = ({
 
       quoteData.status = 'SETTLED';
       quoteData.destTxHash = '0x' + Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join('');
+      saveLocalSwapRecord(quoteData);
       onQuoteGenerated(quoteData);
     } catch (err: any) {
       console.error('1-Click Swap error:', err);
