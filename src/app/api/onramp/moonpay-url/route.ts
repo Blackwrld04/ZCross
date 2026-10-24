@@ -20,12 +20,21 @@ export async function GET(req: NextRequest) {
     url.searchParams.set('baseCurrencyAmount', amount);
     url.searchParams.set('redirectURL', `${redirectOrigin}/swap?onramp_complete=1&provider=moonpay`);
 
+    // Detect client IP address (Vercel, Render, Cloudflare headers)
+    const forwarded = req.headers.get('x-forwarded-for');
+    const clientIp = forwarded ? forwarded.split(',')[0].trim() : req.headers.get('x-real-ip') || '';
+
+    // If client IP is available, include allowedIpAddress for partner security compliance
+    if (clientIp && clientIp !== '::1' && clientIp !== '127.0.0.1') {
+      url.searchParams.set('allowedIpAddress', clientIp);
+    }
+
     // Only set walletAddress if valid EVM address format
     if (address && address.startsWith('0x')) {
       url.searchParams.set('walletAddress', address);
     }
 
-    // Sign URL if a valid secret key is configured
+    // Sign URL if a valid secret key is configured AND allowedIpAddress is present (or walletAddress requires signing)
     if (secretKey && secretKey.startsWith('sk_')) {
       try {
         const moonpay = new MoonPay(secretKey);
